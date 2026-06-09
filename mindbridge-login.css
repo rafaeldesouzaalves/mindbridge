@@ -1,0 +1,310 @@
+/* Importação da Fontes */
+
+
+/* ============================================================
+   1. VARIÁVEIS DE DESIGN (Design Tokens)
+   Altere aqui para mudar toda a paleta de uma vez
+============================================================ */
+
+:root{
+    /* Paleta Principal */
+    --Lavanda-Suave:#F2EFF8;
+    --Verde-Menta:#E1F5EE;
+    --Azul-Névoa:#E7F1F8;
+    --Areia-Neutra:#F1EFE8;
+
+    /* Cores Destaque */
+    --Roxo-Calmo:#534AB7;
+    --Verde-Esperança:#1D9E75;
+    --Azul-Confiança:#378ADD;
+}
+
+
+/* ============================================================
+   2. RESET E BASE
+============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+ul{
+    list-style: none;
+}
+
+body{
+    background-color: var(--Lavanda-Suave);
+     font-family: 'Inter', sans-serif;
+}
+
+/* ============================================================
+   3. CONTAINERS 
+============================================================ */
+
+.login-container{
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.container-1 {
+    background-color: var(--Roxo-Calmo);
+    padding: 40px;
+    width: 420px;
+    min-height: 550px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-right: 25px;
+}
+
+.container-1 h2 {
+    color: var(--Lavanda-Suave);
+    font-size: 24px;
+    font-family: 'Lora', serif;
+    margin-bottom: 150px;
+ }
+
+.container-1 h3 {
+    color: var(--Lavanda-Suave);
+    font-size: 20px;
+    font-family: 'Lora', serif;
+
+ }
+
+.container-1 p  {
+    color: rgba(255, 255, 255, 0.6);
+ }
+
+.lista{
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.lista li {
+    padding: 4px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.1);
+    font-size: 12px;
+    color: var(--Lavanda-Suave);
+    margin-bottom: 8px;
+    white-space: nowrap;
+    display: block;
+}
+
+.container-2 {
+    background-color: var(--Lavanda-Suave);
+    width: 420px;
+    min-height: 550px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s;
+    border-radius: 20px;
+}
+
+.container-2:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 32px rgba(83, 74, 183, 0.37);
+}
+
+.loginForm{
+    margin: 0;
+}
+
+.container-2 h2 {
+    font-family: 'Lora', serif;
+    color: var(--Roxo-Calmo);
+    margin-bottom: 5px;
+    font-size: 30px;
+}
+
+.container-2 p {
+    font-family: 'Lora', serif;
+    color: var(--Roxo-Calmo);
+    margin-bottom: 24px;
+    font-size: 18px;
+}
+
+.container-2 p.ou-divider {
+    margin: 16px 0;
+    margin-bottom: 0;
+}
+
+/* Formulario */
+
+.input-group {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+input {
+    border: 1px solid #C9C3E8;
+    border-radius: 8px;
+    padding: 10px 14px;
+    width: 100%;
+    font-size: 14px;
+    outline: none;
+    position: relative;
+}
+
+.input-group input {
+    transition: all 0.3s;
+}
+
+input[type="checkbox"] {
+    width: auto;
+}
+
+.input-group label {
+    position: absolute;
+    top: 10px;
+    left: 14px;
+    font-size: 14px;
+    transition: all 0.3s;
+    pointer-events: none;
+}
+
+.input-group input:focus {
+    transform: scale(1.04);
+    font-size: 16px;
+    border-color: var(--Roxo-Calmo);
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -10px;
+    font-size: 11px;
+    background: white;
+    padding: 0 4px;
+}
+
+
+.loginForm button {
+    color: white;
+    background-color: var(--Roxo-Calmo);
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .5s;
+    border: none;
+}
+
+.loginForm button:hover{
+    background-color: #3C3489;
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(83, 74, 183, 0.37);
+}
+
+label {
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 6px;
+    color: var(--Roxo-Calmo);
+    transition: all .5s ease;
+    transform-origin:left top ;
+    cursor: pointer;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.checkbox-group label {
+    display: inline;
+    margin-bottom: 0;
+}
+
+.forgot {
+    font-size: 15px;
+    color: var(--Roxo-Calmo);
+    display: block;
+    text-align: right;
+    margin-top: 6px;
+    text-decoration: none;
+}
+
+.btn-google{
+    border: 1px solid #C9C3E8;
+    color: var(--Roxo-Calmo);
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all .5s;
+}
+
+.btn-google:hover {
+    color: white;
+    background-color: var(--Roxo-Calmo);
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(83, 74, 183, 0.37);
+}
+
+.form-wrapper {
+    max-width: 360px;
+    width: 100%;
+}
+
+.ou-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 16px 0;
+    margin-bottom: 0;
+    color: #888;
+    font-family: 'Inter', sans-serif;
+    font-size: 19px;
+}
+
+.ou-divider::before,
+.ou-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: #C9C3E8;
+}
+
+.no-conta {
+    text-align: center;
+    margin: 12px;
+}
+
+.loginForm .btn-ver-senha {
+    position: absolute;
+    right: 12px;
+    top: 11px;
+    background: transparent;
+    width: auto;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #888;
+    transition: color 0.3s;
+    transform: none;
+}
+
+.loginForm .btn-ver-senha:hover {
+    background: transparent;
+    transform: none;
+    color: var(--Roxo-Calmo);
+}
