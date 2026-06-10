@@ -38,6 +38,10 @@ ul{
     list-style: none;
 }
 
+a {
+    text-decoration: none;
+}
+
 body{
     background-color: var(--Lavanda-Suave);
      font-family: 'Inter', sans-serif;
@@ -69,21 +73,45 @@ body{
 
 .container-1 h2 {
     color: var(--Lavanda-Suave);
-    font-size: 24px;
-    font-family: 'Lora', serif;
-    margin-bottom: 150px;
+    font-size: 25px;
+    margin-bottom: 120px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family:  'Lora', serif;
  }
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #9FE1CB;
+    margin-bottom: 5px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
 
 .container-1 h3 {
     color: var(--Lavanda-Suave);
-    font-size: 20px;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 10px;
     font-family: 'Lora', serif;
-
  }
 
 .container-1 p  {
     color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
  }
+
+.destaque {
+    color: #9FE1CB;
+    font-style: italic;
+}
 
 .lista{
     gap: 8px;
@@ -222,8 +250,8 @@ label {
 .checkbox-group {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
+    gap: 6px;
+    margin-bottom: 17px;
 }
 
 .checkbox-group label {
@@ -307,4 +335,48 @@ label {
     background: transparent;
     transform: none;
     color: var(--Roxo-Calmo);
+}
+
+.lost-senha {
+    display: block;
+    text-align: right;
+    font-size: 13px;
+    color: var(--Roxo-Calmo);
+    margin-bottom: 10px;
+}
+
+/* Responsividade / Adptividade */
+
+@media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .container-1 {
+        width: 100%;
+        min-height: auto;
+        margin-right: 0;
+    }
+
+    .container-1 h2 {
+        margin-bottom: 20px;
+    }
+
+    .lista li {
+        display: inline-block;
+        width: auto;
+    }
+
+    .container-2 {
+        width: 100%;
+        margin-top: 25px;
+    }
+
+    .container-1,
+    .container-2 {
+        padding: 24px;
+    }
 }

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Fundo -->
+  <rect width="64" height="64" rx="14" fill="#534AB7"/>
+  <!-- Arco da ponte -->
+  <path d="M10 42 Q32 16 54 42" fill="none" stroke="#9FE1CB" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- Pilares -->
+  <line x1="22" y1="42" x2="22" y2="34" stroke="#F2EFF8" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="32" y1="42" x2="32" y2="27" stroke="#F2EFF8" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="42" y1="42" x2="42" y2="34" stroke="#F2EFF8" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Base -->
+  <line x1="10" y1="42" x2="54" y2="42" stroke="#F2EFF8" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Ponto destaque -->
+  <circle cx="32" cy="27" r="3" fill="#9FE1CB"/>
+</svg>
