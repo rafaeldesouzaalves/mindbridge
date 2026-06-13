@@ -195,3 +195,61 @@ body{
     color: white;
     transform: scale(1.08);
 }
+
+/* ============================================================
+   HERO
+============================================================ */
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 80px 40px;
+    gap: 40px;
+}
+
+.hero-texto {
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 20;
+}
+
+.hero-texto h1 {
+    font-family: 'Lora', serif;
+    font-size: 48px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    line-height: 1.2;
+}
+
+.hero-texto p {
+    font-size: 18px;
+    color: #888780;
+    line-height: 1.6;
+}
+
+.destaque {
+    color: var(--Verde-Esperança);
+    font-style: italic;
+}
+
+.btn-comecar {
+    display: inline-block;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    font-size: 15px;
+    padding: 14px 28px;
+    margin-top: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    align-self: flex-start;
+    transition: all 0.3s;
+}
+
+.btn-comecar:hover {
+    background-color: #3C3489;
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgb(83, 74, 183, 0.3);
+}
+
