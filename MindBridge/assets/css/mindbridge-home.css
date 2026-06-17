@@ -253,3 +253,445 @@ body{
     box-shadow: 0 8px 24px rgb(83, 74, 183, 0.3);
 }
 
+/* ============================================================
+   URGÊNCIA
+============================================================ */
+
+.urgencia {
+    display: flex;
+    gap: 20px;
+    padding: 0 40px 80px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.urgencia-card {
+    background-color: white;
+    border: 1px solid #C9C3E8;
+    border-radius: 16px;
+    padding: 32px;
+    flex: 1;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.3s;
+}
+
+.urgencia-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(83, 74, 183, 0.12);
+}
+
+.urgencia-card i {
+    font-size: 28px;
+    color: var(--Roxo-Calmo);
+}
+
+.urgencia-card h3 {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    color: var(--Roxo-Calmo);
+}
+
+.urgencia-card p {
+    font-size: 15px;
+    color: #888780;
+    line-height: 1.6;
+}
+
+.urgencia-card a {
+    margin-top: auto;
+    font-size: 14px;
+    color: var(--Roxo-Calmo);
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.3s;
+}
+
+.urgencia-card a:hover {
+    gap: 10px;
+}
+
+/* Card de emergência — destaque */
+.urgencia-emergencia {
+    background-color: var(--Roxo-Calmo);
+    border-color: transparent;
+}
+
+.urgencia-emergencia i,
+.urgencia-emergencia h3,
+.urgencia-emergencia p,
+.urgencia-emergencia a {
+    color: white;
+}
+
+.urgencia-emergencia i {
+    color: #9FE1CB;
+}
+
+.urgencia-emergencia:hover {
+    box-shadow: 0 12px 32px rgba(83, 74, 183, 0.35);
+}
+
+/* ============================================================
+   COMUNIDADE PREVIEW
+============================================================ */
+
+.comunidade-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    padding: 80px 40px;
+    background-color: white;
+}
+
+.comunidade-texto {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.comunidade-texto h2 {
+    font-family: 'Lora', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    line-height: 1.3;
+}
+
+.comunidade-texto p {
+    font-size: 16px;
+    color: #888780;
+    line-height: 1.6;
+}
+
+.comunidade-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+    max-width: 500px;
+}
+
+.comunidade-card {
+    background-color: var(--Lavanda-Suave);
+    border: 1px solid #C9C3E8;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.comunidade-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.nome {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+}
+
+.tempo {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.mensagem {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.btn-abraco {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    border: 1px solid #C9C3E8;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--Roxo-Calmo);
+    cursor: pointer;
+    transition: all 0.3s;
+    align-self: flex-start;
+}
+
+.btn-abraco:hover {
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border-color: transparent;
+}
+
+.card-resposta {
+    display: flex;
+    gap: 8px;
+}
+
+.card-resposta input {
+    flex: 1;
+    border: 1px solid #C9C3E8;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 13px;
+    background: white;
+    outline: none;
+}
+
+.card-resposta input:focus {
+    border-color: var(--Roxo-Calmo);
+}
+
+.card-resposta button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.card-resposta button:hover {
+    background-color: #3C3489;
+    transform: scale(1.08);
+}
+
+/* ============================================================
+   COMO FUNCIONA
+============================================================ */
+
+.como-funciona {
+    padding: 80px 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+}
+
+.como-funciona h2 {
+    font-family: 'Lora', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+}
+
+.passos {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.passo {
+    background-color: white;
+    border: 1px solid #C9C3E8;
+    border-radius: 16px;
+    padding: 32px 28px;
+    max-width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: left;
+    transition: all 0.3s;
+}
+
+.passo:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(83, 74, 183, 0.12);
+}
+
+.passo-numero {
+    width: 40px;
+    height: 40px;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border-radius: 12px;
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.passo h3 {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    color: var(--Roxo-Calmo);
+}
+
+.passo p {
+    font-size: 14px;
+    color: #888780;
+    line-height: 1.6;
+}
+
+.passo-seta {
+    font-size: 22px;
+    color: #C9C3E8;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   DEPOIMENTOS
+============================================================ */
+
+.depoimentos {
+    padding: 80px 40px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+}
+
+.depoimentos h2 {
+    font-family: 'Lora', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+}
+
+.depoimentos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.depoimento-card {
+    background-color: var(--Lavanda-Suave);
+    border: 1px solid #C9C3E8;
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: all 0.3s;
+}
+
+.depoimento-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(83, 74, 183, 0.1);
+}
+
+.depoimento-card > p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.7;
+    font-style: italic;
+    flex: 1;
+}
+
+.depoimento-autor {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.footer {
+    background-color: var(--Roxo-Calmo);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-logo span {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    color: white;
+    font-weight: 500;
+}
+
+.footer-links {
+    display: flex;
+    gap: 28px;
+}
+
+.footer-links a {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+.footer-cvv {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 8px 20px;
+    color: #9FE1CB;
+    font-size: 14px;
+}
+
+.footer-copy {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Animação de entrada dos cards */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.comunidade-card {
+    animation: slideIn 0.4s ease;
+}
+
