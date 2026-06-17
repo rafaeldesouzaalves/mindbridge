@@ -1,0 +1,518 @@
+/* ================================================================
+   MINDBRIDGE — COMUNIDADE (CSS)
+   Complementa o mindbridge-home.css com estilos exclusivos desta
+   página. Carregado depois do arquivo base no HTML.
+================================================================ */
+
+
+/* ============================================================
+   1. HERO DA COMUNIDADE
+============================================================ */
+
+/* Container central do hero com espaçamento e alinhamento */
+.com-hero {
+    padding: 64px 40px 48px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+/* Selo de presença com fundo lavanda e texto roxo */
+.com-hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #EDE9F9;
+    color: var(--Roxo-Calmo);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 20px;
+}
+
+/* Bolinha verde pulsante que indica presença em tempo real */
+.com-hero-tag .ponto-online {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--Verde-Esperança);
+    animation: pulso-ponto 2s infinite;
+}
+
+/* Animação de pulso da bolinha verde */
+@keyframes pulso-ponto {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(29, 158, 117, 0.5); }
+    50%      { box-shadow: 0 0 0 6px rgba(29, 158, 117, 0); }
+}
+
+/* Título principal do hero em serif */
+.com-hero h1 {
+    font-family: 'Lora', serif;
+    font-size: 38px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    line-height: 1.25;
+    max-width: 700px;
+}
+
+/* Subtítulo descritivo com linha generosa */
+.com-hero p {
+    font-size: 16px;
+    color: var(--Texto-Suave);
+    max-width: 560px;
+    line-height: 1.7;
+}
+
+/* Aviso de regras com fundo verde-menta e ícone */
+.com-hero-regras {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    background-color: var(--Verde-Menta);
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-top: 4px;
+}
+
+/* Ícone do aviso de regras em verde */
+.com-hero-regras i {
+    color: var(--Verde-Esperança);
+    font-size: 16px;
+}
+
+
+/* ============================================================
+   2. AVATAR / PERFIL NO HEADER
+   Botão circular que alterna com o "Entrar" conforme estado de login.
+   O CSS controla a visibilidade via body.logado (aplicado pelo JS).
+============================================================ */
+
+/* Avatar circular com borda e fundo lavanda */
+.nav-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--Lavanda-Suave);
+    border: 1.5px solid var(--Borda-Suave);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--Roxo-Calmo);
+    font-size: 18px;
+    flex-shrink: 0;
+    transition: all 0.3s;
+}
+
+/* Hover do avatar: inverte para roxo sólido */
+.nav-avatar:hover {
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border-color: transparent;
+    transform: scale(1.06);
+}
+
+/* Quando NÃO logado: avatar oculto, botão Entrar visível */
+body:not(.logado) .nav-avatar { display: none; }
+body:not(.logado) .btn-entrar { display: inline-flex; }
+
+/* Quando logado: botão Entrar oculto, avatar visível */
+body.logado .btn-entrar { display: none; }
+body.logado .nav-avatar { display: flex; }
+
+
+/* ============================================================
+   3. FILTROS DE TEMA (chips horizontais)
+============================================================ */
+
+/* Wrapper com padding lateral para os chips */
+.com-filtros-wrapper {
+    padding: 0 40px;
+    margin-bottom: 36px;
+}
+
+/* Faixa de chips com quebra de linha em desktop */
+.com-filtros {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 2px 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Chip padrão: borda suave, fundo branco */
+.com-filtro-btn {
+    flex-shrink: 0;
+    background-color: white;
+    border: 1.5px solid var(--Borda-Suave);
+    color: var(--Texto-Suave);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 9px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+}
+
+/* Hover do chip: borda e texto roxo */
+.com-filtro-btn:hover {
+    border-color: var(--Roxo-Calmo);
+    color: var(--Roxo-Calmo);
+}
+
+/* Chip ativo: fundo roxo, texto branco */
+.com-filtro-btn.ativo {
+    background-color: var(--Roxo-Calmo);
+    border-color: var(--Roxo-Calmo);
+    color: white;
+}
+
+
+/* ============================================================
+   4. GRUPOS DE APOIO
+============================================================ */
+
+/* Seção de grupos com espaçamento inferior */
+.com-grupos {
+    padding: 0 40px 80px;
+}
+
+/* Cabeçalho centralizado da seção */
+.com-secao-cabecalho {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Título da seção em serif */
+.com-secao-cabecalho h2 {
+    font-family: 'Lora', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+}
+
+/* Subtítulo da seção */
+.com-secao-cabecalho p {
+    font-size: 15px;
+    color: var(--Texto-Suave);
+    line-height: 1.6;
+}
+
+/* Grade de 4 colunas para os cards de grupo */
+.com-grupos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Card individual de grupo com hover elevado */
+.com-grupo-card {
+    background-color: white;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 16px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+}
+
+/* Hover do card: eleva e aplica borda roxa */
+.com-grupo-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--Sombra-Hover);
+    border-color: var(--Roxo-Calmo);
+}
+
+/* Ícone quadrado com cantos arredondados */
+.com-grupo-icone {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+/* Cores identitárias de cada grupo */
+.com-grupo-icone.cor-ansiedade { background-color: var(--Roxo-Calmo); }
+.com-grupo-icone.cor-burnout   { background-color: var(--Azul-Confiança); }
+.com-grupo-icone.cor-luto      { background-color: #8B7BC4; }
+.com-grupo-icone.cor-sono      { background-color: var(--Verde-Esperança); }
+
+/* Nome do grupo em serif */
+.com-grupo-card h3 {
+    font-family: 'Lora', serif;
+    font-size: 17px;
+    color: #333;
+}
+
+/* Descrição curta do grupo */
+.com-grupo-card p {
+    font-size: 13.5px;
+    color: var(--Texto-Suave);
+    line-height: 1.5;
+}
+
+/* Rodapé do card com membros e status lado a lado */
+.com-grupo-rodape {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: #aaa;
+    padding-top: 8px;
+    border-top: 1px solid var(--Lavanda-Suave);
+}
+
+/* Contagem de membros com ícone */
+.com-grupo-rodape .com-grupo-membros {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Selo "Ativo agora" em verde */
+.com-grupo-selo {
+    color: var(--Verde-Esperança);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+
+/* ============================================================
+   5. FEED DA COMUNIDADE
+============================================================ */
+
+/* Seção do feed centralizada com padding lateral */
+.com-feed {
+    padding: 0 40px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Coluna única de posts com largura máxima legível */
+.com-feed-coluna {
+    width: 100%;
+    max-width: 680px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Cards do feed ocupam largura total da coluna (diferente do carrossel da home) */
+.com-feed .comunidade-card {
+    flex: none;
+    width: 100%;
+    scroll-snap-align: unset;
+}
+
+/* Botão "Carregar mais" centralizado com borda suave */
+.com-feed-carregar {
+    align-self: center;
+    margin-top: 12px;
+    background-color: white;
+    border: 1.5px solid var(--Borda-Suave);
+    color: var(--Roxo-Calmo);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Hover do botão: fundo roxo */
+.com-feed-carregar:hover {
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border-color: transparent;
+}
+
+/* Texto que normaliza a leitura passiva como participação válida */
+.com-feed-incentivo {
+    text-align: center;
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    max-width: 420px;
+    margin: 8px auto 0;
+    line-height: 1.6;
+}
+
+/* Card de nova publicação com borda e fundo branco */
+.com-novo-post {
+    background-color: white;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Linha superior do formulário: avatar + label */
+.com-novo-post-topo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Área de texto redimensionável verticalmente */
+.com-novo-post textarea {
+    width: 100%;
+    min-height: 64px;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #444;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+/* Foco na textarea: borda roxa */
+.com-novo-post textarea:focus {
+    border-color: var(--Roxo-Calmo);
+}
+
+/* Rodapé do formulário: seletor, anônimo e botão publicar */
+.com-novo-post-rodape {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Seletor de tema com fundo lavanda */
+.com-novo-post select {
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 13px;
+    color: var(--Roxo-Calmo);
+    background-color: var(--Lavanda-Suave);
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* Label do checkbox de anonimato */
+.com-novo-post-anonimo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    cursor: pointer;
+}
+
+/* Checkbox com cor roxa de acento */
+.com-novo-post-anonimo input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--Roxo-Calmo);
+    cursor: pointer;
+}
+
+/* Botão Publicar alinhado à direita */
+.com-novo-post-publicar {
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-left: auto;
+}
+
+/* Hover do botão Publicar */
+.com-novo-post-publicar:hover {
+    background-color: var(--Roxo-Escuro);
+}
+
+/* Estado desabilitado enquanto não há texto digitado */
+.com-novo-post-publicar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   6. RESPONSIVIDADE MOBILE
+============================================================ */
+
+/* Grade de grupos vira 2 colunas em tablets */
+@media (max-width: 1024px) {
+    .com-grupos-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    /* Hero com padding reduzido e fonte menor */
+    .com-hero { padding: 48px 20px 36px; }
+    .com-hero h1 { font-size: 28px; }
+    .com-hero p { font-size: 15px; }
+
+    /* Padding lateral reduzido nos blocos principais */
+    .com-filtros-wrapper,
+    .com-grupos,
+    .com-feed { padding-left: 20px; padding-right: 20px; }
+
+    /* Chips viram faixa rolável horizontal no mobile */
+    .com-filtros {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Grade de grupos vira coluna única */
+    .com-grupos-grid { grid-template-columns: 1fr; }
+
+    /* Rodapé do formulário em coluna */
+    .com-novo-post-rodape { flex-direction: column; align-items: stretch; }
+
+    /* Botão publicar ocupa largura total com alvo de toque confortável */
+    .com-novo-post-publicar { margin-left: 0; width: 100%; text-align: center; padding: 12px 22px; }
+
+    /* Área de toque maior para o checkbox no celular */
+    .com-novo-post-anonimo { padding: 4px 0; }
+}
+
+@media (max-width: 480px) {
+    /* Ajustes de fonte em telas muito pequenas */
+    .com-hero h1 { font-size: 24px; }
+    .com-hero-tag, .com-hero-regras { font-size: 12px; }
+    .com-secao-cabecalho h2 { font-size: 22px; }
+    .com-grupo-card { padding: 20px 16px; }
+}
+
+/* Respeita preferência de sistema por menos animação */
+@media (prefers-reduced-motion: reduce) {
+    .com-hero-tag .ponto-online { animation: none; }
+}

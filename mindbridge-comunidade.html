@@ -1,11 +1,433 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Beta teste</h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MindBridge - Comunidade</title>
+
+    <!-- Fontes: Lora para títulos, Inter para corpo -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- Biblioteca de ícones Tabler -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+
+    <!-- Favicon da aba -->
+    <link rel="shortcut icon" href="MindBridge/assets/img/favicon.svg" type="image/x-icon" />
+
+    <!-- Base global (header, footer, variáveis de cor, toast, botão topo) -->
+    <link rel="stylesheet" href="MindBridge/assets/css/mindbridge-home.css" />
+
+    <!-- Estilos exclusivos desta página (hero, filtros, grupos, feed) -->
+    <link rel="stylesheet" href="MindBridge/assets/css/mindbridge-comunidade.css" />
+  </head>
+
+  <body>
+
+    <!-- Barra de urgência fixa no topo — acesso rápido ao CVV em qualquer momento -->
+    <div class="sup">
+      <i class="ti ti-heart-handshake"></i>
+      <span>Precisa de apoio agora?</span>
+      <a href="tel:188">Falar com o CVV — 188</a>
+      <span class="sup-divider">·</span>
+      <a href="#urgencia-comunidade">Ver recursos de emergência</a>
+    </div>
+
+    <!-- Cabeçalho principal com navegação -->
+    <header class="header">
+      <nav class="nav">
+
+        <!-- Logo com link para a home -->
+        <a href="mindbridge-home.html" class="nav-logo">
+          <div class="nav-logo-icon"><span class="dot"></span></div>
+          <h2>MindBridge</h2>
+        </a>
+
+        <!-- Links de navegação principal; "Comunidade" marcado como ativo -->
+        <ul class="nav-links" id="navLinks">
+          <li><a href="mindbridge-home.html"><i class="ti ti-home"></i> Início</a></li>
+          <li><a href="mindbridge-home.html#como-funciona"><i class="ti ti-route"></i> Como funciona</a></li>
+          <li class="active"><a href="mindbridge-comunidade.html"><i class="ti ti-users"></i> Comunidade</a></li>
+          <li><a href="mindbridge-home.html#biblioteca"><i class="ti ti-lifebuoy"></i> Recursos</a></li>
+          <li><a href="#urgencia-comunidade"><i class="ti ti-map-pin"></i> Mapa de Apoio</a></li>
+        </ul>
+
+        <!-- Ações do lado direito da navbar -->
+        <div class="nav-actions">
+
+          <!-- Selo de segurança e privacidade -->
+          <div class="badge">
+            <i class="ti ti-shield-check"></i>
+            <p>Seguro &amp; Privado</p>
+          </div>
+
+          <!-- Avatar do usuário — visível apenas quando logado (.logado no body) -->
+          <!-- O JS substitui o ícone pelas iniciais reais e atualiza o href para o perfil -->
+          <a href="mindbridge-login.html" class="nav-avatar" id="navAvatar" aria-label="Ver perfil">
+            <i class="ti ti-user"></i>
+          </a>
+
+          <!-- Botão "Entrar" — visível apenas quando deslogado (sem .logado no body) -->
+          <a href="mindbridge-login.html" class="btn-entrar" id="btnEntrar">Entrar</a>
+
+        </div>
+
+        <!-- Botão hambúrguer para menu mobile -->
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+
+      </nav>
+    </header>
+
+    <main>
+
+      <!-- Hero da comunidade: acolhimento imediato com contador de pessoas ativas -->
+      <section class="com-hero">
+
+        <!-- Selo com bolinha pulsante indicando presença em tempo real -->
+        <span class="com-hero-tag">
+          <span class="ponto-online"></span>
+          312 pessoas ativas na comunidade agora
+        </span>
+
+        <h1>Aqui, ninguém precisa explicar <span class="destaque">tudo</span> para ser entendido.</h1>
+        <p>
+          Leia, responda ou só fique por aqui — tudo bem ir no seu ritmo.
+          Esta é uma comunidade de apoio entre pessoas reais, com moderação
+          ativa e respeito acima de tudo.
+        </p>
+
+        <!-- Mini aviso de regras para reduzir o medo de julgamento -->
+        <span class="com-hero-regras">
+          <i class="ti ti-shield-heart"></i>
+          Sem julgamentos. Sem conselhos não pedidos. Só apoio.
+        </span>
+
+      </section>
+
+      <!-- Chips de filtro por tema — controlados pelo JS para mostrar/ocultar posts -->
+      <div class="com-filtros-wrapper">
+        <div class="com-filtros" role="group" aria-label="Filtrar publicações por tema">
+          <button class="com-filtro-btn ativo" data-tema-filtro="todos"><i class="ti ti-apps"></i> Todos</button>
+          <button class="com-filtro-btn" data-tema-filtro="ansiedade">Ansiedade</button>
+          <button class="com-filtro-btn" data-tema-filtro="burnout">Burnout</button>
+          <button class="com-filtro-btn" data-tema-filtro="luto">Luto</button>
+          <button class="com-filtro-btn" data-tema-filtro="sono">Sono</button>
+          <button class="com-filtro-btn" data-tema-filtro="autoestima">Autoestima</button>
+          <button class="com-filtro-btn" data-tema-filtro="relacionamentos">Relacionamentos</button>
+        </div>
+      </div>
+
+      <!-- Grade de grupos de apoio temáticos -->
+      <section class="com-grupos">
+
+        <!-- Cabeçalho da seção de grupos -->
+        <div class="com-secao-cabecalho reveal">
+          <h2>Encontre o seu <span class="destaque">grupo</span></h2>
+          <p>Espaços dedicados a temas específicos, onde você encontra pessoas vivendo algo parecido com o que você sente.</p>
+        </div>
+
+        <!-- Cards dos grupos: cada um tem ícone, descrição, contagem de membros e status -->
+        <div class="com-grupos-grid">
+
+          <!-- Grupo: Ansiedade & Pânico -->
+          <div class="com-grupo-card reveal">
+            <div class="com-grupo-icone cor-ansiedade"><i class="ti ti-wind"></i></div>
+            <h3>Ansiedade &amp; Pânico</h3>
+            <p>Técnicas, desabafos e apoio para quem lida com crises de ansiedade no dia a dia.</p>
+            <div class="com-grupo-rodape">
+              <span class="com-grupo-membros"><i class="ti ti-users"></i> 4.180 membros</span>
+              <span class="com-grupo-selo"><i class="ti ti-circle-filled" style="font-size:8px;"></i> Ativo agora</span>
+            </div>
+          </div>
+
+          <!-- Grupo: Burnout & Carreira -->
+          <div class="com-grupo-card reveal">
+            <div class="com-grupo-icone cor-burnout"><i class="ti ti-battery-1"></i></div>
+            <h3>Burnout &amp; Carreira</h3>
+            <p>Para quem sente o peso do esgotamento profissional e busca formas de se recuperar.</p>
+            <div class="com-grupo-rodape">
+              <span class="com-grupo-membros"><i class="ti ti-users"></i> 2.760 membros</span>
+              <span class="com-grupo-selo"><i class="ti ti-circle-filled" style="font-size:8px;"></i> Ativo agora</span>
+            </div>
+          </div>
+
+          <!-- Grupo: Luto & Perdas -->
+          <div class="com-grupo-card reveal">
+            <div class="com-grupo-icone cor-luto"><i class="ti ti-feather"></i></div>
+            <h3>Luto &amp; Perdas</h3>
+            <p>Um espaço gentil para falar sobre perdas, no seu tempo, sem pressa de "superar".</p>
+            <div class="com-grupo-rodape">
+              <span class="com-grupo-membros"><i class="ti ti-users"></i> 1.340 membros</span>
+              <span class="com-grupo-selo"><i class="ti ti-circle-filled" style="font-size:8px;"></i> Ativo agora</span>
+            </div>
+          </div>
+
+          <!-- Grupo: Sono & Descanso -->
+          <div class="com-grupo-card reveal">
+            <div class="com-grupo-icone cor-sono"><i class="ti ti-moon"></i></div>
+            <h3>Sono &amp; Descanso</h3>
+            <p>Trocas sobre insônia, rotina noturna e técnicas para uma mente mais calma à noite.</p>
+            <div class="com-grupo-rodape">
+              <span class="com-grupo-membros"><i class="ti ti-users"></i> 980 membros</span>
+              <span class="com-grupo-selo"><i class="ti ti-circle-filled" style="font-size:8px;"></i> Ativo agora</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Feed principal da comunidade em coluna única -->
+      <section class="com-feed" id="feedComunidade">
+        <div class="com-feed-coluna" id="feedColuna">
+
+          <!-- Formulário de nova publicação — sempre visível, nunca obrigatório -->
+          <div class="com-novo-post reveal">
+            <div class="com-novo-post-topo">
+              <!-- Avatar do usuário no formulário; JS atualiza a inicial quando logado -->
+              <div class="avatar" id="feedAvatar">V</div>
+              <strong style="color:var(--Roxo-Calmo); font-size:14px;">Compartilhar algo com a comunidade</strong>
+            </div>
+
+            <!-- Campo de texto; botão Publicar só ativa quando há conteúdo -->
+            <textarea id="novoPostTexto" placeholder="Como você está se sentindo hoje? Escreva com calma, sem pressa..." maxlength="400"></textarea>
+
+            <div class="com-novo-post-rodape">
+              <!-- Seletor de tema da publicação -->
+              <select id="novoPostTema" aria-label="Escolher tema da publicação">
+                <option value="ansiedade">Ansiedade</option>
+                <option value="burnout">Burnout</option>
+                <option value="luto">Luto</option>
+                <option value="sono">Sono</option>
+                <option value="autoestima">Autoestima</option>
+                <option value="relacionamentos">Relacionamentos</option>
+              </select>
+
+              <!-- Opção de anonimato para reduzir barreira de exposição -->
+              <label class="com-novo-post-anonimo">
+                <input type="checkbox" id="novoPostAnonimo">
+                Publicar como anônimo
+              </label>
+
+              <!-- Botão desabilitado por padrão; ativa via JS ao digitar -->
+              <button type="button" id="novoPostBotao" class="com-novo-post-publicar" disabled>Publicar</button>
+            </div>
+          </div>
+
+          <!-- Aviso de que só leitura também é participação válida -->
+          <p class="com-feed-incentivo reveal">
+            <i class="ti ti-info-circle"></i>
+            Só ler também é participar. Não existe pressa nem obrigação de postar.
+          </p>
+
+          <!-- Post visível: Ansiedade — Ana Gabrielly -->
+          <div class="comunidade-card reveal" data-tema="ansiedade">
+            <span class="tag-topico">Ansiedade</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">A</div>
+              <div><p class="nome">Ana Gabrielly</p><p class="tempo">Agora mesmo</p></div>
+            </div>
+            <p class="mensagem">"Hoje foi difícil, mas consegui sair da cama. Pequenas vitórias."</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(3)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <!-- Post visível: Ansiedade — Rafael Lima -->
+          <div class="comunidade-card reveal" data-tema="ansiedade">
+            <span class="tag-topico">Ansiedade</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">R</div>
+              <div><p class="nome">Rafael Lima</p><p class="tempo">Há 30 minutos</p></div>
+            </div>
+            <p class="mensagem">"Ansiedade alta hoje. Alguém tem alguma técnica de respiração?"</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(7)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <!-- Post visível: Burnout — Camila Souza -->
+          <div class="comunidade-card reveal" data-tema="burnout">
+            <span class="tag-topico">Burnout</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">C</div>
+              <div><p class="nome">Camila Souza</p><p class="tempo">Há 1 hora</p></div>
+            </div>
+            <p class="mensagem">"Voltei de licença e já sinto o peso de tudo de novo. Alguém mais nessa?"</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(12)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <!-- Post visível: Luto — Daniel Alves -->
+          <div class="comunidade-card reveal" data-tema="luto">
+            <span class="tag-topico">Luto</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">D</div>
+              <div><p class="nome">Daniel Alves</p><p class="tempo">Há 2 horas</p></div>
+            </div>
+            <p class="mensagem">"Faz um mês que perdi meu pai. Hoje doeu menos que ontem. Isso é normal?"</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(21)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <!-- Post visível: Autoestima — Beatriz Nunes -->
+          <div class="comunidade-card reveal" data-tema="autoestima">
+            <span class="tag-topico">Autoestima</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">B</div>
+              <div><p class="nome">Beatriz Nunes</p><p class="tempo">Há 3 horas</p></div>
+            </div>
+            <p class="mensagem">"Primeira vez que escrevo aqui. Obrigada por existir, esse espaço me fez bem só de ler."</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(15)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <!-- Posts ocultos por padrão — revelados ao clicar em "Carregar mais" -->
+
+          <!-- Post oculto: Relacionamentos — Lucas Tavares -->
+          <div class="comunidade-card post-oculto reveal" data-tema="relacionamentos" style="display:none;">
+            <span class="tag-topico">Relacionamentos</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">L</div>
+              <div><p class="nome">Lucas Tavares</p><p class="tempo">Há 4 horas</p></div>
+            </div>
+            <p class="mensagem">"Terminei um relacionamento longo. Sinto alívio e culpa ao mesmo tempo, é confuso."</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(9)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <!-- Post oculto: Ansiedade/Pânico — Fernanda Costa -->
+          <div class="comunidade-card post-oculto reveal" data-tema="ansiedade" style="display:none;">
+            <span class="tag-topico">Pânico</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">F</div>
+              <div><p class="nome">Fernanda Costa</p><p class="tempo">Há 5 horas</p></div>
+            </div>
+            <p class="mensagem">"Tive uma crise no trabalho hoje. Consegui aplicar a técnica de respiração 4-7-8 e passou."</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(18)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <!-- Post oculto: Sono — Gabriel Rocha -->
+          <div class="comunidade-card post-oculto reveal" data-tema="sono" style="display:none;">
+            <span class="tag-topico">Sono</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">G</div>
+              <div><p class="nome">Gabriel Rocha</p><p class="tempo">Há 6 horas</p></div>
+            </div>
+            <p class="mensagem">"Insônia há semanas. Alguém testou os exercícios de grounding antes de dormir?"</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(6)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <!-- Botão para revelar os posts ocultos acima -->
+          <button type="button" id="feedCarregarMais" class="com-feed-carregar reveal">
+            <i class="ti ti-chevron-down"></i> Carregar mais publicações
+          </button>
+
+        </div>
+      </section>
+
+      <!-- Seção de recursos de emergência — sempre acessível via âncora #urgencia-comunidade -->
+      <section class="urgencia" id="urgencia-comunidade">
+
+        <!-- Card: link para profissionais de saúde mental -->
+        <div class="urgencia-card reveal">
+          <i class="ti ti-stethoscope"></i>
+          <h3>Falar com Profissional</h3>
+          <p>Psicólogos e terapeutas prontos para te ouvir com sigilo e cuidado.</p>
+          <a href="mindbridge-home.html#profissionais"><i class="ti ti-arrow-right"></i> Ver profissionais</a>
+        </div>
+
+        <!-- Card: link para biblioteca de técnicas guiadas -->
+        <div class="urgencia-card reveal">
+          <i class="ti ti-player-play"></i>
+          <h3>Técnicas Guiadas</h3>
+          <p>Vídeos curtos de respiração e grounding para momentos difíceis.</p>
+          <a href="mindbridge-home.html#biblioteca"><i class="ti ti-arrow-right"></i> Ver biblioteca</a>
+        </div>
+
+        <!-- Card de emergência: discagem direta para o CVV -->
+        <div class="urgencia-card urgencia-emergencia reveal">
+          <i class="ti ti-alert-triangle"></i>
+          <h3>É uma emergência!</h3>
+          <p>Estou em crise e preciso falar com alguém agora.</p>
+          <a href="tel:188"><i class="ti ti-phone"></i> Ligar CVV — 188</a>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Rodapé com logo, links institucionais e atalho para o CVV -->
+    <footer class="footer">
+      <div class="footer-logo">
+        <div class="nav-logo-icon"><span class="dot"></span></div>
+        <span>MindBridge</span>
+      </div>
+      <div class="footer-links">
+        <a href="mindbridge-home.html#sobre">Sobre</a>
+        <a href="mindbridge-comunidade.html">Comunidade</a>
+        <a href="mindbridge-home.html#biblioteca">Recursos</a>
+        <a href="mindbridge-home.html#profissionais">Profissionais</a>
+        <!-- Privacidade e Contato apontam para urgência até as páginas próprias existirem -->
+        <a href="#urgencia-comunidade">Privacidade</a>
+        <a href="#urgencia-comunidade">Contato</a>
+      </div>
+      <!-- Link de discagem rápida para o CVV no rodapé -->
+      <a href="tel:188" class="footer-cvv">
+        <i class="ti ti-phone"></i>
+        <span>Crise? Ligue agora — <strong>CVV 188</strong></span>
+      </a>
+      <p class="footer-copy">© 2026 MindBridge. Feito com empatia.</p>
+    </footer>
+
+    <!-- Botão flutuante para voltar ao topo da página -->
+    <button class="btn-topo" id="btnTopo" aria-label="Voltar ao topo">
+      <i class="ti ti-arrow-up"></i>
+    </button>
+
+    <!-- Toast de feedback rápido para ações como abraço e respostas -->
+    <div class="toast" id="toast">
+      <i class="ti ti-heart"></i>
+      <span id="toastTexto">Abraço enviado!</span>
+    </div>
+
+    <!-- JS global: menu mobile, scroll do header, animação reveal, botão topo -->
+    <script src="MindBridge/assets/js/mindbridge-home.js" defer></script>
+
+    <!-- JS desta página: filtros, novo post, abraços, carregar mais -->
+    <script src="MindBridge/assets/js/mindbridge-comunidade.js" defer></script>
+
+  </body>
 </html>

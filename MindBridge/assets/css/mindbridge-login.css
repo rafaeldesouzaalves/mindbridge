@@ -1,4 +1,10 @@
-/* Importação da Fontes */
+/* ================================================================
+   MINDBRIDGE — LOGIN
+   Estilos da tela de login: painel de marca (esquerda) e
+   formulário (direita), com animações e responsividade.
+================================================================ */
+
+/* Importação das fontes — caso não esteja carregada via <link> no HTML */
 
 
 /* ============================================================
@@ -15,8 +21,14 @@
 
     /* Cores Destaque */
     --Roxo-Calmo:#534AB7;
+    --Roxo-Escuro:#3C3489;
     --Verde-Esperança:#1D9E75;
     --Azul-Confiança:#378ADD;
+
+    /* Cor de erro, usada na validação do formulário */
+    --Vermelho-Alerta:#E0556F;
+
+    --Borda-Suave:#C9C3E8;
 }
 
 
@@ -44,11 +56,43 @@ a {
 
 body{
     background-color: var(--Lavanda-Suave);
-     font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
+
 /* ============================================================
-   3. CONTAINERS 
+   3. ANIMAÇÕES
+============================================================ */
+
+/* Os dois painéis entram suavemente quando a página carrega */
+@keyframes entradaEsquerda {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes entradaDireita {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Pequeno "tremor" usado para indicar erro de validação no input */
+@keyframes tremor {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+}
+
+/* Giro do ícone de carregamento no botão de login */
+@keyframes girar {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+
+/* ============================================================
+   4. CONTAINERS
 ============================================================ */
 
 .login-container{
@@ -57,7 +101,10 @@ body{
     align-items: center;
     justify-content: center;
     padding: 40px;
+    flex-wrap: wrap; /* permite empilhar em telas pequenas */
 }
+
+/* --- Painel esquerdo: identidade da marca --- */
 
 .container-1 {
     background-color: var(--Roxo-Calmo);
@@ -69,6 +116,33 @@ body{
     flex-direction: column;
     justify-content: flex-end;
     margin-right: 25px;
+    position: relative;
+    overflow: hidden; /* mantém as formas decorativas dentro do card */
+    animation: entradaEsquerda 0.6s ease both;
+}
+
+/* Pequenos círculos decorativos no fundo do painel roxo,
+   dão profundidade sem precisar de nenhuma imagem externa */
+.container-1::before,
+.container-1::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.container-1::before {
+    width: 220px;
+    height: 220px;
+    top: -60px;
+    right: -60px;
+}
+
+.container-1::after {
+    width: 140px;
+    height: 140px;
+    bottom: 40px;
+    left: -50px;
 }
 
 .container-1 h2 {
@@ -78,7 +152,9 @@ body{
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    font-family:  'Lora', serif;
+    font-family: 'Lora', serif;
+    position: relative; /* fica acima dos círculos decorativos */
+    z-index: 1;
  }
 
 .dot {
@@ -99,6 +175,8 @@ body{
     line-height: 1.4;
     margin-bottom: 10px;
     font-family: 'Lora', serif;
+    position: relative;
+    z-index: 1;
  }
 
 .container-1 p  {
@@ -106,6 +184,8 @@ body{
     font-size: 16px;
     line-height: 1.6;
     margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
  }
 
 .destaque {
@@ -116,6 +196,8 @@ body{
 .lista{
     gap: 8px;
     margin-top: 12px;
+    position: relative;
+    z-index: 1;
 }
 
 .lista li {
@@ -127,8 +209,18 @@ body{
     color: var(--Lavanda-Suave);
     margin-bottom: 8px;
     white-space: nowrap;
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.3s;
 }
+
+/* Pequeno efeito de destaque ao passar o mouse nas tags */
+.lista li:hover {
+    background: rgba(255,255,255,0.18);
+}
+
+/* --- Painel direito: formulário --- */
 
 .container-2 {
     background-color: var(--Lavanda-Suave);
@@ -138,13 +230,14 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transition: transform 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
     border-radius: 20px;
+    animation: entradaDireita 0.6s ease both;
 }
 
 .container-2:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 32px rgba(83, 74, 183, 0.37);
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(83, 74, 183, 0.25);
 }
 
 .loginForm{
@@ -170,7 +263,10 @@ body{
     margin-bottom: 0;
 }
 
-/* Formulario */
+
+/* ============================================================
+   5. FORMULÁRIO
+============================================================ */
 
 .input-group {
     position: relative;
@@ -178,13 +274,14 @@ body{
 }
 
 input {
-    border: 1px solid #C9C3E8;
+    border: 1px solid var(--Borda-Suave);
     border-radius: 8px;
     padding: 10px 14px;
     width: 100%;
     font-size: 14px;
     outline: none;
     position: relative;
+    background-color: white;
 }
 
 .input-group input {
@@ -193,6 +290,8 @@ input {
 
 input[type="checkbox"] {
     width: auto;
+    accent-color: var(--Roxo-Calmo); /* tinge o checkbox nativo com a cor da marca */
+    cursor: pointer;
 }
 
 .input-group label {
@@ -202,12 +301,14 @@ input[type="checkbox"] {
     font-size: 14px;
     transition: all 0.3s;
     pointer-events: none;
+    color: #888;
 }
 
 .input-group input:focus {
-    transform: scale(1.04);
-    font-size: 16px;
+    transform: scale(1.02);
+    font-size: 15px;
     border-color: var(--Roxo-Calmo);
+    box-shadow: 0 0 0 3px rgba(83, 74, 183, 0.12);
 }
 
 .input-group input:focus + label,
@@ -216,10 +317,53 @@ input[type="checkbox"] {
     font-size: 11px;
     background: white;
     padding: 0 4px;
+    color: var(--Roxo-Calmo);
+}
+
+/* --- Estado de erro de validação (classe ligada via JS) --- */
+
+.input-group.erro input {
+    border-color: var(--Vermelho-Alerta);
+    animation: tremor 0.4s ease;
+}
+
+.input-group.erro label {
+    color: var(--Vermelho-Alerta);
+}
+
+.mensagem-erro {
+    display: none; /* JS troca para "block" quando há erro */
+    color: var(--Vermelho-Alerta);
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.input-group.erro .mensagem-erro {
+    display: block;
+}
+
+/* --- Indicador de força da senha --- */
+
+.forca-senha {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.forca-senha span {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--Borda-Suave);
+    transition: background-color 0.3s;
 }
 
 
-.loginForm button {
+/* ============================================================
+   6. BOTÕES
+============================================================ */
+
+.loginForm button[type="submit"] {
     color: white;
     background-color: var(--Roxo-Calmo);
     border-radius: 8px;
@@ -227,14 +371,43 @@ input[type="checkbox"] {
     width: 100%;
     font-size: 14px;
     cursor: pointer;
-    transition: .5s;
+    transition: .3s;
     border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
-.loginForm button:hover{
-    background-color: #3C3489;
+.loginForm button[type="submit"]:hover{
+    background-color: var(--Roxo-Escuro);
     transform: scale(1.02);
     box-shadow: 0 8px 32px rgba(83, 74, 183, 0.37);
+}
+
+.loginForm button[type="submit"]:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Ícone giratório de "carregando" mostrado durante o envio do form */
+.spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: girar 0.6s linear infinite;
+}
+
+.carregando .spinner {
+    display: inline-block;
+}
+
+.carregando .texto-botao {
+    display: none;
 }
 
 label {
@@ -242,7 +415,7 @@ label {
     display: inline-block;
     margin-bottom: 6px;
     color: var(--Roxo-Calmo);
-    transition: all .5s ease;
+    transition: all .3s ease;
     transform-origin:left top ;
     cursor: pointer;
 }
@@ -269,7 +442,7 @@ label {
 }
 
 .btn-google{
-    border: 1px solid #C9C3E8;
+    border: 1px solid var(--Borda-Suave);
     color: var(--Roxo-Calmo);
     background-color: white;
     border-radius: 8px;
@@ -277,7 +450,11 @@ label {
     width: 100%;
     cursor: pointer;
     margin-top: 12px;
-    transition: all .5s;
+    transition: all .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .btn-google:hover {
@@ -300,7 +477,7 @@ label {
     margin-bottom: 0;
     color: #888;
     font-family: 'Inter', sans-serif;
-    font-size: 19px;
+    font-size: 14px;
 }
 
 .ou-divider::before,
@@ -308,12 +485,25 @@ label {
     content: '';
     flex: 1;
     height: 1px;
-    background-color: #C9C3E8;
+    background-color: var(--Borda-Suave);
 }
 
 .no-conta {
     text-align: center;
     margin: 12px;
+    font-size: 14px;
+    color: #555;
+}
+
+.no-conta a {
+    color: var(--Roxo-Calmo);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.no-conta a:hover {
+    color: var(--Roxo-Escuro);
+    text-decoration: underline;
 }
 
 .loginForm .btn-ver-senha {
@@ -343,16 +533,38 @@ label {
     font-size: 13px;
     color: var(--Roxo-Calmo);
     margin-bottom: 10px;
+    transition: color 0.3s;
 }
 
-/* Responsividade / Adptividade */
-
-@media (max-width: 768px) {
+.lost-senha:hover {
+    color: var(--Roxo-Escuro);
+    text-decoration: underline;
 }
+
+/* Link para voltar à home, no topo do painel de formulário */
+.voltar-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 16px;
+    transition: color 0.3s;
+}
+
+.voltar-home:hover {
+    color: var(--Roxo-Calmo);
+}
+
+
+/* ============================================================
+   7. RESPONSIVIDADE
+============================================================ */
 
 @media (max-width: 768px) {
     .login-container {
         flex-direction: column;
+        padding: 20px;
     }
 
     .container-1 {
@@ -366,7 +578,7 @@ label {
     }
 
     .lista li {
-        display: inline-block;
+        display: inline-flex;
         width: auto;
     }
 
@@ -378,5 +590,24 @@ label {
     .container-1,
     .container-2 {
         padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-1 h3 {
+        font-size: 22px;
+    }
+
+    .container-2 h2 {
+        font-size: 26px;
+    }
+}
+
+/* Respeita usuários que preferem menos movimento na tela */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

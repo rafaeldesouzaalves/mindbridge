@@ -18,9 +18,15 @@
 </head>
 
 <body>
-    <!-- Sistema de Login -->
-    
+    <!-- ============================================================
+         SISTEMA DE LOGIN
+         Dividido em dois painéis: identidade da marca (esquerda)
+         e formulário de acesso (direita).
+    ============================================================= -->
+
     <main class="login-container">
+
+        <!-- Painel esquerdo: marca e mensagem de acolhimento -->
         <div class="container-1">
             <div>
                 <h2><span class="dot"></span>MindBridge</h2>
@@ -38,48 +44,63 @@
                 <ul class="lista">
                     <li><i class="ti ti-heart"></i> Apoio Emocional</li>
                     <li><i class="ti ti-users"></i> Comunidade</li>
-                    <li><i class="ti ti-shield"></i> Seguro & Privado</li>
+                    <li><i class="ti ti-shield"></i> Seguro &amp; Privado</li>
                 </ul>
             </div>
 
         </div>
 
+        <!-- Painel direito: formulário -->
         <div class="container-2">
             <div class="form-wrapper">
-                <h2> Bem vindo de volta</h2>
-                <p>
-                    Entre para continuar sua jornada
-                </p>
-                <form class="loginForm">
-                    
-                    <div class="input-group">
+
+                <a href="mindbridge-home.html" class="voltar-home">
+                    <i class="ti ti-arrow-left"></i> Voltar para o início
+                </a>
+
+                <h2>Bem-vindo de volta</h2>
+                <p>Entre para continuar sua jornada</p>
+
+                <form class="loginForm" id="loginForm" novalidate>
+
+                    <!-- Campo de e-mail -->
+                    <div class="input-group" id="grupoEmail">
                         <input type="email" id="email" placeholder=" " required>
                         <label for="email">E-mail</label>
+                        <span class="mensagem-erro">Digite um e-mail válido.</span>
                     </div>
 
-                    <div class="input-group">
-                        <input type="password" id="password" placeholder=" " required>
+                    <!-- Campo de senha -->
+                    <div class="input-group" id="grupoSenha">
+                        <input type="password" id="password" placeholder=" " required minlength="6">
                         <label for="password">Senha</label>
-                        <button type="button" class="btn-ver-senha" id="btn-ver-senha">
+                        <button type="button" class="btn-ver-senha" id="btn-ver-senha" aria-label="Mostrar senha">
                             <i class="ti ti-eye"></i>
                         </button>
+                        <span class="mensagem-erro">A senha precisa ter pelo menos 6 caracteres.</span>
                     </div>
 
                     <a href="#" class="lost-senha">Esqueci minha senha</a>
-                    
+
                     <div class="checkbox-group">
                         <input type="checkbox" id="lembrar">
                         <label for="lembrar">Lembrar de mim</label>
                     </div>
-                
-                    <button type="submit">Entrar</button>
+
+                    <button type="submit" id="btnEntrar">
+                        <span class="spinner"></span>
+                        <span class="texto-botao">Entrar</span>
+                    </button>
                 </form>
 
                 <div>
                     <p class="ou-divider">ou</p>
 
                     <div>
-                        <button class="btn-google" type="button">Continuar com Google</button>
+                        <button class="btn-google" type="button">
+                            <i class="ti ti-brand-google"></i>
+                            Continuar com Google
+                        </button>
                     </div>
 
                     <p class="no-conta">
@@ -90,10 +111,9 @@
             </div>
         </div>
 
-
     </main>
 
-    <script src="MindBridge/assets/js/" defer></script>
+    <script src="MindBridge/assets/js/mindbridge-login.js" defer></script>
 </body>
-    
+
 </html>

@@ -1,3 +1,8 @@
+/* ================================================================
+   MINDBRIDGE — HOME
+   Estilos da página inicial: header, hero, urgência, comunidade,
+   como funciona, depoimentos, footer e responsividade.
+================================================================ */
 
 
 /* ============================================================
@@ -14,8 +19,17 @@
 
     /* Cores Destaque */
     --Roxo-Calmo:#534AB7;
+    --Roxo-Escuro:#3C3489;
     --Verde-Esperança:#1D9E75;
     --Azul-Confiança:#378ADD;
+
+    /* Texto e bordas neutras (reaproveitadas em várias seções) */
+    --Texto-Suave:#888780;
+    --Borda-Suave:#C9C3E8;
+
+    /* Sombra padrão da marca (roxo translúcido) */
+    --Sombra-Suave: 0 2px 12px rgba(83, 74, 183, 0.08);
+    --Sombra-Hover: 0 12px 32px rgba(83, 74, 183, 0.14);
 }
 
 /* ============================================================
@@ -29,31 +43,86 @@
 }
 
 html{
-    scroll-behavior: smooth;
+    scroll-behavior: smooth; /* rolagem suave ao clicar em links internos (#) */
 }
 
 ul{
     list-style: none;
 }
 
+a{
+    text-decoration: none;
+    color: inherit;
+}
 
 body{
     background-color: var(--Lavanda-Suave);
-     font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden; /* evita scroll horizontal causado pelas animações */
 }
+
+/* Foco acessível: troca o contorno padrão por um com a cor da marca,
+   mantendo visível para quem navega pelo teclado (acessibilidade) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--Roxo-Calmo);
+    outline-offset: 2px;
+}
+
 
 /* ============================================================
-   HEADER / NAV
+   3. ANIMAÇÕES REUTILIZÁVEIS
+   Definidas uma vez aqui em cima, usadas em várias seções abaixo
 ============================================================ */
 
-.header {
-   background-color: var(--Lavanda-Suave);
-   border-bottom: 1px solid rgba(83, 74, 183, 0.12);
-   position: sticky;
-   top: 0;
-   z-index: 100;
-   box-shadow: 0 2px 12px rgba(83, 74, 183, 0.08);
+/* Aparece de baixo para cima, suavemente */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
+
+/* Aparece da esquerda */
+@keyframes fadeLeft {
+    from { opacity: 0; transform: translateX(-24px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Aparece da direita */
+@keyframes fadeRight {
+    from { opacity: 0; transform: translateX(24px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Pulso suave — usado no indicador de emergência para chamar atenção */
+@keyframes pulso {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(83, 74, 183, 0.25); }
+    50%      { box-shadow: 0 0 0 10px rgba(83, 74, 183, 0); }
+}
+
+/* Entrada lateral usada nos cards da comunidade */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Classe utilitária: elementos com essa classe começam invisíveis
+   e são revelados via JS (Intersection Observer) quando entram na tela */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.ativo {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* ============================================================
+   4. BARRA DE URGÊNCIA (topo do site)
+============================================================ */
 
 .sup {
     background-color: var(--Verde-Esperança);
@@ -64,15 +133,36 @@ body{
     padding: 8px 40px;
     font-size: 13px;
     color: white;
+    text-align: center;
+    flex-wrap: wrap; /* quebra linha em telas pequenas em vez de cortar texto */
 }
 
 .sup a {
     color: #9FE1CB;
     text-decoration: underline;
+    transition: color 0.3s;
+}
+
+.sup a:hover {
+    color: white; /* feedback visual de hover, antes não existia */
 }
 
 .sup-divider {
-    opacity: 0.4
+    opacity: 0.4;
+}
+
+
+/* ============================================================
+   5. HEADER / NAVEGAÇÃO
+============================================================ */
+
+.header {
+    background-color: var(--Lavanda-Suave);
+    position: sticky;     /* gruda no topo ao rolar a página */
+    top: 0;
+    z-index: 100;          /* fica acima do conteúdo */
+    box-shadow: var(--Sombra-Suave);
+    transition: box-shadow 0.3s; /* preparado para JS reforçar sombra no scroll */
 }
 
 .nav {
@@ -83,11 +173,17 @@ body{
     height: 68px;
 }
 
+/* --- Logo --- */
+
 .nav-logo {
     display: flex;
     align-items: center;
     gap: 10px;
-    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.nav-logo:hover {
+    opacity: 0.8;
 }
 
 .nav-logo-icon {
@@ -98,6 +194,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .dot {
@@ -106,14 +203,11 @@ body{
     height: 10px;
     border-radius: 50%;
     background-color: #9FE1CB;
-    margin-bottom: 5px;
-    margin-right: 8px;
     vertical-align: middle;
 }
 
 .nav-logo-icon .dot {
     margin: 0;
-    vertical-align: middle;
 }
 
 .nav-logo h2 {
@@ -123,6 +217,8 @@ body{
     color: var(--Roxo-Calmo);
 }
 
+/* --- Links de navegação --- */
+
 .nav-links {
     display: flex;
     align-items: center;
@@ -131,14 +227,16 @@ body{
 
 .nav-links a {
     font-size: 15px;
-    color: #888780;
-    text-decoration: none;
-    transition: color 0.5s;
+    color: var(--Texto-Suave);
     padding-bottom: 4px;
-    position: relative;
-    transition: all 0.5s;
+    position: relative; /* necessário para o ::after (sublinhado animado) */
+    transition: color 0.3s, transform 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
+/* Sublinhado que "cresce" do centro para as bordas no hover */
 .nav-links a::after {
     content: '';
     position: absolute;
@@ -147,19 +245,31 @@ body{
     width: 0;
     height: 2px;
     background-color: var(--Roxo-Calmo);
-    transition: width 0.5s ease, left 0.5s ease;
+    transition: width 0.3s ease, left 0.3s ease;
 }
 
 .nav-links a:hover {
     color: var(--Roxo-Calmo);
-    transform: scale(1.08);
-    display: inline-block;
+    transform: scale(1.06);
 }
 
 .nav-links a:hover::after {
     width: 100%;
     left: 0;
 }
+
+/* Indica em qual página o usuário está */
+.nav-links .active a {
+    color: var(--Roxo-Calmo);
+    font-weight: 500;
+}
+
+.nav-links .active a::after {
+    width: 100%;
+    left: 0;
+}
+
+/* --- Ações do lado direito (badge + botão entrar) --- */
 
 .nav-actions {
     display: flex;
@@ -171,33 +281,70 @@ body{
     display: flex;
     align-items: center;
     gap: 6px;
-    background-color: #EDE9f9;
-    color: #534AB7;
-    font-size: 14px;
+    background-color: #EDE9F9;
+    color: var(--Roxo-Calmo);
+    font-size: 13px;
     padding: 5px 12px;
     border-radius: 20px;
-    border: 1px solid #c9C3e8;
+    border: 1px solid var(--Borda-Suave);
+    white-space: nowrap;
 }
 
 .btn-entrar {
-    font-size: 16px;
+    font-size: 15px;
     color: var(--Roxo-Calmo);
     background-color: white;
-    border: 1px solid #c9C3e8;
+    border: 1px solid var(--Borda-Suave);
     border-radius: 8px;
     padding: 8px 18px;
-    text-decoration: none;
-    transition: all 0.5s;
+    transition: all 0.3s;
 }
 
 .btn-entrar:hover {
     background-color: var(--Roxo-Calmo);
     color: white;
-    transform: scale(1.08);
+    transform: scale(1.05);
+    box-shadow: var(--Sombra-Hover);
 }
 
+/* --- Botão "hambúrguer" para mobile (escondido em telas grandes) --- */
+
+.nav-toggle {
+    display: none; /* só aparece no media query mobile, lá no fim do arquivo */
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--Roxo-Calmo);
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+/* Anima o ícone hambúrguer transformando em "X" quando o menu abre
+   (classe .aberto é alternada via JS) */
+.nav-toggle.aberto span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.nav-toggle.aberto span:nth-child(2) {
+    opacity: 0;
+}
+.nav-toggle.aberto span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+
 /* ============================================================
-   HERO
+   6. HERO (primeira seção — texto + quiz)
 ============================================================ */
 
 .hero {
@@ -206,13 +353,15 @@ body{
     justify-content: space-between;
     padding: 80px 40px;
     gap: 40px;
+    flex-wrap: wrap;
 }
 
 .hero-texto {
     max-width: 520px;
     display: flex;
     flex-direction: column;
-    gap: 20;
+    gap: 20px;
+    animation: fadeLeft 0.7s ease both; /* entra deslizando da esquerda */
 }
 
 .hero-texto h1 {
@@ -225,7 +374,7 @@ body{
 
 .hero-texto p {
     font-size: 18px;
-    color: #888780;
+    color: var(--Texto-Suave);
     line-height: 1.6;
 }
 
@@ -234,27 +383,270 @@ body{
     font-style: italic;
 }
 
+/* Botão de destaque, reaproveitado em várias seções da página */
 .btn-comecar {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     background-color: var(--Roxo-Calmo);
     color: white;
     font-size: 15px;
     padding: 14px 28px;
     margin-top: 10px;
+    border: none;
     border-radius: 10px;
-    text-decoration: none;
+    cursor: pointer;
     align-self: flex-start;
     transition: all 0.3s;
 }
 
 .btn-comecar:hover {
-    background-color: #3C3489;
-    transform: scale(1.03);
-    box-shadow: 0 8px 24px rgb(83, 74, 183, 0.3);
+    background-color: var(--Roxo-Escuro);
+    transform: scale(1.04);
+    box-shadow: 0 8px 24px rgba(83, 74, 183, 0.3);
 }
 
+/* --- Card do Quiz --- */
+
+.hero-quiz {
+    flex: 1;
+    min-width: 320px;
+    display: flex;
+    justify-content: center;
+    animation: fadeRight 0.7s ease both; /* entra deslizando da direita */
+}
+
+.quiz-card {
+    background-color: white;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 20px;
+    padding: 32px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: var(--Sombra-Hover);
+    transition: transform 0.3s;
+}
+
+.quiz-card:hover {
+    transform: translateY(-4px);
+}
+
+.quiz-titulo {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    color: var(--Roxo-Calmo);
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.quiz-opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quiz-btn {
+    background-color: var(--Lavanda-Suave);
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    text-align: left;
+    color: #444;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+
+.quiz-btn:hover {
+    background-color: #EDE9F9;
+    border-color: var(--Roxo-Calmo);
+    transform: translateX(4px); /* pequeno deslize ao passar o mouse */
+}
+
+/* Estado "selecionado" — aplicado via JS quando o usuário clica numa opção */
+.quiz-btn.selecionado {
+    background-color: var(--Roxo-Calmo);
+    border-color: var(--Roxo-Calmo);
+    color: white;
+}
+
+.quiz-rodape {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #aaa;
+    text-align: center;
+}
+
+/* --- Resultado do quiz (aparece após escolher uma opção) --- */
+
+.quiz-resultado {
+    display: none; /* JS troca para "flex" depois da resposta */
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    animation: fadeUp 0.4s ease both;
+}
+
+.quiz-resultado.visivel {
+    display: flex;
+}
+
+.quiz-resultado p {
+    font-size: 14px;
+    color: var(--Texto-Suave);
+    line-height: 1.6;
+}
+
+.quiz-resultado .btn-comecar {
+    align-self: center;
+    margin-top: 4px;
+}
+
+.quiz-resultado-icone {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--Verde-Menta);
+    color: var(--Verde-Esperança);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+
 /* ============================================================
-   URGÊNCIA
+   6-B. SOBRE O APP
+============================================================ */
+
+.sobre {
+    padding: 80px 40px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+}
+
+.sobre-cabecalho {
+    max-width: 640px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.sobre-tag {
+    align-self: center;
+    background-color: #EDE9F9;
+    color: var(--Roxo-Calmo);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.sobre-cabecalho h2 {
+    font-family: 'Lora', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    line-height: 1.3;
+}
+
+.sobre-cabecalho p {
+    font-size: 16px;
+    color: var(--Texto-Suave);
+    line-height: 1.7;
+}
+
+.sobre-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.sobre-card {
+    background-color: var(--Lavanda-Suave);
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 16px;
+    padding: 28px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.sobre-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--Sombra-Hover);
+}
+
+.sobre-icone {
+    width: 44px;
+    height: 44px;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.sobre-card h3 {
+    font-family: 'Lora', serif;
+    font-size: 17px;
+    color: var(--Roxo-Calmo);
+}
+
+.sobre-card p {
+    font-size: 14px;
+    color: var(--Texto-Suave);
+    line-height: 1.6;
+}
+
+/* --- Números de impacto --- */
+
+.sobre-numeros {
+    display: flex;
+    justify-content: center;
+    gap: 56px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 900px;
+    padding-top: 24px;
+    border-top: 1px solid var(--Lavanda-Suave);
+}
+
+.numero-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.numero {
+    font-family: 'Lora', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+}
+
+.numero-label {
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    text-align: center;
+}
+
+
+/* ============================================================
+   7. INDICADOR DE URGÊNCIA
 ============================================================ */
 
 .urgencia {
@@ -267,10 +659,11 @@ body{
 
 .urgencia-card {
     background-color: white;
-    border: 1px solid #C9C3E8;
+    border: 1px solid var(--Borda-Suave);
     border-radius: 16px;
     padding: 32px;
     flex: 1;
+    min-width: 240px;
     max-width: 340px;
     display: flex;
     flex-direction: column;
@@ -279,8 +672,8 @@ body{
 }
 
 .urgencia-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(83, 74, 183, 0.12);
+    transform: translateY(-6px);
+    box-shadow: var(--Sombra-Hover);
 }
 
 .urgencia-card i {
@@ -296,16 +689,15 @@ body{
 
 .urgencia-card p {
     font-size: 15px;
-    color: #888780;
+    color: var(--Texto-Suave);
     line-height: 1.6;
 }
 
 .urgencia-card a {
-    margin-top: auto;
+    margin-top: auto; /* empurra o link para o final do card, alinhando todos */
     font-size: 14px;
     color: var(--Roxo-Calmo);
     font-weight: 500;
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -313,13 +705,15 @@ body{
 }
 
 .urgencia-card a:hover {
-    gap: 10px;
+    gap: 10px; /* a seta "se afasta" do texto, sugerindo movimento */
 }
 
-/* Card de emergência — destaque */
+/* Card de emergência — visualmente destacado e com pulso sutil
+   para chamar atenção de quem precisa de ajuda imediata */
 .urgencia-emergencia {
     background-color: var(--Roxo-Calmo);
     border-color: transparent;
+    animation: pulso 2.5s infinite;
 }
 
 .urgencia-emergencia i,
@@ -337,8 +731,9 @@ body{
     box-shadow: 0 12px 32px rgba(83, 74, 183, 0.35);
 }
 
+
 /* ============================================================
-   COMUNIDADE PREVIEW
+   8. COMUNIDADE — PREVIEW
 ============================================================ */
 
 .comunidade-preview {
@@ -348,6 +743,7 @@ body{
     gap: 60px;
     padding: 80px 40px;
     background-color: white;
+    flex-wrap: wrap;
 }
 
 .comunidade-texto {
@@ -367,26 +763,73 @@ body{
 
 .comunidade-texto p {
     font-size: 16px;
-    color: #888780;
+    color: var(--Texto-Suave);
     line-height: 1.6;
 }
 
+.comunidade-dica {
+    font-size: 13px;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Faixa com scroll horizontal — comporta vários cards sem
+   empurrar o resto da página para baixo */
 .comunidade-cards {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 16px;
     flex: 1;
-    max-width: 500px;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x proximity; /* "encaixa" suavemente nos cards ao soltar o scroll */
+    cursor: grab; /* indica visualmente que a faixa pode ser arrastada */
+    scroll-behavior: auto; /* o auto-scroll via JS controla pixel a pixel; "smooth" travaria a animação */
+}
+
+.comunidade-cards:active {
+    cursor: grabbing;
+}
+
+/* Barra de scroll discreta, na cor da marca */
+.comunidade-cards::-webkit-scrollbar {
+    height: 6px;
+}
+
+.comunidade-cards::-webkit-scrollbar-thumb {
+    background-color: var(--Borda-Suave);
+    border-radius: 10px;
+}
+
+.comunidade-cards::-webkit-scrollbar-thumb:hover {
+    background-color: var(--Roxo-Calmo);
 }
 
 .comunidade-card {
     background-color: var(--Lavanda-Suave);
-    border: 1px solid #C9C3E8;
+    border: 1px solid var(--Borda-Suave);
     border-radius: 16px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    animation: slideIn 0.5s ease both;
+    flex: 0 0 280px; /* largura fixa: não encolhe nem cresce no flex */
+    scroll-snap-align: start;
+}
+
+.tag-topico {
+    align-self: flex-start;
+    background-color: #EDE9F9;
+    color: var(--Roxo-Calmo);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
 }
 
 .comunidade-card-header {
@@ -432,7 +875,7 @@ body{
     align-items: center;
     gap: 6px;
     background: white;
-    border: 1px solid #C9C3E8;
+    border: 1px solid var(--Borda-Suave);
     border-radius: 20px;
     padding: 6px 14px;
     font-size: 13px;
@@ -448,6 +891,23 @@ body{
     border-color: transparent;
 }
 
+/* Estado "já enviei abraço" — controlado via JS, impede múltiplos cliques
+   e dá feedback claro de que a ação funcionou */
+.btn-abraco.enviado {
+    background-color: var(--Verde-Esperança);
+    color: white;
+    border-color: transparent;
+    cursor: default;
+}
+
+.btn-abraco i {
+    transition: transform 0.3s;
+}
+
+.btn-abraco:hover i {
+    transform: scale(1.2); /* coraçãozinho cresce no hover */
+}
+
 .card-resposta {
     display: flex;
     gap: 8px;
@@ -455,12 +915,13 @@ body{
 
 .card-resposta input {
     flex: 1;
-    border: 1px solid #C9C3E8;
+    border: 1px solid var(--Borda-Suave);
     border-radius: 20px;
     padding: 8px 14px;
     font-size: 13px;
     background: white;
     outline: none;
+    transition: border-color 0.3s;
 }
 
 .card-resposta input:focus {
@@ -483,12 +944,271 @@ body{
 }
 
 .card-resposta button:hover {
-    background-color: #3C3489;
-    transform: scale(1.08);
+    background-color: var(--Roxo-Escuro);
+    transform: scale(1.1) rotate(8deg); /* o avião de papel "voa" um pouco */
 }
 
+/* Mensagem enviada pelo usuário, inserida dinamicamente via JS
+   logo abaixo do campo de resposta */
+.resposta-enviada {
+    background-color: white;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #555;
+    animation: fadeUp 0.3s ease both;
+}
+
+.resposta-enviada strong {
+    color: var(--Roxo-Calmo);
+}
+
+
 /* ============================================================
-   COMO FUNCIONA
+   8-B. BIBLIOTECA DE TÉCNICAS / VÍDEOS
+============================================================ */
+
+.biblioteca {
+    padding: 80px 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+}
+
+.biblioteca h2 {
+    font-family: 'Lora', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+}
+
+.biblioteca-subtitulo {
+    max-width: 560px;
+    font-size: 15px;
+    color: var(--Texto-Suave);
+    line-height: 1.7;
+    margin-top: -16px;
+}
+
+.biblioteca-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.biblioteca-card {
+    background-color: white;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 16px;
+    overflow: hidden;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 18px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.biblioteca-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--Sombra-Hover);
+}
+
+/* "Thumbnail" do vídeo — gradiente roxo no lugar de uma imagem real,
+   já que não temos vídeos hospedados neste protótipo */
+.biblioteca-thumb {
+    height: 140px;
+    background: linear-gradient(135deg, var(--Roxo-Calmo), #7D72D6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: white;
+    font-size: 32px;
+}
+
+.biblioteca-thumb i {
+    transition: transform 0.3s;
+}
+
+.biblioteca-card:hover .biblioteca-thumb i {
+    transform: scale(1.15); /* play button "pulsa" no hover, convida ao clique */
+}
+
+.biblioteca-duracao {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.tag-categoria {
+    margin: 14px 20px 0;
+    align-self: flex-start;
+    background-color: var(--Verde-Menta);
+    color: var(--Verde-Esperança);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.biblioteca-card h3 {
+    margin: 0 20px;
+    font-family: 'Lora', serif;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.biblioteca-card p {
+    margin: 0 20px;
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    line-height: 1.5;
+}
+
+/* Link "ver tudo", reaproveitado na biblioteca e nos profissionais */
+.ver-tudo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    transition: gap 0.3s;
+}
+
+.ver-tudo-link:hover {
+    gap: 10px;
+}
+
+
+/* ============================================================
+   8-C. PROFISSIONAIS EM DESTAQUE
+============================================================ */
+
+.profissionais {
+    padding: 80px 40px;
+    background-color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+}
+
+.profissionais h2 {
+    font-family: 'Lora', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+}
+
+.profissionais-subtitulo {
+    max-width: 560px;
+    font-size: 15px;
+    color: var(--Texto-Suave);
+    line-height: 1.7;
+    margin-top: -16px;
+}
+
+.profissionais-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.profissional-card {
+    background-color: var(--Lavanda-Suave);
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 16px;
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.profissional-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--Sombra-Hover);
+}
+
+.profissional-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+}
+
+.profissional-card h3 {
+    font-family: 'Lora', serif;
+    font-size: 16px;
+    color: #333;
+}
+
+.profissional-especialidade {
+    font-size: 13px;
+    color: var(--Roxo-Calmo);
+}
+
+.profissional-avaliacao {
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.profissional-avaliacao i {
+    color: #F2B544; /* dourado para a estrela de avaliação */
+}
+
+.profissional-sessoes {
+    color: #aaa;
+}
+
+.btn-perfil {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--Roxo-Calmo);
+    border: 1px solid var(--Borda-Suave);
+    background-color: white;
+    padding: 7px 18px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.btn-perfil:hover {
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border-color: transparent;
+}
+
+
+/* ============================================================
+   9. COMO FUNCIONA
 ============================================================ */
 
 .como-funciona {
@@ -510,12 +1230,14 @@ body{
 .passos {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 16px;
+    flex-wrap: wrap;
 }
 
 .passo {
     background-color: white;
-    border: 1px solid #C9C3E8;
+    border: 1px solid var(--Borda-Suave);
     border-radius: 16px;
     padding: 32px 28px;
     max-width: 240px;
@@ -527,8 +1249,8 @@ body{
 }
 
 .passo:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(83, 74, 183, 0.12);
+    transform: translateY(-6px);
+    box-shadow: var(--Sombra-Hover);
 }
 
 .passo-numero {
@@ -552,18 +1274,19 @@ body{
 
 .passo p {
     font-size: 14px;
-    color: #888780;
+    color: var(--Texto-Suave);
     line-height: 1.6;
 }
 
 .passo-seta {
     font-size: 22px;
-    color: #C9C3E8;
+    color: var(--Borda-Suave);
     flex-shrink: 0;
 }
 
+
 /* ============================================================
-   DEPOIMENTOS
+   10. DEPOIMENTOS
 ============================================================ */
 
 .depoimentos {
@@ -592,7 +1315,7 @@ body{
 
 .depoimento-card {
     background-color: var(--Lavanda-Suave);
-    border: 1px solid #C9C3E8;
+    border: 1px solid var(--Borda-Suave);
     border-radius: 16px;
     padding: 28px;
     display: flex;
@@ -602,8 +1325,8 @@ body{
 }
 
 .depoimento-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(83, 74, 183, 0.1);
+    transform: translateY(-6px);
+    box-shadow: var(--Sombra-Suave);
 }
 
 .depoimento-card > p {
@@ -620,8 +1343,9 @@ body{
     gap: 12px;
 }
 
+
 /* ============================================================
-   FOOTER
+   11. FOOTER
 ============================================================ */
 
 .footer {
@@ -649,12 +1373,13 @@ body{
 .footer-links {
     display: flex;
     gap: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .footer-links a {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.6);
-    text-decoration: none;
     transition: color 0.3s;
 }
 
@@ -672,6 +1397,11 @@ body{
     padding: 8px 20px;
     color: #9FE1CB;
     font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.footer-cvv:hover {
+    background-color: rgba(255, 255, 255, 0.18);
 }
 
 .footer-copy {
@@ -679,19 +1409,237 @@ body{
     color: rgba(255, 255, 255, 0.4);
 }
 
-/* Animação de entrada dos cards */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-16px);
+/* --- Botão "voltar ao topo" --- */
+
+.btn-topo {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: var(--Sombra-Hover);
+    opacity: 0;
+    pointer-events: none; /* invisível e "desclicável" até o JS liberar */
+    transition: all 0.3s;
+    z-index: 99;
+}
+
+/* Classe ativada via JS quando o usuário rola a página para baixo */
+.btn-topo.visivel {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.btn-topo:hover {
+    background-color: var(--Roxo-Escuro);
+    transform: translateY(-4px);
+}
+
+
+/* ============================================================
+   12. TOAST (notificação flutuante de feedback rápido)
+   Usado por exemplo após enviar um "abraço virtual"
+============================================================ */
+
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--Sombra-Hover);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.35s ease;
+    z-index: 200;
+}
+
+.toast.visivel {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+
+/* ============================================================
+   13. RESPONSIVIDADE
+============================================================ */
+
+@media (max-width: 1024px) {
+    .depoimentos-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas médias */
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    .sobre-grid,
+    .profissionais-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .biblioteca-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-.comunidade-card {
-    animation: slideIn 0.4s ease;
+@media (max-width: 900px) {
+    .passos {
+        flex-direction: column; /* passos do "como funciona" empilham */
+    }
+
+    .passo-seta {
+        transform: rotate(90deg); /* seta gira para apontar para baixo */
+    }
+
+    .hero {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .hero-texto {
+        align-items: center;
+        max-width: 100%;
+    }
 }
 
+@media (max-width: 768px) {
+    .sup {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+
+    .nav {
+        padding: 0 20px;
+    }
+
+    /* Esconde os links e mostra o botão hambúrguer */
+    .nav-links {
+        position: fixed;
+        top: 68px;
+        left: 0;
+        right: 0;
+        background-color: var(--Lavanda-Suave);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        box-shadow: var(--Sombra-Suave);
+        transition: max-height 0.4s ease;
+    }
+
+    /* Classe alternada via JS ao clicar no hambúrguer */
+    .nav-links.aberto {
+        max-height: 400px;
+        padding: 12px 0;
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links a {
+        width: 100%;
+        padding: 14px 24px;
+    }
+
+    .nav-links a::after {
+        display: none; /* sublinhado animado não faz sentido no menu mobile */
+    }
+
+    .badge {
+        display: none; /* esconde o selo "seguro e privado" para economizar espaço */
+    }
+
+    .nav-toggle {
+        display: flex; /* mostra o hambúrguer só no mobile */
+    }
+
+    .hero-texto h1 {
+        font-size: 34px;
+    }
+
+    .urgencia-card,
+    .passo {
+        max-width: 100%;
+    }
+
+    .comunidade-preview {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .comunidade-texto {
+        align-items: center;
+    }
+
+    .depoimentos-grid {
+        grid-template-columns: 1fr; /* 1 coluna no celular */
+    }
+
+    .sobre-grid,
+    .profissionais-grid,
+    .biblioteca-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sobre-numeros {
+        gap: 32px;
+    }
+
+    .comunidade-card {
+        flex: 0 0 240px; /* cards um pouco menores no mobile */
+    }
+
+    .footer-links {
+        gap: 16px;
+    }
+
+    .btn-topo {
+        bottom: 16px;
+        right: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-texto h1 {
+        font-size: 28px;
+    }
+
+    .quiz-card {
+        padding: 24px;
+    }
+
+    .urgencia,
+    .hero,
+    .comunidade-preview,
+    .como-funciona,
+    .depoimentos {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/* Respeita usuários que pediram menos animação no sistema operacional */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

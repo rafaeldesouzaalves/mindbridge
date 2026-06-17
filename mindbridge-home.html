@@ -11,6 +11,12 @@
       rel="stylesheet"
     />
 
+    <!-- Ícones (Tabler Icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+
     <!-- Ícone da aba -->
     <link
       rel="shortcut icon"
@@ -23,247 +29,628 @@
   </head>
 
   <body>
-    <!-- Cabeçalho -->
+    <!-- ============================================================
+         BARRA DE URGÊNCIA
+         Fica sempre visível no topo, antes do header, para que quem
+         precisa de ajuda imediata encontre o contato em 1 segundo.
+    ============================================================= -->
+    <div class="sup">
+      <i class="ti ti-heart-handshake"></i>
+      <span>Precisa de apoio agora?</span>
+      <a href="#">Falar com o CVV — 188</a>
+      <span class="sup-divider">·</span>
+      <a href="#urgencia">Ver recursos de emergência</a>
+    </div>
 
-        <div class="sup">
-            <i class="ti ti-heart-handshake"></i>
-            <span>Precisa de apoio agora?</span>
-            <a href="#">Falar com o CVV — 188</a>
-            <span class="sup-divider">·</span>
-            <a href="#">Ver recursos de emergência</a>
-        </div>  
-        
+    <!-- ============================================================
+         CABEÇALHO / NAVEGAÇÃO
+    ============================================================= -->
     <header class="header">
       <nav class="nav">
-        
-        <a href="$" class="nav-logo">
-            <div class="nav-logo-icon">
-                <span class="dot"></span>
-            </div> 
-            <h2>MindBridge</h2>
+
+        <!-- Logo -->
+        <a href="mindbridge-home.html" class="nav-logo">
+          <div class="nav-logo-icon">
+            <span class="dot"></span>
+          </div>
+          <h2>MindBridge</h2>
         </a>
-        
-        <ul class="nav-links">
-          <li><a href="#">Início</a></li>
-          <li><a href="#">Recursos</a></li>
-          <li><a href="#">Comunidade</a></li>
-          <li><a href="$">Como funciona?</a></li>
-          <li>
-            <a href="#"><span class="icon-map"></span>Mapa de Apoio</a>
-          </li>
+
+        <!-- Links principais -->
+        <ul class="nav-links" id="navLinks">
+          <li class="active"><a href="mindbridge-home.html"><i class="ti ti-home"></i> Início</a></li>
+          <li><a href="#como-funciona"><i class="ti ti-route"></i> Como funciona</a></li>
+          <li><a href="mindbridge-comunidade.html"><i class="ti ti-users"></i> Comunidade</a></li>
+          <li><a href="mindbridge-home.html#biblioteca"><i class="ti ti-lifebuoy"></i> Recursos</a></li>
+          <li><a href="#"><i class="ti ti-map-pin"></i> Mapa de Apoio</a></li>
         </ul>
 
+        <!-- Ações do lado direito -->
         <div class="nav-actions">
-            <div class="badge">
-                <p>Seguro & Privado</p>
-            </div>
+          <div class="badge">
+            <i class="ti ti-shield-check"></i>
+            <p>Seguro &amp; Privado</p>
+          </div>
           <a href="mindbridge-login.html" class="btn-entrar">Entrar</a>
         </div>
+
+        <!-- Botão hambúrguer — só aparece no mobile (ver CSS) -->
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
 
       </nav>
     </header>
 
-    <!-- Conteudo Principal-->
-
+    <!-- ============================================================
+         CONTEÚDO PRINCIPAL
+    ============================================================= -->
     <main>
-        <section class="hero">
 
-            <div class="hero-texto">
-                <h1>
-                    Sua saúde mental <span class="destaque">importa.</span>
-                </h1>
-                <p>Dê o primeiro passo - encontre apoio, técnicas e profissionais prontos para te ajudar.</p>
-                <a href="#" class="btn-comecar">Começar agora!</a>
+      <!-- ===================== HERO ===================== -->
+      <section class="hero">
+
+        <div class="hero-texto">
+          <h1>Sua saúde mental <span class="destaque">importa.</span></h1>
+          <p>Dê o primeiro passo — encontre apoio, técnicas e profissionais prontos para te ajudar.</p>
+          <a href="#urgencia" class="btn-comecar">
+            <i class="ti ti-arrow-right"></i>
+            Começar agora
+          </a>
+        </div>
+
+        <!-- Card do quiz de triagem emocional -->
+        <div class="hero-quiz">
+          <div class="quiz-card" id="quizCard">
+
+            <!-- Pergunta inicial do quiz -->
+            <div id="quizPergunta">
+              <p class="quiz-titulo">Como você está se sentindo hoje?</p>
+
+              <div class="quiz-opcoes" id="quizOpcoes">
+                <button class="quiz-btn" data-resultado="ansioso">😔 Ansioso</button>
+                <button class="quiz-btn" data-resultado="esgotado">😴 Esgotado</button>
+                <button class="quiz-btn" data-resultado="triste">😢 Triste</button>
+                <button class="quiz-btn" data-resultado="irritado">😤 Irritado</button>
+                <button class="quiz-btn" data-resultado="perdido">😕 Perdido</button>
+                <button class="quiz-btn" data-resultado="curioso">🙂 Bem, só curioso</button>
+              </div>
+
+              <p class="quiz-rodape"><i class="ti ti-lock"></i> Suas respostas são anônimas e seguras.</p>
             </div>
 
-            <div class="hero-quiz">
-
+            <!-- Resultado exibido após o clique (texto trocado via JS) -->
+            <div class="quiz-resultado" id="quizResultado">
+              <div class="quiz-resultado-icone">
+                <i class="ti ti-check"></i>
+              </div>
+              <p id="quizResultadoTexto">Obrigado por compartilhar. Preparamos algumas indicações para você.</p>
+              <a href="#urgencia" class="btn-comecar">Ver indicações</a>
+              <button class="quiz-btn" id="quizRefazer" style="text-align:center;">Refazer o quiz</button>
             </div>
 
-        </section>
+          </div>
+        </div>
 
-        <section class="urgencia">
+      </section>
 
-            <div class="urgencia-card">
-                <i class="ti ti-leaf"></i>
-                <h3>Estou Curioso</h3>
-                <p>Quero explorar técnicas e aprender sobre saúde mental.</p>
-                <a href="#">Explorar Biblioteca</a>
+      <!-- ===================== SOBRE O APP ===================== -->
+      <section class="sobre">
+
+        <div class="sobre-cabecalho reveal">
+          <span class="sobre-tag">O que é o MindBridge</span>
+          <h2>Um app para você não enfrentar tudo <span class="destaque">sozinho.</span></h2>
+          <p>
+            O MindBridge nasceu para encurtar a distância entre quem está passando por
+            ansiedade, burnout ou um momento emocional difícil e o apoio que essa pessoa
+            precisa — seja uma técnica rápida, uma comunidade que entende, ou um profissional
+            qualificado a uma mensagem de distância.
+          </p>
+        </div>
+
+        <div class="sobre-grid">
+
+          <div class="sobre-card reveal">
+            <div class="sobre-icone"><i class="ti ti-users-group"></i></div>
+            <h3>Comunidade ativa</h3>
+            <p>Pessoas reais trocando apoio todos os dias, em um espaço seguro e sem julgamentos.</p>
+          </div>
+
+          <div class="sobre-card reveal">
+            <div class="sobre-icone"><i class="ti ti-stethoscope"></i></div>
+            <h3>Profissionais acessíveis</h3>
+            <p>Psicólogos e terapeutas verificados, com atendimento online e valores acessíveis.</p>
+          </div>
+
+          <div class="sobre-card reveal">
+            <div class="sobre-icone"><i class="ti ti-player-play"></i></div>
+            <h3>Conteúdo que acolhe</h3>
+            <p>Vídeos e técnicas curtas que te ajudam a entender o que você está sentindo.</p>
+          </div>
+
+          <div class="sobre-card reveal">
+            <div class="sobre-icone"><i class="ti ti-shield-check"></i></div>
+            <h3>Privacidade em primeiro lugar</h3>
+            <p>Você decide o que compartilhar. Tudo o que é sensível pode ser anônimo.</p>
+          </div>
+
+        </div>
+
+        <!-- Números de impacto: reforçam confiança através de escala -->
+        <div class="sobre-numeros reveal">
+          <div class="numero-item">
+            <span class="numero">12.400+</span>
+            <span class="numero-label">pessoas acolhidas</span>
+          </div>
+          <div class="numero-item">
+            <span class="numero">340+</span>
+            <span class="numero-label">profissionais parceiros</span>
+          </div>
+          <div class="numero-item">
+            <span class="numero">98%</span>
+            <span class="numero-label">indicam o app a um amigo</span>
+          </div>
+          <div class="numero-item">
+            <span class="numero">24h</span>
+            <span class="numero-label">apoio sempre disponível</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ===================== INDICADOR DE URGÊNCIA ===================== -->
+      <section class="urgencia" id="urgencia">
+
+        <div class="urgencia-card reveal">
+          <i class="ti ti-leaf"></i>
+          <h3>Estou Curioso</h3>
+          <p>Quero explorar técnicas e aprender sobre saúde mental.</p>
+          <a href="#"><i class="ti ti-arrow-right"></i> Explorar Biblioteca</a>
+        </div>
+
+        <div class="urgencia-card reveal">
+          <i class="ti ti-stethoscope"></i>
+          <h3>Falar com Profissional</h3>
+          <p>Psicólogos e terapeutas prontos para te ouvir com sigilo e cuidado.</p>
+          <a href="#"><i class="ti ti-arrow-right"></i> Ver profissionais</a>
+        </div>
+
+        <div class="urgencia-card reveal">
+          <i class="ti ti-heart"></i>
+          <h3>Preciso de Apoio</h3>
+          <p>Estou passando por um momento difícil e quero ajuda.</p>
+          <a href="mindbridge-comunidade.html"><i class="ti ti-arrow-right"></i> Ver Comunidades</a>
+        </div>
+
+        <div class="urgencia-card urgencia-emergencia reveal">
+          <i class="ti ti-alert-triangle"></i>
+          <h3>É uma emergência!</h3>
+          <p>Estou em crise e preciso falar com alguém agora.</p>
+          <a href="tel:188"><i class="ti ti-phone"></i> Ligar CVV — 188</a>
+        </div>
+
+      </section>
+
+      <!-- ===================== COMUNIDADE — PREVIEW ===================== -->
+      <section class="comunidade-preview">
+
+        <div class="comunidade-texto reveal">
+          <h2>Você não está <span class="destaque">sozinho.</span></h2>
+          <p>Conecte-se com pessoas que estão passando pelo mesmo que você. Sem julgamentos, só apoio — só gente real se ajudando.</p>
+          <a href="mindbridge-comunidade.html" class="btn-comecar">
+            <i class="ti ti-users"></i>
+            Entrar na comunidade
+          </a>
+          <p class="comunidade-dica"><i class="ti ti-arrow-right"></i> Arraste para o lado e veja mais relatos</p>
+        </div>
+
+        <!-- Faixa com scroll horizontal: comporta vários posts sem
+             ocupar altura excessiva da página -->
+        <div class="comunidade-cards" id="comunidadeCards">
+
+          <div class="comunidade-card">
+            <span class="tag-topico">Ansiedade</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">A</div>
+              <div>
+                <p class="nome">Ana Gabrielly</p>
+                <p class="tempo">Agora mesmo</p>
+              </div>
             </div>
-
-            <div class="urgencia-card">
-                <i class="ti ti-stethoscope"></i>
-                <h3>Falar com Profissional</h3>
-                <p>Psicólogos e terapeutas prontos para te ouvir com sigilo e cuidado.</p>
-                <a href="#">Ver profissionais</a>
+            <p class="mensagem">"Hoje foi difícil, mas consegui sair da cama. Pequenas vitórias."</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(3)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
             </div>
+            <div class="respostas-lista"></div>
+          </div>
 
-            <div class="urgencia-card">
-                <i class="ti ti-heart"></i>
-                <h3>Preciso de Apoio</h3>
-                <p>Estou passando por um momento difícil e quero ajuda.</p>
-                <a href="#">Ver Comunidades</a>
+          <div class="comunidade-card">
+            <span class="tag-topico">Ansiedade</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">R</div>
+              <div>
+                <p class="nome">Rafael Lima</p>
+                <p class="tempo">Há 30 minutos</p>
+              </div>
             </div>
-
-            <div class="urgencia-card urgencia-emergencia">
-                <i class="ti ti-alert-triangle"></i>
-                <h3>É uma emergência!</h3>
-                <p>Estou em crise e preciso falar com alguém agora.</p>
-                <a href="#">Ligar CVV - 188</a>
+            <p class="mensagem">"Ansiedade alta hoje. Alguém tem alguma técnica de respiração?"</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(7)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
             </div>
+            <div class="respostas-lista"></div>
+          </div>
 
-        </section>
-
-        <section class="comunidade-preview">
-
-            <div class="comunidade-texto">
-                <h2>Você não está <span class="destaque">sozinho.</span></h2>
-                <p>Conecte-se com pessoas que estão passando o mesmo que você. Sem julgamentos, só apoio</p>
-                <a href="mindbridge-comunidade.html" class="btn-comecar">Entrar na comunidade</a>
+          <div class="comunidade-card">
+            <span class="tag-topico">Burnout</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">C</div>
+              <div>
+                <p class="nome">Camila Souza</p>
+                <p class="tempo">Há 1 hora</p>
+              </div>
             </div>
-
-            <div class="comunidade-cards">
-
-                <div class="comunidade-card">
-                    <div class="comunidade-card-header">
-                        <div class="avatar">A</div>
-                        <div>
-                            <p class="nome">Ana Gabrielly</p>
-                            <p class="tempo">Agora mesmo</p>
-                        </div>
-                    </div>
-                    <p class="mensagem">"Hoje foi difícil, mas consegui sair da cama. Pequenas vitórias."</p>
-                    <button class="btn-abraco"><i class="ti ti-heart"></i>Abraço virutal</button>
-                    <div class="card-resposta">
-                        <input type="text" placeholder="Escreva uma mensagem de Apoio...">
-                        <button><i class="ti ti-send"></i></button>
-                    </div>
-                </div>
-
-                <div class="comunidade-card">
-                    <div class="comunidade-card-header">
-                        <div class="avatar">R</div>
-                        <div>
-                            <p class="nome">Rafael Lima</p>
-                            <p class="tempo">Há 30 minutos</p>
-                        </div>
-                    </div>
-                    <p class="mensagem">"Ansiedade alta hoje. Alguém tem alguma técnica de respiração?"</p>
-                    <button class="btn-abraco"><i class="ti ti-heart"></i>Abraço Virutal</button>
-                     <div class="card-resposta">
-                        <input type="text" placeholder="Escreva uma mensagem de Apoio...">
-                        <button><i class="ti ti-send"></i></button>
-                    </div>
-                </div>
-
+            <p class="mensagem">"Voltei de licença e já sinto o peso de tudo de novo. Alguém mais nessa?"</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(12)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
             </div>
+            <div class="respostas-lista"></div>
+          </div>
 
-        </section>
-
-        <section class="como-funciona">
-            
-            <h2>Como <span class="destaque">funciona?</span></h2>
-
-            <div class="passos">
-
-                <div class="passo">
-                    <div class="passo-numero">1</div>
-                    <h3>Responsa o Quiz</h3>
-                    <p>Algumas perguntas rápidas para entender como você está se sentindo.</p>
-                </div>
-
-                <div class="passo-seta">
-                    <i class="ti ti-arrow-right"></i>
-                </div>
-
-                <div class="passo">
-                    <div class="passo-numero">2</div>
-                    <h3>Receba indicações</h3>
-                    <p>Com base na suas resposta, indicamos os recursos certo pra você.</p>
-                </div>
-
-                <div class="passo-seta">
-                    <i class="ti ti-arrow-right"></i>
-                </div>
-
-                <div class="passo">
-                    <div class="passo-numero">3</div>
-                    <h3>Acesso o Apoio</h3>
-                    <p>Profissionais, técnicas ou comunidade - você escolhe por onde começar.</p>
-                </div>
-
+          <div class="comunidade-card">
+            <span class="tag-topico">Luto</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">D</div>
+              <div>
+                <p class="nome">Daniel Alves</p>
+                <p class="tempo">Há 2 horas</p>
+              </div>
             </div>
-
-        </section>
-        <section class="depoimentos">
-
-            <h2>O que dizem por <span class="destaque">aqui</span></h2>
-
-            <div class="depoimentos-grid">
-
-                <div class="depoimento-card">
-                    <p>"Encontrei um grupo de apoio que mudou minha vida. Não me sentia tão acolhido há anos."</p>
-                    <div class="depoimento-autor">
-                        <div class="avatar">M</div>
-                        <div>
-                            <p class="nome">Marcos</p>
-                            <p class="tempo">Ansiedade social</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="depoimento-card">
-                    <p>"As técnicas de respiração me ajudaram nas crises de pânico. Simples e eficaz."</p>
-                    <div class="depoimento-autor">
-                        <div class="avatar">J</div>
-                        <div>
-                            <p class="nome">Julia</p>
-                            <p class="tempo">Síndrome do pânico</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="depoimento-card">
-                    <p>"Finalmente um lugar seguro pra falar sobre burnout sem ser julgado."</p>
-                    <div class="depoimento-autor">
-                        <div class="avatar">P</div>
-                        <div>
-                            <p class="nome">Pedro</p>
-                            <p class="tempo">Burnout</p>
-                        </div>
-                    </div>
-                </div>
-
+            <p class="mensagem">"Faz um mês que perdi meu pai. Hoje doeu menos que ontem. Isso é normal?"</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(21)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
             </div>
+            <div class="respostas-lista"></div>
+          </div>
 
-        </section>
+          <div class="comunidade-card">
+            <span class="tag-topico">Autoestima</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">B</div>
+              <div>
+                <p class="nome">Beatriz Nunes</p>
+                <p class="tempo">Há 3 horas</p>
+              </div>
+            </div>
+            <p class="mensagem">"Primeira vez que escrevo aqui. Obrigada por existir, esse espaço me fez bem só de ler."</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(15)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <div class="comunidade-card">
+            <span class="tag-topico">Relacionamentos</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">L</div>
+              <div>
+                <p class="nome">Lucas Tavares</p>
+                <p class="tempo">Há 4 horas</p>
+              </div>
+            </div>
+            <p class="mensagem">"Terminei um relacionamento longo. Sinto alívio e culpa ao mesmo tempo, é confuso."</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(9)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <div class="comunidade-card">
+            <span class="tag-topico">Pânico</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">F</div>
+              <div>
+                <p class="nome">Fernanda Costa</p>
+                <p class="tempo">Há 5 horas</p>
+              </div>
+            </div>
+            <p class="mensagem">"Tive uma crise no trabalho hoje. Consegui aplicar a técnica de respiração 4-7-8 e passou."</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(18)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+          <div class="comunidade-card">
+            <span class="tag-topico">Sono</span>
+            <div class="comunidade-card-header">
+              <div class="avatar">G</div>
+              <div>
+                <p class="nome">Gabriel Rocha</p>
+                <p class="tempo">Há 6 horas</p>
+              </div>
+            </div>
+            <p class="mensagem">"Insônia há semanas. Alguém testou os exercícios de grounding antes de dormir?"</p>
+            <button class="btn-abraco"><i class="ti ti-heart"></i> Abraço virtual <span class="contador-abraco">(6)</span></button>
+            <div class="card-resposta">
+              <input type="text" placeholder="Escreva uma mensagem de apoio..." maxlength="120">
+              <button type="button" aria-label="Enviar mensagem"><i class="ti ti-send"></i></button>
+            </div>
+            <div class="respostas-lista"></div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ===================== BIBLIOTECA DE TÉCNICAS ===================== -->
+      <section class="biblioteca" id="biblioteca">
+
+        <h2>Entenda o que você está <span class="destaque">sentindo</span></h2>
+        <p class="biblioteca-subtitulo">
+          Vídeos curtos e técnicas guiadas para respiração, mindfulness e grounding —
+          feitos para te ajudar no momento em que você mais precisa.
+        </p>
+
+        <div class="biblioteca-grid">
+
+          <div class="biblioteca-card reveal">
+            <div class="biblioteca-thumb">
+              <i class="ti ti-player-play-filled"></i>
+              <span class="biblioteca-duracao">4 min</span>
+            </div>
+            <span class="tag-categoria">Respiração</span>
+            <h3>Respiração 4-7-8 para crises de ansiedade</h3>
+            <p>Uma técnica simples para acalmar o corpo em poucos minutos.</p>
+          </div>
+
+          <div class="biblioteca-card reveal">
+            <div class="biblioteca-thumb">
+              <i class="ti ti-player-play-filled"></i>
+              <span class="biblioteca-duracao">7 min</span>
+            </div>
+            <span class="tag-categoria">Mindfulness</span>
+            <h3>Mindfulness para iniciantes</h3>
+            <p>Aprenda a observar seus pensamentos sem se afogar neles.</p>
+          </div>
+
+          <div class="biblioteca-card reveal">
+            <div class="biblioteca-thumb">
+              <i class="ti ti-player-play-filled"></i>
+              <span class="biblioteca-duracao">3 min</span>
+            </div>
+            <span class="tag-categoria">Grounding</span>
+            <h3>Técnica 5-4-3-2-1 para se reconectar</h3>
+            <p>Use os sentidos para voltar ao presente durante uma crise.</p>
+          </div>
+
+          <div class="biblioteca-card reveal">
+            <div class="biblioteca-thumb">
+              <i class="ti ti-player-play-filled"></i>
+              <span class="biblioteca-duracao">6 min</span>
+            </div>
+            <span class="tag-categoria">Burnout</span>
+            <h3>Reconhecendo os sinais de esgotamento</h3>
+            <p>Entenda o que o corpo tenta te avisar antes de quebrar.</p>
+          </div>
+
+          <div class="biblioteca-card reveal">
+            <div class="biblioteca-thumb">
+              <i class="ti ti-player-play-filled"></i>
+              <span class="biblioteca-duracao">5 min</span>
+            </div>
+            <span class="tag-categoria">Sono</span>
+            <h3>Relaxamento guiado para dormir melhor</h3>
+            <p>Um roteiro de voz para desacelerar a mente antes de dormir.</p>
+          </div>
+
+          <div class="biblioteca-card reveal">
+            <div class="biblioteca-thumb">
+              <i class="ti ti-player-play-filled"></i>
+              <span class="biblioteca-duracao">8 min</span>
+            </div>
+            <span class="tag-categoria">Autoestima</span>
+            <h3>Reescrevendo a autocrítica</h3>
+            <p>Como notar e suavizar a voz interna mais dura com você.</p>
+          </div>
+
+        </div>
+
+        <a href="#" class="ver-tudo-link">Ver biblioteca completa <i class="ti ti-arrow-right"></i></a>
+
+      </section>
+
+      <!-- ===================== PROFISSIONAIS EM DESTAQUE ===================== -->
+      <section class="profissionais" id="profissionais">
+
+        <h2>Profissionais prontos para te <span class="destaque">ouvir</span></h2>
+        <p class="profissionais-subtitulo">
+          Psicólogos e terapeutas verificados, com atendimento online, sigilo garantido
+          e valores acessíveis.
+        </p>
+
+        <div class="profissionais-grid">
+
+          <div class="profissional-card reveal">
+            <div class="profissional-avatar">MF</div>
+            <h3>Dra. Mariana Ferraz</h3>
+            <span class="profissional-especialidade">Ansiedade e Pânico</span>
+            <div class="profissional-avaliacao">
+              <i class="ti ti-star-filled"></i> 4.9 <span class="profissional-sessoes">· 312 sessões</span>
+            </div>
+            <a href="#" class="btn-perfil">Ver perfil</a>
+          </div>
+
+          <div class="profissional-card reveal">
+            <div class="profissional-avatar">TC</div>
+            <h3>Thiago Cardoso</h3>
+            <span class="profissional-especialidade">Burnout e Carreira</span>
+            <div class="profissional-avaliacao">
+              <i class="ti ti-star-filled"></i> 4.8 <span class="profissional-sessoes">· 198 sessões</span>
+            </div>
+            <a href="#" class="btn-perfil">Ver perfil</a>
+          </div>
+
+          <div class="profissional-card reveal">
+            <div class="profissional-avatar">LS</div>
+            <h3>Dra. Letícia Sales</h3>
+            <span class="profissional-especialidade">Luto e Relacionamentos</span>
+            <div class="profissional-avaliacao">
+              <i class="ti ti-star-filled"></i> 5.0 <span class="profissional-sessoes">· 256 sessões</span>
+            </div>
+            <a href="#" class="btn-perfil">Ver perfil</a>
+          </div>
+
+          <div class="profissional-card reveal">
+            <div class="profissional-avatar">RP</div>
+            <h3>Rodrigo Pires</h3>
+            <span class="profissional-especialidade">Depressão e Autoestima</span>
+            <div class="profissional-avaliacao">
+              <i class="ti ti-star-filled"></i> 4.7 <span class="profissional-sessoes">· 145 sessões</span>
+            </div>
+            <a href="#" class="btn-perfil">Ver perfil</a>
+          </div>
+
+        </div>
+
+        <a href="#" class="ver-tudo-link">Ver todos os profissionais <i class="ti ti-arrow-right"></i></a>
+
+      </section>
+
+      <!-- ===================== COMO FUNCIONA ===================== -->
+      <section class="como-funciona" id="como-funciona">
+
+        <h2>Como <span class="destaque">funciona?</span></h2>
+
+        <div class="passos">
+
+          <div class="passo reveal">
+            <div class="passo-numero">1</div>
+            <h3>Responda o Quiz</h3>
+            <p>Algumas perguntas rápidas para entender como você está se sentindo.</p>
+          </div>
+
+          <div class="passo-seta"><i class="ti ti-arrow-right"></i></div>
+
+          <div class="passo reveal">
+            <div class="passo-numero">2</div>
+            <h3>Receba indicações</h3>
+            <p>Com base nas suas respostas, indicamos os recursos certos pra você.</p>
+          </div>
+
+          <div class="passo-seta"><i class="ti ti-arrow-right"></i></div>
+
+          <div class="passo reveal">
+            <div class="passo-numero">3</div>
+            <h3>Acesse o Apoio</h3>
+            <p>Profissionais, técnicas ou comunidade — você escolhe por onde começar.</p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ===================== DEPOIMENTOS ===================== -->
+      <section class="depoimentos">
+
+        <h2>O que dizem por <span class="destaque">aqui</span></h2>
+
+        <div class="depoimentos-grid">
+
+          <div class="depoimento-card reveal">
+            <p>"Encontrei um grupo de apoio que mudou minha vida. Não me sentia tão acolhido há anos."</p>
+            <div class="depoimento-autor">
+              <div class="avatar">M</div>
+              <div>
+                <p class="nome">Marcos</p>
+                <p class="tempo">Ansiedade social</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="depoimento-card reveal">
+            <p>"As técnicas de respiração me ajudaram nas crises de pânico. Simples e eficaz."</p>
+            <div class="depoimento-autor">
+              <div class="avatar">J</div>
+              <div>
+                <p class="nome">Julia</p>
+                <p class="tempo">Síndrome do pânico</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="depoimento-card reveal">
+            <p>"Finalmente um lugar seguro pra falar sobre burnout sem ser julgado."</p>
+            <div class="depoimento-autor">
+              <div class="avatar">P</div>
+              <div>
+                <p class="nome">Pedro</p>
+                <p class="tempo">Burnout</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
 
     </main>
 
+    <!-- ============================================================
+         FOOTER
+    ============================================================= -->
     <footer class="footer">
 
-        <div class="footer-logo">
-            <div class="nav-logo-icon">
-                <span class="dot"></span>
-            </div>
-            <span>MindBridge</span>
+      <div class="footer-logo">
+        <div class="nav-logo-icon">
+          <span class="dot"></span>
         </div>
+        <span>MindBridge</span>
+      </div>
 
-        <div class="footer-links">
-            <a href="#">Sobre</a>
-            <a href="#">Comunidade</a>
-            <a href="#">Recursos</a>
-            <a href="#">Privacidade</a>
-            <a href="#">Contato</a>
-        </div>
+      <div class="footer-links">
+        <a href="#">Sobre</a>
+        <a href="mindbridge-comunidade.html">Comunidade</a>
+        <a href="#biblioteca">Recursos</a>
+        <a href="#profissionais">Profissionais</a>
+        <a href="#">Privacidade</a>
+        <a href="#">Contato</a>
+      </div>
 
-        <div class="footer-cvv">
-            <i class="ti ti-phone"></i>
-            <span>Crise? Ligue agora - <strong>CVV 188</strong></span>
-        </div>
+      <a href="tel:188" class="footer-cvv">
+        <i class="ti ti-phone"></i>
+        <span>Crise? Ligue agora — <strong>CVV 188</strong></span>
+      </a>
 
-        <p class="footer-copy">© 2025 MindBridge. Feito com empatia.</p>
+      <p class="footer-copy">© 2026 MindBridge. Feito com empatia.</p>
     </footer>
-    <script src="mindbridge-home.js"></script>
+
+    <!-- Botão flutuante "voltar ao topo" -->
+    <button class="btn-topo" id="btnTopo" aria-label="Voltar ao topo">
+      <i class="ti ti-arrow-up"></i>
+    </button>
+
+    <!-- Toast de feedback rápido (ex: "Abraço enviado!") -->
+    <div class="toast" id="toast">
+      <i class="ti ti-heart"></i>
+      <span id="toastTexto">Abraço enviado!</span>
+    </div>
+
+    <script src="MindBridge/assets/js/mindbridge-home.js" defer></script>
   </body>
 </html>
