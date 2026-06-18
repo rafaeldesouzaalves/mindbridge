@@ -1,0 +1,750 @@
+/* ================================================================
+   MINDBRIDGE — CADASTRO
+   Estilos da tela de cadastro: painel de marca com mensagens de
+   apoio rotativas (esquerda) e formulário (direita).
+   Reaproveita os tokens e a base visual da tela de login.
+================================================================ */
+
+
+/* ============================================================
+   1. VARIÁVEIS DE DESIGN (Design Tokens)
+   Altere aqui para mudar toda a paleta de uma vez
+============================================================ */
+
+:root{
+    /* Paleta Principal */
+    --Lavanda-Suave:#F2EFF8;
+    --Verde-Menta:#E1F5EE;
+    --Azul-Névoa:#E7F1F8;
+    --Areia-Neutra:#F1EFE8;
+
+    /* Cores Destaque */
+    --Roxo-Calmo:#534AB7;
+    --Roxo-Escuro:#3C3489;
+    --Verde-Esperança:#1D9E75;
+    --Azul-Confiança:#378ADD;
+
+    /* Cor de erro, usada na validação do formulário */
+    --Vermelho-Alerta:#E0556F;
+
+    /* Cores de força de senha */
+    --Forca-Fraca:#E0556F;
+    --Forca-Media:#E0A23B;
+    --Forca-Boa:#378ADD;
+    --Forca-Forte:#1D9E75;
+
+    --Borda-Suave:#C9C3E8;
+}
+
+
+/* ============================================================
+   2. RESET E BASE
+============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+ul{
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+body{
+    background-color: var(--Lavanda-Suave);
+    font-family: 'Inter', sans-serif;
+}
+
+
+/* ============================================================
+   3. ANIMAÇÕES
+============================================================ */
+
+/* Os dois painéis entram suavemente quando a página carrega */
+@keyframes entradaEsquerda {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes entradaDireita {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Pequeno "tremor" usado para indicar erro de validação no input */
+@keyframes tremor {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+}
+
+/* Giro do ícone de carregamento no botão de cadastro */
+@keyframes girar {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Transição de entrada de cada mensagem de apoio rotativa */
+@keyframes entradaMensagem {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ============================================================
+   4. CONTAINERS
+============================================================ */
+
+.login-container{
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    flex-wrap: wrap; /* permite empilhar em telas pequenas */
+}
+
+/* --- Painel esquerdo: identidade da marca --- */
+
+.container-1 {
+    background-color: var(--Roxo-Calmo);
+    padding: 40px;
+    width: 420px;
+    min-height: 610px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-right: 25px;
+    position: relative;
+    overflow: hidden; /* mantém as formas decorativas dentro do card */
+    animation: entradaEsquerda 0.6s ease both;
+}
+
+/* Pequenos círculos decorativos no fundo do painel roxo,
+   dão profundidade sem precisar de nenhuma imagem externa */
+.container-1::before,
+.container-1::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.container-1::before {
+    width: 220px;
+    height: 220px;
+    top: -60px;
+    right: -60px;
+}
+
+.container-1::after {
+    width: 140px;
+    height: 140px;
+    bottom: 40px;
+    left: -50px;
+}
+
+.container-1 h2 {
+    color: var(--Lavanda-Suave);
+    font-size: 25px;
+    margin-bottom: 120px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: 'Lora', serif;
+    position: relative; /* fica acima dos círculos decorativos */
+    z-index: 1;
+ }
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #9FE1CB;
+    margin-bottom: 5px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.container-1 h3 {
+    color: var(--Lavanda-Suave);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    font-family: 'Lora', serif;
+    position: relative;
+    z-index: 1;
+ }
+
+.container-1 p  {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+ }
+
+.destaque {
+    color: #9FE1CB;
+    font-style: italic;
+}
+
+.lista{
+    gap: 8px;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.lista li {
+    padding: 4px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.1);
+    font-size: 12px;
+    color: var(--Lavanda-Suave);
+    margin-bottom: 8px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.3s;
+}
+
+/* Pequeno efeito de destaque ao passar o mouse nas tags */
+.lista li:hover {
+    background: rgba(255,255,255,0.18);
+}
+
+
+/* ============================================================
+   4.1 MENSAGENS DE APOIO ROTATIVAS
+   Cada "slide" ocupa o mesmo espaço (posicionamento absoluto)
+   e o JS alterna a classe "is-ativo" entre elas.
+============================================================ */
+
+.mensagens-apoio {
+    position: relative;
+    min-height: 150px;
+    margin-bottom: 4px;
+}
+
+.slide-apoio {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.slide-apoio.is-ativo {
+    position: relative;
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    animation: entradaMensagem 0.5s ease both;
+}
+
+/* Bolinhas indicadoras de qual mensagem está ativa */
+.indicadores {
+    display: flex;
+    gap: 6px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 24px;
+}
+
+.indicadores .ponto {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.indicadores .ponto.is-ativo {
+    background: #9FE1CB;
+    width: 20px;
+    border-radius: 3px;
+}
+
+
+/* --- Painel direito: formulário --- */
+
+.container-2 {
+    background-color: var(--Lavanda-Suave);
+    width: 420px;
+    min-height: 610px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 20px;
+    animation: entradaDireita 0.6s ease both;
+}
+
+.container-2:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(83, 74, 183, 0.25);
+}
+
+.loginForm{
+    margin: 0;
+}
+
+.container-2 h2 {
+    font-family: 'Lora', serif;
+    color: var(--Roxo-Calmo);
+    margin-bottom: 5px;
+    font-size: 30px;
+}
+
+.container-2 p {
+    font-family: 'Lora', serif;
+    color: var(--Roxo-Calmo);
+    margin-bottom: 24px;
+    font-size: 18px;
+}
+
+.container-2 p.ou-divider {
+    margin: 16px 0;
+    margin-bottom: 0;
+}
+
+
+/* ============================================================
+   5. FORMULÁRIO
+============================================================ */
+
+.input-group {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+/* Nome e sobrenome um ao lado do outro */
+.linha-dupla {
+    display: flex;
+    gap: 12px;
+}
+
+.linha-dupla .input-group {
+    flex: 1;
+    min-width: 0; /* evita overflow em telas estreitas */
+}
+
+input {
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 8px;
+    padding: 10px 14px;
+    width: 100%;
+    font-size: 14px;
+    outline: none;
+    position: relative;
+    background-color: white;
+}
+
+.input-group input {
+    transition: all 0.3s;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--Roxo-Calmo); /* tinge o checkbox nativo com a cor da marca */
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.input-group label {
+    position: absolute;
+    top: 10px;
+    left: 14px;
+    font-size: 14px;
+    transition: all 0.3s;
+    pointer-events: none;
+    color: #888;
+}
+
+.input-group input:focus {
+    transform: scale(1.02);
+    font-size: 15px;
+    border-color: var(--Roxo-Calmo);
+    box-shadow: 0 0 0 3px rgba(83, 74, 183, 0.12);
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -10px;
+    font-size: 11px;
+    background: white;
+    padding: 0 4px;
+    color: var(--Roxo-Calmo);
+}
+
+/* --- Estado de erro de validação (classe ligada via JS) --- */
+
+.input-group.erro input {
+    border-color: var(--Vermelho-Alerta);
+    animation: tremor 0.4s ease;
+}
+
+.input-group.erro label {
+    color: var(--Vermelho-Alerta);
+}
+
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.mensagem-erro {
+    display: none; /* JS troca para "block" quando há erro */
+    color: var(--Vermelho-Alerta);
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.input-group.erro .mensagem-erro {
+    display: block;
+}
+
+/* --- Indicador de força da senha --- */
+
+.forca-senha {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+.forca-senha span {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--Borda-Suave);
+    transition: background-color 0.3s;
+}
+
+.texto-forca-senha {
+    font-size: 12px;
+    margin-bottom: 16px;
+    transition: color 0.3s;
+    color: #888;
+}
+
+/* Classes ligadas via JS conforme a força calculada da senha */
+.forca-senha.fraca span:nth-child(1) { background-color: var(--Forca-Fraca); }
+
+.forca-senha.media span:nth-child(1),
+.forca-senha.media span:nth-child(2) { background-color: var(--Forca-Media); }
+
+.forca-senha.boa span:nth-child(1),
+.forca-senha.boa span:nth-child(2),
+.forca-senha.boa span:nth-child(3) { background-color: var(--Forca-Boa); }
+
+.forca-senha.forte span { background-color: var(--Forca-Forte); }
+
+.texto-forca-senha.fraca { color: var(--Forca-Fraca); }
+.texto-forca-senha.media { color: var(--Forca-Media); }
+.texto-forca-senha.boa { color: var(--Forca-Boa); }
+.texto-forca-senha.forte { color: var(--Forca-Forte); }
+
+
+/* ============================================================
+   6. BOTÕES
+============================================================ */
+
+.loginForm button[type="submit"] {
+    color: white;
+    background-color: var(--Roxo-Calmo);
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .3s;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.loginForm button[type="submit"]:hover{
+    background-color: var(--Roxo-Escuro);
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(83, 74, 183, 0.37);
+}
+
+.loginForm button[type="submit"]:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Ícone giratório de "carregando" mostrado durante o envio do form */
+.spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: girar 0.6s linear infinite;
+}
+
+.carregando .spinner {
+    display: inline-block;
+}
+
+.carregando .texto-botao {
+    display: none;
+}
+
+label {
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 6px;
+    color: var(--Roxo-Calmo);
+    transition: all .3s ease;
+    transform-origin:left top ;
+    cursor: pointer;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 17px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-top: 3px;
+}
+
+.checkbox-group label {
+    display: inline;
+    margin-bottom: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    cursor: default;
+}
+
+.checkbox-group label a {
+    color: var(--Roxo-Calmo);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.checkbox-group label a:hover {
+    text-decoration: underline;
+}
+
+.forgot {
+    font-size: 15px;
+    color: var(--Roxo-Calmo);
+    display: block;
+    text-align: right;
+    margin-top: 6px;
+    text-decoration: none;
+}
+
+.btn-google{
+    border: 1px solid var(--Borda-Suave);
+    color: var(--Roxo-Calmo);
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-google:hover {
+    color: white;
+    background-color: var(--Roxo-Calmo);
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(83, 74, 183, 0.37);
+}
+
+.form-wrapper {
+    max-width: 360px;
+    width: 100%;
+}
+
+.ou-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 16px 0;
+    margin-bottom: 0;
+    color: #888;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+}
+
+.ou-divider::before,
+.ou-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--Borda-Suave);
+}
+
+.no-conta {
+    text-align: center;
+    margin: 12px;
+    font-size: 14px;
+    color: #555;
+}
+
+.no-conta a {
+    color: var(--Roxo-Calmo);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.no-conta a:hover {
+    color: var(--Roxo-Escuro);
+    text-decoration: underline;
+}
+
+.loginForm .btn-ver-senha {
+    position: absolute;
+    right: 12px;
+    top: 11px;
+    background: transparent;
+    width: auto;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #888;
+    transition: color 0.3s;
+    transform: none;
+}
+
+.loginForm .btn-ver-senha:hover {
+    background: transparent;
+    transform: none;
+    color: var(--Roxo-Calmo);
+}
+
+.lost-senha {
+    display: block;
+    text-align: right;
+    font-size: 13px;
+    color: var(--Roxo-Calmo);
+    margin-bottom: 10px;
+    transition: color 0.3s;
+}
+
+.lost-senha:hover {
+    color: var(--Roxo-Escuro);
+    text-decoration: underline;
+}
+
+/* Link para voltar à home, no topo do painel de formulário */
+.voltar-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 16px;
+    transition: color 0.3s;
+}
+
+.voltar-home:hover {
+    color: var(--Roxo-Calmo);
+}
+
+
+/* ============================================================
+   7. RESPONSIVIDADE
+============================================================ */
+
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .container-1 {
+        width: 100%;
+        min-height: auto;
+        margin-right: 0;
+    }
+
+    .container-1 h2 {
+        margin-bottom: 20px;
+    }
+
+    .mensagens-apoio {
+        min-height: 110px;
+    }
+
+    .lista li {
+        display: inline-flex;
+        width: auto;
+    }
+
+    .container-2 {
+        width: 100%;
+        margin-top: 25px;
+    }
+
+    .container-1,
+    .container-2 {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-1 h3 {
+        font-size: 22px;
+    }
+
+    .container-2 h2 {
+        font-size: 26px;
+    }
+
+    .linha-dupla {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+/* Respeita usuários que preferem menos movimento na tela */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

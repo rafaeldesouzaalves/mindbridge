@@ -3,6 +3,13 @@
    Cada bloco abaixo controla uma interação específica da página.
    Lemos o DOM uma vez no topo e usamos eventos para reagir
    às ações do usuário.
+
+   INTEGRAÇÃO COM O QUIZ COMPLETO:
+   O mini-quiz da home agora passa a resposta do usuário para a
+   página mindbridge-quiz.html via parâmetro na URL:
+     ex: mindbridge-quiz.html?sentimento=ansioso
+   O quiz completo lê esse parâmetro e pré-seleciona a opção
+   correspondente no Passo 1, economizando um clique para o usuário.
 ================================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -12,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
      Ao clicar no botão, abre/fecha a lista de links no celular.
   ============================================================= */
   const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
+  const navLinks  = document.getElementById('navLinks');
 
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', function () {
@@ -83,30 +90,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   /* ============================================================
-     4. QUIZ DE TRIAGEM EMOCIONAL
-     Ao clicar numa opção, mostramos uma mensagem de resultado
-     personalizada e destacamos o botão escolhido.
-  ============================================================= */
-  const quizOpcoes = document.getElementById('quizOpcoes');
-  const quizPergunta = document.getElementById('quizPergunta');
-  const quizResultado = document.getElementById('quizResultado');
-  const quizResultadoTexto = document.getElementById('quizResultadoTexto');
-  const quizRefazer = document.getElementById('quizRefazer');
+     4. QUIZ DE TRIAGEM EMOCIONAL — INTEGRADO COM O QUIZ COMPLETO
+     ─────────────────────────────────────────────────────────────
+     FLUXO ANTERIOR:
+       Usuário clicava → via mensagem de acolhimento → botão "Ver indicações"
+       levava para a seção #urgencia dentro da própria home.
 
-  // Mensagem de acolhimento para cada estado emocional escolhido
+     FLUXO NOVO:
+       1. Usuário clica numa opção do mini-quiz
+       2. Exibimos a mensagem de acolhimento por 350ms (feedback visual)
+       3. O botão "Ir para o quiz completo" aparece no resultado
+       4. Ao clicar, o JS redireciona para:
+            mindbridge-quiz.html?sentimento=VALOR_ESCOLHIDO
+          ex: mindbridge-quiz.html?sentimento=ansioso
+       5. O quiz completo (mindbridge-quiz.js) lê esse parâmetro
+          via URLSearchParams e pré-seleciona a opção correta
+          no Passo 1, pulando direto para o Passo 2.
+
+     Isso garante que o usuário não precise responder de novo
+     a pergunta que já respondeu na home.
+  ============================================================= */
+  const quizOpcoes        = document.getElementById('quizOpcoes');
+  const quizPergunta      = document.getElementById('quizPergunta');
+  const quizResultado     = document.getElementById('quizResultado');
+  const quizResultadoTexto = document.getElementById('quizResultadoTexto');
+  const quizRefazer       = document.getElementById('quizRefazer');
+
+  // Guarda qual sentimento o usuário escolheu para passar ao quiz completo
+  let sentimentoEscolhido = '';
+
+  // Mensagem de acolhimento para cada estado emocional escolhido.
+  // O texto convida o usuário a continuar no quiz completo.
   const mensagensQuiz = {
-    ansioso: 'Sentir ansiedade é mais comum do que parece. Preparamos técnicas de respiração e profissionais especializados para te ajudar agora.',
-    esgotado: 'O esgotamento merece atenção. Vamos te mostrar recursos sobre burnout e formas de recuperar sua energia.',
-    triste: 'Está tudo bem não estar bem. Reunimos apoio emocional e uma comunidade pronta para te ouvir.',
-    irritado: 'A irritação às vezes esconde um cansaço maior. Temos técnicas de regulação emocional que podem ajudar.',
-    perdido: 'Não saber por onde começar também é um passo. Vamos te indicar o caminho mais simples para você.',
-    curioso: 'Que bom ter você por aqui! Explore nossa biblioteca de técnicas e conheça a comunidade com calma.'
+    ansioso:  'Sentir ansiedade é mais comum do que parece. Continue no quiz completo e vamos preparar indicações personalizadas para você.',
+    esgotado: 'O esgotamento merece atenção. Responda mais algumas perguntas e indicaremos os recursos certos para te ajudar.',
+    triste:   'Está tudo bem não estar bem. Continue no quiz e vamos te mostrar formas de apoio feitas para este momento.',
+    irritado: 'A irritação às vezes esconde um cansaço maior. Siga para o quiz e vamos entender melhor o que você está sentindo.',
+    perdido:  'Não saber por onde começar também é um passo. Continue no quiz e vamos te guiar pelo caminho mais simples.',
+    curioso:  'Que bom ter você por aqui! Continue para o quiz completo e explore tudo que o MindBridge tem para você.'
   };
 
   if (quizOpcoes) {
     quizOpcoes.querySelectorAll('.quiz-btn').forEach(function (botao) {
       botao.addEventListener('click', function () {
         const chave = botao.getAttribute('data-resultado');
+
+        // Salva o sentimento escolhido — vai ser passado na URL
+        sentimentoEscolhido = chave;
 
         // Marca visualmente a opção escolhida
         quizOpcoes.querySelectorAll('.quiz-btn').forEach(function (b) {
@@ -115,7 +145,19 @@ document.addEventListener('DOMContentLoaded', function () {
         botao.classList.add('selecionado');
 
         // Troca o texto do resultado de acordo com a escolha
-        quizResultadoTexto.textContent = mensagensQuiz[chave] || mensagensQuiz.curioso;
+        quizResultadoTexto.textContent =
+          mensagensQuiz[chave] || mensagensQuiz.curioso;
+
+        // Atualiza o href do botão "Ver indicações" que já existe no HTML
+        // para apontar ao quiz completo com o sentimento como parâmetro de URL.
+        // Ex: mindbridge-quiz.html?sentimento=ansioso
+        const btnVerIndicacoes = quizResultado.querySelector('a.btn-comecar');
+        if (btnVerIndicacoes) {
+          btnVerIndicacoes.href = 'mindbridge-quiz.html?sentimento=' + encodeURIComponent(chave);
+          btnVerIndicacoes.textContent = '';            // limpa o conteúdo atual
+          btnVerIndicacoes.innerHTML =
+            '<i class="ti ti-arrow-right"></i> Continuar no quiz completo';
+        }
 
         // Pequeno delay para o usuário ver o botão selecionado antes da troca
         setTimeout(function () {
@@ -126,9 +168,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Botão "Refazer o quiz" volta para a pergunta inicial
+  // Botão "Refazer o quiz" volta para a pergunta inicial e limpa o sentimento
   if (quizRefazer) {
     quizRefazer.addEventListener('click', function () {
+      sentimentoEscolhido = '';                         // reseta o estado
       quizResultado.classList.remove('visivel');
       quizPergunta.style.display = 'block';
       quizOpcoes.querySelectorAll('.quiz-btn').forEach(function (b) {
@@ -169,8 +212,8 @@ document.addEventListener('DOMContentLoaded', function () {
      logo abaixo, sem precisar recarregar a página.
   ============================================================= */
   document.querySelectorAll('.comunidade-card').forEach(function (card) {
-    const input = card.querySelector('.card-resposta input');
-    const botaoEnviar = card.querySelector('.card-resposta button');
+    const input         = card.querySelector('.card-resposta input');
+    const botaoEnviar   = card.querySelector('.card-resposta button');
     const listaRespostas = card.querySelector('.respostas-lista');
 
     function enviarResposta() {
@@ -236,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ============================================================
      8. TOAST — pequena notificação flutuante de feedback
   ============================================================= */
-  const toast = document.getElementById('toast');
+  const toast      = document.getElementById('toast');
   const toastTexto = document.getElementById('toastTexto');
   let toastTimeout; // guarda o temporizador para poder cancelar/reiniciar
 
@@ -275,7 +318,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Ao chegar no final, volta para o início suavemente,
         // criando um loop contínuo em vez de "travar" na borda
-        const fimDoScroll = comunidadeCards.scrollWidth - comunidadeCards.clientWidth;
+        const fimDoScroll =
+          comunidadeCards.scrollWidth - comunidadeCards.clientWidth;
         if (comunidadeCards.scrollLeft >= fimDoScroll - 1) {
           comunidadeCards.scrollLeft = 0;
         }
@@ -306,8 +350,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Toque (celular/tablet) e arraste manual: pausa e agenda retomada
     comunidadeCards.addEventListener('touchstart', pausarEAgendarRetomada, { passive: true });
-    comunidadeCards.addEventListener('touchmove', pausarEAgendarRetomada, { passive: true });
-    comunidadeCards.addEventListener('scroll', pausarEAgendarRetomada);
+    comunidadeCards.addEventListener('touchmove',  pausarEAgendarRetomada, { passive: true });
+    comunidadeCards.addEventListener('scroll',     pausarEAgendarRetomada);
 
     // Se o usuário clicar em algo dentro do card (botão, input),
     // também pausamos para não competir com a digitação
@@ -323,4 +367,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-});
+}); /* fim do DOMContentLoaded */
