@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindBridge - Criar conta</title>
+
+    <!-- Fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <!-- Ícone da aba -->
+    <link rel="shortcut icon" href="MindBridge/assets/img/favicon.svg" type="image/x-icon">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="MindBridge/assets/css/mindbridge-cadastro.css">
+
+</head>
+
+<body>
+    <!-- ============================================================
+         SISTEMA DE CADASTRO
+         Dividido em dois painéis: identidade da marca com
+         mensagens de apoio rotativas (esquerda) e formulário
+         de criação de conta (direita).
+    ============================================================= -->
+
+    <main class="login-container">
+
+        <!-- Painel esquerdo: marca e mensagens de apoio rotativas -->
+        <div class="container-1">
+            <div>
+                <h2><span class="dot"></span>MindBridge</h2>
+            </div>
+
+            <!-- Mensagens de apoio que vão trocando automaticamente.
+                 Cada bloco é uma "slide"; o JS controla qual fica visível. -->
+            <div class="mensagens-apoio" id="mensagensApoio">
+
+                <div class="slide-apoio is-ativo">
+                    <h3>Sua jornada de cuidado <span class="destaque">começa aqui.</span></h3>
+                    <p>Crie sua conta gratuita e tenha acesso a profissionais, conteúdos e uma comunidade que entende você.</p>
+                </div>
+
+                <div class="slide-apoio">
+                    <h3>Você merece um espaço <span class="destaque">seguro.</span></h3>
+                    <p>Tudo o que você compartilha aqui é tratado com privacidade e respeito, do primeiro ao último passo.</p>
+                </div>
+
+                <div class="slide-apoio">
+                    <h3>Terapeutas reais, <span class="destaque">prontos para ouvir.</span></h3>
+                    <p>Agende conversas com psicólogos qualificados sem sair de casa, no horário que funciona para você.</p>
+                </div>
+
+                <div class="slide-apoio">
+                    <h3>Comece pequeno, <span class="destaque">avance no seu ritmo.</span></h3>
+                    <p>Diários de humor, exercícios guiados e lembretes gentis para te ajudar a cuidar da mente todos os dias.</p>
+                </div>
+
+            </div>
+
+            <!-- Indicadores (bolinhas) da mensagem atual -->
+            <div class="indicadores" id="indicadores"></div>
+
+            <div>
+                <ul class="lista">
+                    <li><i class="ti ti-heart"></i> Apoio Emocional</li>
+                    <li><i class="ti ti-users"></i> Comunidade</li>
+                    <li><i class="ti ti-shield"></i> Seguro &amp; Privado</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Painel direito: formulário de cadastro -->
+        <div class="container-2">
+            <div class="form-wrapper">
+
+                <a href="mindbridge-home.html" class="voltar-home">
+                    <i class="ti ti-arrow-left"></i> Voltar para o início
+                </a>
+
+                <h2>Crie sua conta</h2>
+                <p>Dê o primeiro passo da sua jornada</p>
+
+                <form class="loginForm" id="cadastroForm" novalidate>
+
+                    <!-- Nome e sobrenome lado a lado -->
+                    <div class="linha-dupla">
+                        <div class="input-group" id="grupoNome">
+                            <input type="text" id="nome" placeholder=" " required minlength="2" autocomplete="given-name">
+                            <label for="nome">Nome</label>
+                            <span class="mensagem-erro">Digite seu nome.</span>
+                        </div>
+
+                        <div class="input-group" id="grupoSobrenome">
+                            <input type="text" id="sobrenome" placeholder=" " required minlength="2" autocomplete="family-name">
+                            <label for="sobrenome">Sobrenome</label>
+                            <span class="mensagem-erro">Digite seu sobrenome.</span>
+                        </div>
+                    </div>
+
+                    <!-- Campo de e-mail -->
+                    <div class="input-group" id="grupoEmail">
+                        <input type="email" id="email" placeholder=" " required autocomplete="email">
+                        <label for="email">E-mail</label>
+                        <span class="mensagem-erro">Digite um e-mail válido.</span>
+                    </div>
+
+                    <!-- Campo de senha -->
+                    <div class="input-group" id="grupoSenha">
+                        <input type="password" id="password" placeholder=" " required minlength="6" autocomplete="new-password">
+                        <label for="password">Senha</label>
+                        <button type="button" class="btn-ver-senha" data-alvo="password" aria-label="Mostrar senha">
+                            <i class="ti ti-eye"></i>
+                        </button>
+                        <span class="mensagem-erro">A senha precisa ter pelo menos 6 caracteres.</span>
+                    </div>
+
+                    <!-- Indicador de força da senha -->
+                    <div class="forca-senha" id="forcaSenha">
+                        <span></span><span></span><span></span><span></span>
+                    </div>
+                    <p class="texto-forca-senha" id="textoForcaSenha">&nbsp;</p>
+
+                    <!-- Campo de confirmação de senha -->
+                    <div class="input-group" id="grupoConfirmarSenha">
+                        <input type="password" id="confirmarSenha" placeholder=" " required minlength="6" autocomplete="new-password">
+                        <label for="confirmarSenha">Confirmar senha</label>
+                        <button type="button" class="btn-ver-senha" data-alvo="confirmarSenha" aria-label="Mostrar senha">
+                            <i class="ti ti-eye"></i>
+                        </button>
+                        <span class="mensagem-erro">As senhas não coincidem.</span>
+                    </div>
+
+                    <div class="checkbox-group" id="grupoTermos">
+                        <input type="checkbox" id="aceitarTermos" required>
+                        <label for="aceitarTermos">Li e aceito os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a></label>
+                    </div>
+
+                    <button type="submit" id="btnCadastrar">
+                        <span class="spinner"></span>
+                        <span class="texto-botao">Criar conta</span>
+                    </button>
+                </form>
+
+                <div>
+                    <p class="ou-divider">ou</p>
+
+                    <div>
+                        <button class="btn-google" type="button">
+                        <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.58-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                            <path fill="none" d="M0 0h48v48H0z"/>
+                        </svg>
+                        Continuar com Google
+                    </button>
+                    </div>
+
+                    <p class="no-conta">
+                        Já tem conta? <a href="mindbridge-login.html">Entrar</a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script src="MindBridge/assets/js/mindbridge-cadastro.js" defer></script>
+</body>
+
+</html>
