@@ -147,5 +147,89 @@ document.addEventListener('DOMContentLoaded', function () {
     // form.insertBefore(divErro, form.firstChild);
     // setTimeout(() => divErro.remove(), 5000);
   }
+/* ============================================================
+   3. LOGIN COM GOOGLE (Google Identity Services)
+   Abre o popup OAuth do Google. Ao confirmar, envia o
+   credential token para o backend PHP validar.
+============================================================= */
+const CLIENT_ID = 'SEU_CLIENT_ID_AQUI.apps.googleusercontent.com'; // ← substitua
 
+const btnGoogle = document.getElementById('btn-google');
+
+if (btnGoogle) {
+    // Inicializa o cliente Google quando a lib carregar
+    window.google?.accounts.id.initialize({
+        client_id: CLIENT_ID,
+        callback: handleGoogleResponse,
+        auto_select: false,
+        cancel_on_tap_outside: true
+    });
+
+    btnGoogle.addEventListener('click', function () {
+        // Verifica se a biblioteca do Google já carregou
+        if (typeof google === 'undefined') {
+            mostrarErroGeral('Não foi possível carregar o login do Google. Verifique sua conexão.');
+            return;
+        }
+
+        // Abre o popup de seleção de conta Google
+        google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed()) {
+                // Fallback: abre via OAuth popup tradicional se o prompt não abrir
+                abrirPopupGoogle();
+            }
+        });
+    });
+}
+
+// Callback chamado pelo Google após o usuário autenticar
+async function handleGoogleResponse(response) {
+    const idToken = response.credential; // JWT do Google
+
+    ativarCarregamento(true);
+
+    try {
+        const resposta = await fetch('api/login-google.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_token: idToken })
+        });
+
+        const dados = await resposta.json();
+
+        if (resposta.ok && dados.sucesso) {
+            window.location.href = dados.redir || 'mindbridge-home.html';
+        } else {
+            ativarCarregamento(false);
+            mostrarErroGeral(dados.erro || 'Erro ao autenticar com o Google.');
+        }
+    } catch (erro) {
+        ativarCarregamento(false);
+        console.error('Erro no login Google:', erro);
+        mostrarErroGeral('Erro de conexão. Tente novamente.');
+    }
+}
+
+// Fallback: popup OAuth tradicional caso o Google One Tap não abra
+function abrirPopupGoogle() {
+    const params = new URLSearchParams({
+        client_id: CLIENT_ID,
+        redirect_uri: window.location.origin + '/api/callback-google.php',
+        response_type: 'code',
+        scope: 'openid email profile',
+        prompt: 'select_account'
+    });
+
+    const url = 'https://accounts.google.com/o/oauth2/v2/auth?' + params.toString();
+    const popup = window.open(url, 'google-login', 'width=500,height=600,left=200,top=100');
+
+    // Escuta mensagem de retorno do popup (se usar callback via postMessage)
+    window.addEventListener('message', function onMsg(event) {
+        if (event.origin !== window.location.origin) return;
+        if (event.data?.tipo === 'google-login-sucesso') {
+            window.removeEventListener('message', onMsg);
+            window.location.href = event.data.redir || 'mindbridge-home.html';
+        }
+    });
+}
 });
