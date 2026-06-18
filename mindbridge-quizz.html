@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MindBridge — Quiz de Triagem Emocional</title>
+
+    <!-- Fontes: Lora (serifada, usada nos títulos) + Inter (sans-serif, usada no corpo) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Ícones Tabler (outline, já carregados no projeto MindBridge) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+
+    <!-- Folha de estilos do quiz -->
+    <link rel="stylesheet" href="MindBridge/assets/css/mindbridge-quiz.css" />
+  </head>
+
+  <body>
+
+    <!--
+      ================================================================
+      BARRA DE URGÊNCIA
+      Sempre visível no topo. Quem precisar de ajuda imediata encontra
+      o CVV em menos de 1 segundo, antes de qualquer interação.
+      ================================================================
+    -->
+    <div class="sup">
+      <i class="ti ti-heart-handshake"></i>
+      <span>Precisa de apoio agora?</span>
+      <a href="tel:188">Falar com o CVV — 188</a>
+    </div>
+
+    <!--
+      ================================================================
+      CABEÇALHO
+      Logo + link de volta para a home. O header fica sticky para
+      manter a navegação sempre acessível durante o quiz.
+      ================================================================
+    -->
+    <header class="header">
+      <nav class="nav">
+        <!-- Logo: clicável, leva de volta para a home -->
+        <a href="mindbridge-home.html" class="nav-logo">
+          <div class="nav-logo-icon">
+            <span class="dot"></span>
+          </div>
+          <h2>MindBridge</h2>
+        </a>
+
+        <!-- Badge de segurança: reforça confiança no momento sensível do quiz -->
+        <div class="badge">
+          <i class="ti ti-lock"></i>
+          <p>Suas respostas são anônimas</p>
+        </div>
+      </nav>
+    </header>
+
+    <!--
+      ================================================================
+      CONTEÚDO PRINCIPAL
+      ================================================================
+    -->
+    <main class="main">
+
+      <!--
+        ==============================================================
+        CONTAINER DO QUIZ
+        Centralizado na tela. Dentro dele temos:
+          1. Barra de progresso (atualizada via JS)
+          2. Indicador de passo atual (ex: "Passo 3 de 8")
+          3. Os 8 passos do quiz (um por vez, controlados via JS)
+          4. A seção de resultado (exibida ao final)
+        ==============================================================
+      -->
+      <section class="quiz-container" id="quizContainer">
+
+        <!--
+          BARRA DE PROGRESSO
+          A largura do .progress-fill é atualizada via JS conforme o
+          usuário avança pelos passos. Começa em 12% (1/8 do total).
+        -->
+        <div class="progress-bar" role="progressbar" aria-label="Progresso do quiz">
+          <div class="progress-fill" id="progressFill" style="width: 12%"></div>
+        </div>
+
+        <!-- Indicador textual do passo atual (ex: "Passo 1 de 8") -->
+        <p class="step-counter" id="stepCounter">Passo 1 de 8</p>
+
+
+        <!-- ========================================================
+             PASSO 1 — Sentimento Geral
+             Pergunta principal: como a pessoa está agora.
+             Cada botão carrega data-val que o JS usa para calcular
+             o perfil emocional e gerar as recomendações.
+        ========================================================= -->
+        <div class="quiz-step active" id="step1">
+
+          <div class="step-header">
+            <span class="step-tag">Sentimento geral</span>
+            <h2 class="step-title">Como você está se sentindo agora?</h2>
+            <p class="step-sub">
+              Escolha o que mais se parece com você neste momento.
+              Não existe resposta certa ou errada.
+            </p>
+          </div>
+
+          <!-- Grade 2 colunas: emoção + descrição breve para facilitar a identificação -->
+          <div class="options-grid" id="optionsStep1">
+
+            <button class="opt-btn" data-val="ansioso" data-step="1">
+              <span class="opt-emoji">😰</span>
+              <span class="opt-content">
+                <strong>Ansioso</strong>
+                <span>Coração acelerado, pensamentos que não param</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="esgotado" data-step="1">
+              <span class="opt-emoji">😴</span>
+              <span class="opt-content">
+                <strong>Esgotado</strong>
+                <span>Sem energia, cansado mesmo sem fazer muito</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="triste" data-step="1">
+              <span class="opt-emoji">😢</span>
+              <span class="opt-content">
+                <strong>Triste</strong>
+                <span>Um peso difícil de nomear ou explicar</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="irritado" data-step="1">
+              <span class="opt-emoji">😤</span>
+              <span class="opt-content">
+                <strong>Irritado</strong>
+                <span>Tudo parece mais intenso, difícil de controlar</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="perdido" data-step="1">
+              <span class="opt-emoji">😕</span>
+              <span class="opt-content">
+                <strong>Perdido</strong>
+                <span>Sem saber o que sente ou o que fazer</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="bem" data-step="1">
+              <span class="opt-emoji">🙂</span>
+              <span class="opt-content">
+                <strong>Bem</strong>
+                <span>Curioso ou querendo aprender mais sobre mim</span>
+              </span>
+            </button>
+
+          </div>
+
+          <!-- Navegação: apenas "Próximo" no primeiro passo -->
+          <div class="nav-row">
+            <span></span><!-- espaço vazio para manter o botão alinhado à direita -->
+            <button class="btn-nav btn-primary" id="next1" disabled onclick="goTo(2)">
+              Próximo <i class="ti ti-arrow-right"></i>
+            </button>
+          </div>
+
+        </div><!-- /step1 -->
+
+
+        <!-- ========================================================
+             PASSO 2 — Frequência / Duração
+             Saber há quanto tempo a pessoa sente isso é essencial
+             para distinguir uma reação pontual de algo persistente
+             que pode indicar burnout, depressão ou ansiedade crônica.
+        ========================================================= -->
+        <div class="quiz-step" id="step2">
+
+          <div class="step-header">
+            <span class="step-tag">Frequência</span>
+            <h2 class="step-title">Há quanto tempo você está se sentindo assim?</h2>
+            <p class="step-sub">
+              Saber a duração ajuda a entender se é uma reação natural
+              a um evento recente ou algo que já está afetando sua rotina.
+            </p>
+          </div>
+
+          <!-- Grade 1 coluna: opções mais longas, precisam de espaço para a descrição -->
+          <div class="options-grid options-col1" id="optionsStep2">
+
+            <button class="opt-btn" data-val="horas" data-step="2">
+              <span class="opt-emoji"><i class="ti ti-clock"></i></span>
+              <span class="opt-content">
+                <strong>Hoje / Últimas horas</strong>
+                <span>Algo aconteceu recentemente que me afetou</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="dias" data-step="2">
+              <span class="opt-emoji"><i class="ti ti-calendar"></i></span>
+              <span class="opt-content">
+                <strong>Alguns dias</strong>
+                <span>Vem e vai, mas está presente na última semana</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="semanas" data-step="2">
+              <span class="opt-emoji"><i class="ti ti-calendar-week"></i></span>
+              <span class="opt-content">
+                <strong>Semanas</strong>
+                <span>Persiste e começa a afetar minha rotina</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="meses" data-step="2">
+              <span class="opt-emoji"><i class="ti ti-calendar-month"></i></span>
+              <span class="opt-content">
+                <strong>Meses ou mais</strong>
+                <span>Já faz tempo, virou algo constante na minha vida</span>
+              </span>
+            </button>
+
+          </div>
+
+          <div class="nav-row">
+            <button class="btn-nav btn-ghost" onclick="goTo(1)">
+              <i class="ti ti-arrow-left"></i> Voltar
+            </button>
+            <button class="btn-nav btn-primary" id="next2" disabled onclick="goTo(3)">
+              Próximo <i class="ti ti-arrow-right"></i>
+            </button>
+          </div>
+
+        </div><!-- /step2 -->
+
+
+        <!-- ========================================================
+             PASSO 3 — Intensidade (escala 1–5)
+             Escala visual com rostos para facilitar a auto-percepção.
+             Valores 4–5 ativam recomendações mais urgentes no resultado.
+        ========================================================= -->
+        <div class="quiz-step" id="step3">
+
+          <div class="step-header">
+            <span class="step-tag">Intensidade</span>
+            <h2 class="step-title">De 1 a 5, qual a intensidade do que você sente?</h2>
+            <p class="step-sub">
+              Não existe resposta certa. Confie no que você está sentindo
+              agora — isso é informação valiosa sobre você.
+            </p>
+          </div>
+
+          <!-- Escala horizontal com 5 opções, cada uma com emoji e número -->
+          <div class="scale-row" id="optionsStep3">
+
+            <button class="scale-btn" data-val="1" data-step="3">
+              <span class="scale-face">😌</span>
+              <span class="scale-num">1</span>
+            </button>
+
+            <button class="scale-btn" data-val="2" data-step="3">
+              <span class="scale-face">😟</span>
+              <span class="scale-num">2</span>
+            </button>
+
+            <button class="scale-btn" data-val="3" data-step="3">
+              <span class="scale-face">😣</span>
+              <span class="scale-num">3</span>
+            </button>
+
+            <button class="scale-btn" data-val="4" data-step="3">
+              <span class="scale-face">😰</span>
+              <span class="scale-num">4</span>
+            </button>
+
+            <button class="scale-btn" data-val="5" data-step="3">
+              <span class="scale-face">😭</span>
+              <span class="scale-num">5</span>
+            </button>
+
+          </div>
+
+          <!-- Legenda da escala -->
+          <div class="scale-labels">
+            <span>Leve, consigo lidar</span>
+            <span>Muito intenso, difícil</span>
+          </div>
+
+          <div class="nav-row">
+            <button class="btn-nav btn-ghost" onclick="goTo(2)">
+              <i class="ti ti-arrow-left"></i> Voltar
+            </button>
+            <button class="btn-nav btn-primary" id="next3" disabled onclick="goTo(4)">
+              Próximo <i class="ti ti-arrow-right"></i>
+            </button>
+          </div>
+
+        </div><!-- /step3 -->
+
+
+        <!-- ========================================================
+             PASSO 4 — Sono
+             O sono é um dos primeiros indicadores de saúde mental.
+             Distúrbios de sono aparecem em ansiedade, depressão e burnout.
+        ========================================================= -->
+        <div class="quiz-step" id="step4">
+
+          <div class="step-header">
+            <span class="step-tag">Sono e descanso</span>
+            <h2 class="step-title">Como está seu sono ultimamente?</h2>
+            <p class="step-sub">
+              O sono é um dos primeiros sinais de como nossa mente está
+              processando as coisas. Não há resposta "melhor" aqui.
+            </p>
+          </div>
+
+          <div class="options-grid" id="optionsStep4">
+
+            <button class="opt-btn" data-val="bom" data-step="4">
+              <span class="opt-emoji">😴</span>
+              <span class="opt-content">
+                <strong>Dormindo bem</strong>
+                <span>Acordo descansado na maioria dos dias</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="dificil" data-step="4">
+              <span class="opt-emoji">🌙</span>
+              <span class="opt-content">
+                <strong>Difícil dormir</strong>
+                <span>Pensamentos não param, demora para conseguir</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="demais" data-step="4">
+              <span class="opt-emoji">🛌</span>
+              <span class="opt-content">
+                <strong>Dormindo demais</strong>
+                <span>Mesmo dormindo muito, sinto cansaço constante</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="irregular" data-step="4">
+              <span class="opt-emoji">🔄</span>
+              <span class="opt-content">
+                <strong>Irregular</strong>
+                <span>Varia muito, sem padrão definido</span>
+              </span>
+            </button>
+
+          </div>
+
+          <div class="nav-row">
+            <button class="btn-nav btn-ghost" onclick="goTo(3)">
+              <i class="ti ti-arrow-left"></i> Voltar
+            </button>
+            <button class="btn-nav btn-primary" id="next4" disabled onclick="goTo(5)">
+              Próximo <i class="ti ti-arrow-right"></i>
+            </button>
+          </div>
+
+        </div><!-- /step4 -->
+
+
+        <!-- ========================================================
+             PASSO 5 — Conexões Sociais
+             Isolamento é um fator de risco crítico e frequentemente
+             ignorado. Detectar isso permite indicar comunidade ou
+             grupos de apoio de forma mais assertiva.
+        ========================================================= -->
+        <div class="quiz-step" id="step5">
+
+          <div class="step-header">
+            <span class="step-tag">Conexões</span>
+            <h2 class="step-title">Como você se sente em relação às pessoas ao seu redor?</h2>
+            <p class="step-sub">
+              Conexão social é parte essencial da saúde mental.
+              Como nos sentimos com os outros diz muito sobre como estamos internamente.
+            </p>
+          </div>
+
+          <div class="options-grid" id="optionsStep5">
+
+            <button class="opt-btn" data-val="conectado" data-step="5">
+              <span class="opt-emoji"><i class="ti ti-users"></i></span>
+              <span class="opt-content">
+                <strong>Me sinto apoiado</strong>
+                <span>Tenho pessoas com quem contar</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="isolado" data-step="5">
+              <span class="opt-emoji"><i class="ti ti-user-off"></i></span>
+              <span class="opt-content">
+                <strong>Me sinto sozinho</strong>
+                <span>Mesmo com gente ao redor, me sinto isolado</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="evitando" data-step="5">
+              <span class="opt-emoji"><i class="ti ti-door-exit"></i></span>
+              <span class="opt-content">
+                <strong>Evitando pessoas</strong>
+                <span>Prefiro o isolamento neste momento</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="conflito" data-step="5">
+              <span class="opt-emoji"><i class="ti ti-flame"></i></span>
+              <span class="opt-content">
+                <strong>Conflitos frequentes</strong>
+                <span>Relacionamentos estão difíceis e pesados</span>
+              </span>
+            </button>
+
+          </div>
+
+          <div class="nav-row">
+            <button class="btn-nav btn-ghost" onclick="goTo(4)">
+              <i class="ti ti-arrow-left"></i> Voltar
+            </button>
+            <button class="btn-nav btn-primary" id="next5" disabled onclick="goTo(6)">
+              Próximo <i class="ti ti-arrow-right"></i>
+            </button>
+          </div>
+
+        </div><!-- /step5 -->
+
+
+        <!-- ========================================================
+             PASSO 6 — Autoestima
+             Autocrítica excessiva é característica central de
+             depressão, ansiedade e burnout. Detectar isso permite
+             indicar conteúdo de autoestima e TCC (terapia cognitiva).
+        ========================================================= -->
+        <div class="quiz-step" id="step6">
+
+          <div class="step-header">
+            <span class="step-tag">Autoestima</span>
+            <h2 class="step-title">Como você tem se sentido em relação a você mesmo?</h2>
+            <p class="step-sub">
+              A forma como nos vemos afeta tudo — o trabalho, os
+              relacionamentos e a maneira como processamos cada emoção.
+            </p>
+          </div>
+
+          <div class="options-grid" id="optionsStep6">
+
+            <button class="opt-btn" data-val="bem" data-step="6">
+              <span class="opt-emoji">💪</span>
+              <span class="opt-content">
+                <strong>Me sinto capaz</strong>
+                <span>Confio em mim na maior parte do tempo</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="duvida" data-step="6">
+              <span class="opt-emoji">🤔</span>
+              <span class="opt-content">
+                <strong>Tenho muitas dúvidas</strong>
+                <span>Me questiono muito e fico inseguro</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="critica" data-step="6">
+              <span class="opt-emoji">😔</span>
+              <span class="opt-content">
+                <strong>Me critico muito</strong>
+                <span>A voz interna é dura e difícil de silenciar</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="vazio" data-step="6">
+              <span class="opt-emoji">🫥</span>
+              <span class="opt-content">
+                <strong>Sinto um vazio</strong>
+                <span>Não sei exatamente quem sou ou o que sinto</span>
+              </span>
+            </button>
+
+          </div>
+
+          <div class="nav-row">
+            <button class="btn-nav btn-ghost" onclick="goTo(5)">
+              <i class="ti ti-arrow-left"></i> Voltar
+            </button>
+            <button class="btn-nav btn-primary" id="next6" disabled onclick="goTo(7)">
+              Próximo <i class="ti ti-arrow-right"></i>
+            </button>
+          </div>
+
+        </div><!-- /step6 -->
+
+
+        <!-- ========================================================
+             PASSO 7 — Pensamentos Difíceis
+             Pergunta sensível, mas necessária para triagem de crise.
+             Linguagem acolhedora e 3 níveis de gravidade:
+               - Não → perfil baixo risco
+               - Às vezes → perfil médio (recomenda profissional)
+               - Frequente → ativa banner de crise + CVV em destaque
+             O texto reforça anonimato para reduzir barreira de resposta.
+        ========================================================= -->
+        <div class="quiz-step" id="step7">
+
+          <div class="step-header">
+            <span class="step-tag">Pensamentos</span>
+            <h2 class="step-title">Você tem tido pensamentos que te assustam ou preocupam?</h2>
+            <p class="step-sub">
+              Isso é completamente confidencial. Suas respostas são anônimas
+              e nunca serão compartilhadas. Respondemos com cuidado e respeito.
+            </p>
+          </div>
+
+          <div class="options-grid options-col1" id="optionsStep7">
+
+            <!-- Nível 1: sem pensamentos assustadores -->
+            <button class="opt-btn" data-val="nao" data-step="7">
+              <span class="opt-emoji opt-icon-green"><i class="ti ti-circle-check"></i></span>
+              <span class="opt-content">
+                <strong>Não, estou bem nesse sentido</strong>
+                <span>Meus pensamentos são difíceis, mas não me assustam</span>
+              </span>
+            </button>
+
+            <!-- Nível 2: pensamentos presentes, mas gerenciáveis -->
+            <button class="opt-btn" data-val="as_vezes" data-step="7">
+              <span class="opt-emoji opt-icon-amber"><i class="ti ti-alert-circle"></i></span>
+              <span class="opt-content">
+                <strong>Às vezes, mas consigo lidar</strong>
+                <span>Pensamentos pesados aparecem, mas consigo segurar</span>
+              </span>
+            </button>
+
+            <!-- Nível 3: crise — ativa banner e recomendação urgente -->
+            <button class="opt-btn" data-val="frequente" data-step="7">
+              <span class="opt-emoji opt-icon-red"><i class="ti ti-alert-triangle"></i></span>
+              <span class="opt-content">
+                <strong>Sim, frequentemente</strong>
+                <span>Pensamentos de me machucar ou desaparecer estão presentes</span>
+              </span>
+            </button>
+
+          </div>
+
+          <div class="nav-row">
+            <button class="btn-nav btn-ghost" onclick="goTo(6)">
+              <i class="ti ti-arrow-left"></i> Voltar
+            </button>
+            <button class="btn-nav btn-primary" id="next7" disabled onclick="goTo(8)">
+              Próximo <i class="ti ti-arrow-right"></i>
+            </button>
+          </div>
+
+        </div><!-- /step7 -->
+
+
+        <!-- ========================================================
+             PASSO 8 — O que a pessoa busca
+             Pergunta final de personalização: o que o usuário quer
+             encontrar. Essa resposta é o principal driver das
+             recomendações exibidas no resultado.
+        ========================================================= -->
+        <div class="quiz-step" id="step8">
+
+          <div class="step-header">
+            <span class="step-tag">O que você busca</span>
+            <h2 class="step-title">O que você mais gostaria de encontrar aqui?</h2>
+            <p class="step-sub">
+              Sua resposta nos ajuda a mostrar o que é mais relevante
+              para você logo na sequência.
+            </p>
+          </div>
+
+          <div class="options-grid" id="optionsStep8">
+
+            <button class="opt-btn" data-val="tecnicas" data-step="8">
+              <span class="opt-emoji"><i class="ti ti-brain"></i></span>
+              <span class="opt-content">
+                <strong>Técnicas para agora</strong>
+                <span>Algo que me ajude neste momento</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="profissional" data-step="8">
+              <span class="opt-emoji"><i class="ti ti-stethoscope"></i></span>
+              <span class="opt-content">
+                <strong>Falar com profissional</strong>
+                <span>Quero apoio de um psicólogo ou terapeuta</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="comunidade" data-step="8">
+              <span class="opt-emoji"><i class="ti ti-users"></i></span>
+              <span class="opt-content">
+                <strong>Comunidade</strong>
+                <span>Quero falar com quem entende o que sinto</span>
+              </span>
+            </button>
+
+            <button class="opt-btn" data-val="aprender" data-step="8">
+              <span class="opt-emoji"><i class="ti ti-book"></i></span>
+              <span class="opt-content">
+                <strong>Aprender</strong>
+                <span>Quero entender melhor o que acontece comigo</span>
+              </span>
+            </button>
+
+          </div>
+
+          <!-- Nota de anonimato: visível logo antes do botão final -->
+          <p class="anon-note">
+            <i class="ti ti-lock"></i>
+            Suas respostas são anônimas e nunca são compartilhadas ou armazenadas.
+          </p>
+
+          <div class="nav-row">
+            <button class="btn-nav btn-ghost" onclick="goTo(7)">
+              <i class="ti ti-arrow-left"></i> Voltar
+            </button>
+            <button class="btn-nav btn-primary" id="next8" disabled onclick="showResult()">
+              <i class="ti ti-check"></i> Ver meu resultado
+            </button>
+          </div>
+
+        </div><!-- /step8 -->
+
+
+        <!-- ========================================================
+             SEÇÃO DE RESULTADO
+             Exibida ao clicar em "Ver meu resultado". O JS popula:
+               - Banner de crise (se necessário)
+               - Ícone e título personalizados
+               - Tags do perfil emocional
+               - Insight contextualizado
+               - Cards de recomendação (até 4)
+               - Botão de reiniciar o quiz
+        ========================================================= -->
+        <div class="quiz-result" id="quizResult">
+
+          <!--
+            BANNER DE CRISE
+            Oculto por padrão (.hidden). O JS adiciona a classe .visible
+            quando step7 = "frequente" ou intensidade = 5.
+            Exibe o CVV com destaque máximo e linguagem acolhedora.
+          -->
+          <div class="crisis-banner hidden" id="crisisBanner">
+            <i class="ti ti-heart-handshake"></i>
+            <div class="crisis-banner-text">
+              <strong>Você não está sozinho nesse momento.</strong>
+              <p>
+                Se você estiver em crise, ligue para o
+                <a href="tel:188">CVV — 188</a> agora.
+                É gratuito, funciona 24h por dia e é completamente sigiloso.
+              </p>
+            </div>
+          </div>
+
+          <!-- Cabeçalho do resultado: ícone + título + descrição personalizados via JS -->
+          <div class="result-header">
+            <div class="result-icon" id="resultIcon">
+              <i class="ti ti-heart"></i>
+            </div>
+            <div class="result-header-text">
+              <h2 id="resultTitle">Obrigado por compartilhar</h2>
+              <p id="resultDesc">
+                Com base nas suas respostas, preparamos indicações cuidadosas para você.
+              </p>
+            </div>
+          </div>
+
+          <!-- Tags do perfil emocional: geradas dinamicamente pelo JS -->
+          <div class="result-tags" id="resultTags"></div>
+
+          <!--
+            CAIXA DE INSIGHT
+            Texto educativo e contextualizado sobre o perfil detectado.
+            Evita linguagem diagnóstica; posiciona como "ponto de partida".
+          -->
+          <div class="insight-box" id="insightBox">
+            <i class="ti ti-bulb"></i>
+            <p id="insightText">
+              Cada pessoa é única. Estas indicações são um ponto de partida,
+              não um diagnóstico.
+            </p>
+          </div>
+
+          <!-- Grade de recomendações: até 4 cards gerados via JS -->
+          <div class="rec-grid" id="recGrid"></div>
+
+          <!-- Link para refazer o quiz -->
+          <button class="btn-restart" onclick="restartQuiz()">
+            <i class="ti ti-refresh"></i> Refazer o quiz
+          </button>
+
+        </div><!-- /quizResult -->
+
+
+      </section><!-- /quiz-container -->
+
+    </main>
+
+
+    <!--
+      ================================================================
+      FOOTER
+      ================================================================
+    -->
+    <footer class="footer">
+      <a href="tel:188" class="footer-cvv">
+        <i class="ti ti-phone"></i>
+        <span>Crise? Ligue agora — <strong>CVV 188</strong></span>
+      </a>
+      <p class="footer-copy">© 2026 MindBridge. Feito com empatia.</p>
+    </footer>
+
+    <!-- Script do quiz (defer: executa após o HTML ser parseado) -->
+    <script src="MindBridge/assets/js/mindbridge-quiz.js" defer></script>
+
+  </body>
+</html>

@@ -331,6 +331,13 @@ input[type="checkbox"] {
     color: var(--Vermelho-Alerta);
 }
 
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
 .mensagem-erro {
     display: none; /* JS troca para "block" quando há erro */
     color: var(--Vermelho-Alerta);

@@ -1,0 +1,1020 @@
+/* ================================================================
+   MINDBRIDGE — QUIZ DE TRIAGEM EMOCIONAL (CSS)
+   Organizado em blocos numerados. Cada bloco cobre uma área
+   específica do layout. Altere as variáveis em :root para
+   ajustar toda a paleta de uma vez.
+================================================================ */
+
+
+/* ============================================================
+   1. VARIÁVEIS DE DESIGN (Design Tokens)
+   Os mesmos tokens do mindbridge-home.css para manter
+   consistência visual entre as páginas.
+============================================================ */
+
+:root {
+    /* Paleta principal */
+    --Lavanda-Suave: #F2EFF8;
+    --Verde-Menta:   #E1F5EE;
+    --Azul-Névoa:    #E7F1F8;
+    --Areia-Neutra:  #F1EFE8;
+  
+    /* Cores de destaque */
+    --Roxo-Calmo:     #534AB7;
+    --Roxo-Escuro:    #3C3489;
+    --Verde-Esperança: #1D9E75;
+    --Azul-Confiança:  #378ADD;
+  
+    /* Feedback semântico */
+    --Cor-Alerta:     #BA7517;  /* aviso / atenção moderada */
+    --Cor-Perigo:     #A32D2D;  /* risco / urgência */
+    --Cor-Perigo-BG:  #FCEBEB;  /* fundo suave para mensagens de perigo */
+    --Cor-Perigo-BRD: #F7C1C1;  /* borda suave para mensagens de perigo */
+    --Cor-Sucesso-BG: #E1F5EE;  /* fundo suave para mensagens positivas */
+    --Cor-Sucesso-BRD: #9FE1CB; /* borda suave para mensagens positivas */
+  
+    /* Texto e bordas neutras */
+    --Texto-Suave:  #888780;
+    --Borda-Suave:  #C9C3E8;
+  
+    /* Sombras */
+    --Sombra-Suave: 0 2px 12px rgba(83, 74, 183, 0.08);
+    --Sombra-Hover: 0 12px 32px rgba(83, 74, 183, 0.14);
+  }
+  
+  
+  /* ============================================================
+     2. RESET E BASE
+     Box-model previsível, sem margens padrão do browser e
+     rolagem suave para links âncora internos.
+  ============================================================ */
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--Lavanda-Suave);
+    color: #333;
+    overflow-x: hidden; /* previne scroll horizontal por elementos animados */
+  }
+  
+  ul {
+    list-style: none;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* Foco acessível: contorno visível para navegação via teclado */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid var(--Roxo-Calmo);
+    outline-offset: 2px;
+  }
+  
+  
+  /* ============================================================
+     3. ANIMAÇÕES REUTILIZÁVEIS
+     Definidas uma vez aqui, aplicadas em múltiplas seções.
+  ============================================================ */
+  
+  /* Entrada suave de baixo para cima — usada nos steps e no resultado */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Fade simples — usado no banner de crise e nos cards de resultado */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  
+  /* Pulso de sombra — usado no card de emergência para chamar atenção */
+  @keyframes pulso {
+    0%, 100% { box-shadow: 0 0 0 0   rgba(163, 45, 45, 0.25); }
+    50%      { box-shadow: 0 0 0 10px rgba(163, 45, 45, 0); }
+  }
+  
+  /* Respeita usuários com preferência por menos animação no SO */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  
+  /* ============================================================
+     4. BARRA DE URGÊNCIA (topo)
+     Sempre visível. Prioridade máxima para quem precisa de
+     ajuda imediata — CVV em 1 segundo antes de qualquer outra
+     interação na página.
+  ============================================================ */
+  
+  .sup {
+    background-color: var(--Verde-Esperança);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 40px;
+    font-size: 13px;
+    color: white;
+    flex-wrap: wrap; /* não trunca em telas pequenas, quebra linha */
+  }
+  
+  .sup a {
+    color: #9FE1CB; /* verde claro sobre verde escuro: contraste acessível */
+    text-decoration: underline;
+    transition: color 0.3s;
+  }
+  
+  .sup a:hover {
+    color: white;
+  }
+  
+  
+  /* ============================================================
+     5. HEADER / NAVEGAÇÃO
+     Sticky para que o logo e o badge de privacidade permaneçam
+     visíveis enquanto o usuário avança nos passos.
+  ============================================================ */
+  
+  .header {
+    background-color: var(--Lavanda-Suave);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--Sombra-Suave);
+  }
+  
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+  }
+  
+  /* --- Logo --- */
+  
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: opacity 0.3s;
+  }
+  
+  .nav-logo:hover {
+    opacity: 0.8;
+  }
+  
+  .nav-logo-icon {
+    width: 32px;
+    height: 32px;
+    background-color: var(--Roxo-Calmo);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #9FE1CB;
+    display: inline-block;
+  }
+  
+  .nav-logo h2 {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+  }
+  
+  /* --- Badge de privacidade no header ---
+     Reforça a sensação de segurança durante o preenchimento do quiz */
+  
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #EDE9F9;
+    color: var(--Roxo-Calmo);
+    font-size: 13px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--Borda-Suave);
+    white-space: nowrap;
+  }
+  
+  
+  /* ============================================================
+     6. LAYOUT PRINCIPAL
+     O .main ocupa toda a altura disponível entre header e footer
+     e centraliza o quiz vertical e horizontalmente.
+  ============================================================ */
+  
+  .main {
+    min-height: calc(100vh - 200px); /* 200px ≈ altura da sup + header + footer */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 48px 20px 80px;
+  }
+  
+  
+  /* ============================================================
+     7. CONTAINER DO QUIZ
+     Card central branco que contém a barra de progresso,
+     o contador de passos e os 8 steps + seção de resultado.
+  ============================================================ */
+  
+  .quiz-container {
+    width: 100%;
+    max-width: 600px;           /* largura máxima para boa legibilidade */
+    background-color: white;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 20px;
+    padding: 36px;
+    box-shadow: var(--Sombra-Hover);
+    animation: fadeUp 0.5s ease both; /* entrada suave ao carregar a página */
+  }
+  
+  
+  /* ============================================================
+     8. BARRA DE PROGRESSO
+     Indica visualmente onde o usuário está no quiz (1/8 a 8/8).
+     A largura do .progress-fill é atualizada pelo JS via
+     element.style.width = porcentagem + '%'.
+  ============================================================ */
+  
+  .progress-bar {
+    height: 6px;
+    background-color: var(--Lavanda-Suave);
+    border-radius: 99px;
+    overflow: hidden; /* garante que o fill não vaze para fora */
+    margin-bottom: 12px;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background-color: var(--Roxo-Calmo);
+    border-radius: 99px;
+    transition: width 0.5s ease; /* animação suave conforme avança os steps */
+  }
+  
+  /* Contador textual (ex: "Passo 3 de 8") */
+  .step-counter {
+    font-size: 12px;
+    color: var(--Texto-Suave);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 28px;
+  }
+  
+  
+  /* ============================================================
+     9. PASSOS DO QUIZ (.quiz-step)
+     Cada passo é um bloco com display: none por padrão.
+     O JS adiciona a classe .active para exibir apenas o passo atual.
+     A animação fadeUp dá sensação de avanço para o usuário.
+  ============================================================ */
+  
+  .quiz-step {
+    display: none; /* oculto por padrão — JS controla qual é visível */
+  }
+  
+  .quiz-step.active {
+    display: block;
+    animation: fadeUp 0.4s ease both;
+  }
+  
+  /* --- Cabeçalho de cada step (tag, título, subtítulo) --- */
+  
+  .step-header {
+    margin-bottom: 24px;
+  }
+  
+  /* Tag de categoria (ex: "Sentimento geral", "Sono e descanso") */
+  .step-tag {
+    display: inline-block;
+    background-color: #EDE9F9;
+    color: var(--Roxo-Calmo);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  
+  .step-title {
+    font-family: 'Lora', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  
+  .step-sub {
+    font-size: 14px;
+    color: var(--Texto-Suave);
+    line-height: 1.65;
+  }
+  
+  
+  /* ============================================================
+     10. GRADE DE OPÇÕES — botões principais (.opt-btn)
+     Layout em 2 colunas por padrão. A variante .options-col1
+     usa 1 coluna (para opções com texto mais longo).
+  ============================================================ */
+  
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 colunas: encaixa 6 opções de forma limpa */
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  
+  /* Variante de coluna única: textos longos precisam de mais espaço */
+  .options-col1 {
+    grid-template-columns: 1fr;
+  }
+  
+  /* --- Botão de opção individual --- */
+  
+  .opt-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background-color: var(--Lavanda-Suave);
+    border: 1.5px solid var(--Borda-Suave);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.22s ease;
+    line-height: 1;
+  }
+  
+  .opt-btn:hover {
+    background-color: #EDE9F9;
+    border-color: var(--Roxo-Calmo);
+    transform: translateY(-2px); /* sutil elevação no hover */
+  }
+  
+  /* Estado selecionado: borda roxa sólida + fundo levemente colorido */
+  .opt-btn.selected {
+    background-color: #EDE9F9;
+    border: 2px solid var(--Roxo-Calmo);
+    color: var(--Roxo-Escuro);
+  }
+  
+  .opt-btn.selected .opt-content span {
+    color: var(--Roxo-Calmo); /* subtítulo fica mais visível quando selecionado */
+  }
+  
+  /* Emoji ou ícone à esquerda da opção */
+  .opt-emoji {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    line-height: 1.2;
+  }
+  
+  /* Variantes de cor para os ícones de alerta no passo 7 */
+  .opt-icon-green i { color: var(--Verde-Esperança); font-size: 20px; }
+  .opt-icon-amber i { color: var(--Cor-Alerta);      font-size: 20px; }
+  .opt-icon-red   i { color: var(--Cor-Perigo);      font-size: 20px; }
+  
+  /* Conteúdo de texto dentro do botão */
+  .opt-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .opt-content strong {
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    color: inherit;
+  }
+  
+  .opt-content span {
+    font-size: 12px;
+    color: var(--Texto-Suave);
+    line-height: 1.4;
+  }
+  
+  /* Ícones Tabler dentro dos botões */
+  .opt-emoji i {
+    font-size: 20px;
+    color: var(--Roxo-Calmo);
+    vertical-align: middle;
+  }
+  
+  
+  /* ============================================================
+     11. ESCALA DE INTENSIDADE (passo 3)
+     5 botões horizontais com emoji + número. Apresentados em
+     fila para facilitar comparação visual entre os níveis.
+  ============================================================ */
+  
+  .scale-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  
+  /* Cada botão da escala ocupa a mesma largura (flex: 1) */
+  .scale-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 6px;
+    background-color: var(--Lavanda-Suave);
+    border: 1.5px solid var(--Borda-Suave);
+    border-radius: 12px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.22s;
+  }
+  
+  .scale-btn:hover {
+    background-color: #EDE9F9;
+    border-color: var(--Roxo-Calmo);
+    transform: translateY(-2px);
+  }
+  
+  .scale-btn.selected {
+    background-color: #EDE9F9;
+    border: 2px solid var(--Roxo-Calmo);
+    color: var(--Roxo-Escuro);
+  }
+  
+  /* Emoji grande (rosto) */
+  .scale-face {
+    font-size: 24px;
+    line-height: 1;
+  }
+  
+  /* Número abaixo do emoji */
+  .scale-num {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+  }
+  
+  /* Legenda dos extremos da escala */
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--Texto-Suave);
+    margin-bottom: 28px;
+    padding: 0 4px;
+  }
+  
+  
+  /* ============================================================
+     12. NAVEGAÇÃO ENTRE PASSOS (Voltar / Próximo)
+     .nav-row usa flexbox com justify-content: space-between.
+     No passo 1, um <span> vazio ocupa o lado esquerdo para
+     manter o botão "Próximo" alinhado à direita.
+  ============================================================ */
+  
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+  
+  /* Base compartilhada entre os dois estilos de botão */
+  .btn-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    border: none;
+  }
+  
+  /* Botão primário: fundo roxo, texto branco */
+  .btn-primary {
+    background-color: var(--Roxo-Calmo);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--Roxo-Escuro);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(83, 74, 183, 0.3);
+  }
+  
+  /* Desabilitado: sem interação visual até o usuário selecionar uma opção */
+  .btn-primary:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* Botão fantasma: apenas borda, sem fundo */
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--Texto-Suave);
+    border: 1px solid var(--Borda-Suave);
+  }
+  
+  .btn-ghost:hover {
+    background-color: var(--Lavanda-Suave);
+    color: var(--Roxo-Calmo);
+  }
+  
+  
+  /* ============================================================
+     13. NOTA DE ANONIMATO (passo 8)
+     Última ação antes do usuário ver o resultado. Reforça
+     a confiança no momento mais importante da jornada.
+  ============================================================ */
+  
+  .anon-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--Texto-Suave);
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--Lavanda-Suave);
+  }
+  
+  .anon-note i {
+    font-size: 14px;
+    color: var(--Roxo-Calmo);
+    flex-shrink: 0;
+  }
+  
+  
+  /* ============================================================
+     14. SEÇÃO DE RESULTADO (.quiz-result)
+     Oculta por padrão. O JS remove a classe .hidden para
+     exibi-la após o usuário completar o passo 8.
+  ============================================================ */
+  
+  .quiz-result {
+    display: none; /* JS controla a visibilidade */
+    animation: fadeUp 0.5s ease both;
+  }
+  
+  /* Classe adicionada pelo JS para exibir o resultado */
+  .quiz-result.visible {
+    display: block;
+  }
+  
+  
+  /* ============================================================
+     15. BANNER DE CRISE
+     Visível APENAS quando o usuário indica pensamentos frequentes
+     (step7 = "frequente") ou intensidade máxima (step3 = "5").
+     Fundo vermelho suave + borda vermelha + pulso de sombra.
+     CVV linkado com href="tel:188" para discagem direta no mobile.
+  ============================================================ */
+  
+  .crisis-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background-color: var(--Cor-Perigo-BG);
+    border: 1px solid var(--Cor-Perigo-BRD);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    animation: pulso 2.5s infinite, fadeIn 0.4s ease both;
+  }
+  
+  /* Oculto via classe utilitária */
+  .crisis-banner.hidden {
+    display: none;
+  }
+  
+  .crisis-banner > i {
+    font-size: 24px;
+    color: var(--Cor-Perigo);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  
+  .crisis-banner-text strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    color: #791F1F; /* vermelho escuro — contraste sobre fundo claro */
+    margin-bottom: 4px;
+  }
+  
+  .crisis-banner-text p {
+    font-size: 13px;
+    color: var(--Cor-Perigo);
+    line-height: 1.6;
+  }
+  
+  .crisis-banner-text a {
+    color: #791F1F;
+    font-weight: 500;
+    text-decoration: underline;
+  }
+  
+  
+  /* ============================================================
+     16. CABEÇALHO DO RESULTADO
+     Ícone circular + título + descrição personalizados via JS
+     conforme o perfil emocional detectado nas respostas.
+  ============================================================ */
+  
+  .result-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background-color: var(--Lavanda-Suave);
+    border-radius: 14px;
+    margin-bottom: 16px;
+  }
+  
+  /* Ícone circular: cor e ícone trocados via JS */
+  .result-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: #EDE9F9;
+    color: var(--Roxo-Calmo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  
+  .result-header-text h2 {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    margin-bottom: 4px;
+  }
+  
+  .result-header-text p {
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    line-height: 1.5;
+  }
+  
+  
+  /* ============================================================
+     17. TAGS DO PERFIL EMOCIONAL
+     Geradas dinamicamente via JS. Cores indicam gravidade:
+       - roxo (padrão): sentimento base
+       - âmbar: sinal de atenção (duração longa, sono afetado)
+       - vermelho: sinal de risco (intensidade alta, crise)
+  ============================================================ */
+  
+  .result-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  
+  /* Tag padrão: tema roxo */
+  .result-tag {
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: #EDE9F9;
+    color: #3C3489;
+    border: 1px solid var(--Borda-Suave);
+  }
+  
+  /* Tag de atenção: tema âmbar */
+  .result-tag.amber {
+    background-color: #FAEEDA;
+    color: #633806;
+    border-color: #FAC775;
+  }
+  
+  /* Tag de risco: tema vermelho */
+  .result-tag.red {
+    background-color: var(--Cor-Perigo-BG);
+    color: #791F1F;
+    border-color: var(--Cor-Perigo-BRD);
+  }
+  
+  /* Tag positiva: tema verde */
+  .result-tag.green {
+    background-color: var(--Cor-Sucesso-BG);
+    color: #0F6E56;
+    border-color: var(--Cor-Sucesso-BRD);
+  }
+  
+  
+  /* ============================================================
+     18. CAIXA DE INSIGHT
+     Texto educativo e contextualizado sobre o que o perfil
+     detectado pode significar. Linguagem cuidadosa que evita
+     diagnósticos, posicionando como "ponto de partida".
+  ============================================================ */
+  
+  .insight-box {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background-color: var(--Cor-Sucesso-BG);
+    border: 1px solid var(--Cor-Sucesso-BRD);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .insight-box > i {
+    font-size: 20px;
+    color: var(--Verde-Esperança);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  
+  .insight-box p {
+    font-size: 13px;
+    color: #0F6E56; /* verde escuro sobre verde claro: contraste acessível */
+    line-height: 1.65;
+  }
+  
+  
+  /* ============================================================
+     19. GRADE DE RECOMENDAÇÕES (.rec-grid)
+     Até 4 cards em layout 2×2. Cada card é gerado
+     dinamicamente pelo JS com base nas respostas coletadas.
+     Variantes:
+       - .rec-card (padrão): borda neutra
+       - .rec-card.highlight: borda roxa — recomendação prioritária
+       - .rec-card.urgent: borda vermelha — crise / CVV
+  ============================================================ */
+  
+  .rec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  
+  /* --- Card de recomendação base --- */
+  .rec-card {
+    background-color: white;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.3s;
+  }
+  
+  .rec-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--Sombra-Hover);
+  }
+  
+  /* Variante destacada: recomendação principal para o perfil */
+  .rec-card.highlight {
+    border: 2px solid var(--Roxo-Calmo);
+  }
+  
+  /* Variante urgente: CVV e suporte em crise */
+  .rec-card.urgent {
+    border: 2px solid var(--Cor-Perigo);
+    animation: pulso 2.5s infinite; /* pulso chama atenção visualmente */
+  }
+  
+  /* Tipo/categoria do recurso (ex: "Técnica imediata", "Profissional") */
+  .rec-type {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--Texto-Suave);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  
+  /* Cor do tipo muda conforme a variante do card */
+  .rec-card.highlight .rec-type { color: var(--Roxo-Calmo); }
+  .rec-card.urgent   .rec-type { color: var(--Cor-Perigo);  }
+  
+  /* Título principal da recomendação */
+  .rec-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.3;
+  }
+  
+  /* Descrição breve */
+  .rec-desc {
+    font-size: 12px;
+    color: var(--Texto-Suave);
+    line-height: 1.5;
+    flex: 1; /* ocupa espaço disponível, empurrando o botão para o final */
+  }
+  
+  /* Botão de ação dentro de cada card */
+  .rec-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: gap 0.2s;
+  }
+  
+  .rec-action:hover {
+    gap: 8px; /* seta se "afasta" do texto, sugerindo movimento */
+  }
+  
+  .rec-card.urgent .rec-action { color: var(--Cor-Perigo); }
+  
+  
+  /* ============================================================
+     20. BOTÃO DE REINICIAR
+     Aparece abaixo dos cards de recomendação. Visual sutil
+     para não competir com as CTAs principais.
+  ============================================================ */
+  
+  .btn-restart {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.25s;
+  }
+  
+  .btn-restart:hover {
+    color: var(--Roxo-Calmo);
+  }
+  
+  
+  /* ============================================================
+     21. FOOTER
+     Minimalista: apenas o CVV e o copyright.
+     O CVV em destaque garante que quem chegou até o final
+     ainda encontra a ajuda de emergência.
+  ============================================================ */
+  
+  .footer {
+    background-color: var(--Roxo-Calmo);
+    padding: 28px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .footer-cvv {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 8px 20px;
+    color: #9FE1CB; /* verde claro sobre roxo escuro */
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  .footer-cvv:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+  
+  
+  /* ============================================================
+     22. RESPONSIVIDADE
+     Adaptações progressivas para telas menores.
+  ============================================================ */
+  
+  /* Tablet (≤ 768px) */
+  @media (max-width: 768px) {
+    .nav {
+      padding: 0 20px;
+    }
+  
+    .main {
+      padding: 28px 16px 60px;
+    }
+  
+    .quiz-container {
+      padding: 24px 20px;
+      border-radius: 16px;
+    }
+  
+    .step-title {
+      font-size: 19px;
+    }
+  
+    /* Grade de opções volta para 1 coluna: botões longos ficam legíveis */
+    .options-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    /* Recomendações também em coluna única no mobile */
+    .rec-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .result-header {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .badge {
+      display: none; /* economiza espaço no header mobile */
+    }
+  }
+  
+  /* Mobile pequeno (≤ 480px) */
+  @media (max-width: 480px) {
+    .sup {
+      font-size: 12px;
+      padding: 8px 16px;
+    }
+  
+    .step-title {
+      font-size: 17px;
+    }
+  
+    .scale-row {
+      gap: 6px;
+    }
+  
+    .scale-btn {
+      padding: 10px 4px;
+    }
+  
+    .scale-face {
+      font-size: 20px;
+    }
+  
+    .btn-nav {
+      padding: 10px 16px;
+      font-size: 13px;
+    }
+  }
