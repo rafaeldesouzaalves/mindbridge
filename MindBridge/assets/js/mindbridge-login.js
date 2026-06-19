@@ -4,6 +4,9 @@
    integração com API PHP e estado de "carregando".
 ================================================================ */
 
+// Removido o espaço em branco interno
+const local = "127.0.0.1"; 
+
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ============================================================
@@ -53,7 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
       evento.preventDefault(); // impede o recarregamento padrão da página
 
       const emailValido = regexEmail.test(inputEmail.value.trim());
-      const senhaValida = inputSenha.value.length >= 6;
+      // Alterado para aceitar qualquer tamanho de senha (sem a trava de 6 dígitos)
+      const senhaValida = inputSenha.value.trim().length > 0;
 
       definirErro(grupoEmail, !emailValido);
       definirErro(grupoSenha, !senhaValida);
@@ -72,7 +76,10 @@ document.addEventListener('DOMContentLoaded', function () {
       ativarCarregamento(true);
 
       try {
-        const resposta = await fetch('api/login.php', {
+        // Corrigido: adicionado http:// e utilizando a constante local dinamicamente
+        const urlAPI = `http://${local}/mindbridge/MindBridge/assets/api/login.php`;
+        
+        const resposta = await fetch(urlAPI, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -95,10 +102,6 @@ document.addEventListener('DOMContentLoaded', function () {
           
           // Mostra mensagem de erro (pode ser um alert, toast, ou mensagem inline)
           mostrarErroGeral(dados.erro || 'E-mail ou senha inválidos.');
-          
-          // Opcional: destaca ambos os campos como erro
-          // definirErro(grupoEmail, true);
-          // definirErro(grupoSenha, true);
         }
 
       } catch (erro) {
@@ -109,8 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // Remove o erro do campo assim que o usuário começa a corrigi-lo,
-    // em vez de esperar um novo envio do formulário
+    // Remove o erro do campo assim que o usuário começa a corrigi-lo
     inputEmail.addEventListener('input', function () {
       if (regexEmail.test(inputEmail.value.trim())) {
         definirErro(grupoEmail, false);
@@ -118,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     inputSenha.addEventListener('input', function () {
-      if (inputSenha.value.length >= 6) {
+      if (inputSenha.value.trim().length > 0) {
         definirErro(grupoSenha, false);
       }
     });
@@ -132,20 +134,9 @@ document.addEventListener('DOMContentLoaded', function () {
     btnEntrar.disabled = ativo;
   }
 
-  // Função auxiliar para mostrar erro geral (pode ser personalizada)
+  // Função auxiliar para mostrar erro geral
   function mostrarErroGeral(mensagem) {
-    // Opção 1: Alert simples
     alert(mensagem);
-    
-    // Opção 2: Toast/notificação (descomente se tiver um sistema de toast)
-    // criarToast(mensagem, 'erro');
-    
-    // Opção 3: Mensagem inline acima do formulário
-    // const divErro = document.createElement('div');
-    // divErro.className = 'mensagem-erro-geral';
-    // divErro.textContent = mensagem;
-    // form.insertBefore(divErro, form.firstChild);
-    // setTimeout(() => divErro.remove(), 5000);
   }
 /* ============================================================
    3. LOGIN COM GOOGLE (Google Identity Services)
@@ -153,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function () {
    credential token para o backend PHP validar.
 ============================================================= */
 const CLIENT_ID = '457534457639-p83hooh96soj19g6mol3htsjjl6725g1.apps.googleusercontent.com'; // ← substitua
-
 const btnGoogle = document.getElementById('btn-google');
 
 if (btnGoogle) {
@@ -233,3 +223,4 @@ function abrirPopupGoogle() {
     });
 }
 });
+
