@@ -945,7 +945,332 @@
     color: rgba(255, 255, 255, 0.4);
   }
   
-  
+  /* ================================================================
+   MINDBRIDGE — QUIZ: ANIMAÇÕES E ÍCONES
+   Este arquivo é carregado DEPOIS de mindbridge-quiz.css e só
+   adiciona/sobrescreve o necessário para:
+     1. Estilizar os ícones Tabler que substituíram os emojis
+     2. Dar movimento a cada interação (seleção, troca de passo,
+        progresso, cards de recomendação, banner de crise)
+
+   Organizado em blocos numerados, igual ao JS, para facilitar
+   encontrar o que mexe em quê.
+================================================================ */
+
+
+/* ============================================================
+   1. ÍCONES NO LUGAR DOS EMOJIS
+   Cada opção tinha um emoji solto (ex: 😰). Agora é um círculo
+   colorido com um ícone Tabler dentro, com leve "respiro" ao
+   passar o mouse.
+============================================================ */
+
+.opt-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 20px;
+  flex-shrink: 0;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Paleta temática dos ícones — cada cor reforça o "clima" da opção */
+.opt-icon-azul      { background: rgba(91, 140, 255, 0.14);  color: #5b8cff; }
+.opt-icon-roxo       { background: rgba(124, 92, 255, 0.14); color: #7c5cff; }
+.opt-icon-verde     { background: rgba(56, 189, 130, 0.14);  color: #2faa78; }
+.opt-icon-amber      { background: rgba(245, 166, 35, 0.16); color: #c97d09; }
+.opt-icon-vermelho  { background: rgba(240, 90, 90, 0.14);   color: #e14b4b; }
+
+/* O ícone "respira" um pouco quando o card do mouse/foco está por cima */
+.opt-btn:hover .opt-icon,
+.opt-btn:focus-visible .opt-icon {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+/* Quando selecionado, o ícone ganha um leve "pulso" único (ver keyframes abaixo) */
+.opt-btn.selected .opt-icon {
+  animation: iconePulso 0.4s ease;
+  box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.18);
+}
+
+@keyframes iconePulso {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+
+/* ----- Escala de intensidade (Passo 3) ----- */
+.scale-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  font-size: 22px;
+  transition: transform 0.25s ease;
+}
+
+/* Gradiente de cor do nível 1 (mais leve) ao 5 (mais intenso) */
+.scale-icon-1 { background: rgba(56, 189, 130, 0.16);  color: #2faa78; }
+.scale-icon-2 { background: rgba(141, 198, 90, 0.16);  color: #6f9d2f; }
+.scale-icon-3 { background: rgba(245, 166, 35, 0.16);  color: #c97d09; }
+.scale-icon-4 { background: rgba(240, 130, 70, 0.16);  color: #d4641f; }
+.scale-icon-5 { background: rgba(240, 90, 90, 0.18);   color: #e14b4b; }
+
+.scale-btn:hover .scale-icon { transform: translateY(-3px) scale(1.06); }
+
+.scale-btn.selected .scale-icon {
+  animation: iconePulso 0.4s ease;
+}
+
+
+/* ============================================================
+   2. TRANSIÇÃO ENTRE PASSOS
+   Cada .quiz-step que recebe .active entra com um fade + leve
+   deslize de baixo para cima, em vez de simplesmente "aparecer".
+============================================================ */
+
+.quiz-step {
+  display: none;
+}
+
+.quiz-step.active {
+  display: block;
+  animation: passoEntra 0.45s ease;
+}
+
+@keyframes passoEntra {
+  0%   { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ============================================================
+   3. BARRA DE PROGRESSO
+   A largura já é controlada via JS (style.width), aqui só
+   garantimos que a mudança de valor sempre deslize suavemente.
+============================================================ */
+
+.progress-fill {
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* ============================================================
+   4. BOTÕES DE OPÇÃO E ESCALA
+   Leve elevação ao passar o mouse e "encolhe" rápido ao clicar,
+   dando sensação de resposta tátil mesmo na tela.
+============================================================ */
+
+.opt-btn,
+.scale-btn {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.opt-btn:hover,
+.scale-btn:hover {
+  transform: translateY(-2px);
+}
+
+.opt-btn:active,
+.scale-btn:active {
+  transform: scale(0.97);
+}
+
+
+/* ============================================================
+   5. BOTÕES DE NAVEGAÇÃO (Próximo / Voltar)
+============================================================ */
+
+.btn-nav {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.btn-nav:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+
+.btn-nav:not(:disabled):active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* Seta do botão "Próximo" desliza um pouco para a direita no hover */
+.btn-primary:not(:disabled):hover .ti-arrow-right {
+  transform: translateX(3px);
+}
+
+.ti-arrow-right {
+  display: inline-block;
+  transition: transform 0.18s ease;
+}
+
+
+/* ============================================================
+   6. RESULTADO — ENTRADA GERAL
+   Quando .quiz-result recebe .visible, o bloco inteiro entra
+   com fade; o ícone do cabeçalho recebe um "pop" próprio.
+============================================================ */
+
+.quiz-result {
+  display: none;
+}
+
+.quiz-result.visible {
+  display: block;
+  animation: resultadoEntra 0.5s ease;
+}
+
+@keyframes resultadoEntra {
+  0%   { opacity: 0; transform: translateY(18px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.result-icon {
+  animation: iconeResultadoPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+@keyframes iconeResultadoPop {
+  0%   { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+
+/* ============================================================
+   7. TAGS DO PERFIL EMOCIONAL
+   Cada tag aparece em sequência (efeito "cascata"), em vez de
+   surgir tudo de uma vez. O atraso de cada uma é calculado
+   automaticamente pelo nth-child.
+============================================================ */
+
+.result-tag {
+  opacity: 0;
+  animation: tagEntra 0.35s ease forwards;
+}
+
+.result-tag:nth-child(1) { animation-delay: 0.05s; }
+.result-tag:nth-child(2) { animation-delay: 0.12s; }
+.result-tag:nth-child(3) { animation-delay: 0.19s; }
+.result-tag:nth-child(4) { animation-delay: 0.26s; }
+.result-tag:nth-child(5) { animation-delay: 0.33s; }
+.result-tag:nth-child(6) { animation-delay: 0.40s; }
+.result-tag:nth-child(7) { animation-delay: 0.47s; }
+.result-tag:nth-child(8) { animation-delay: 0.54s; }
+
+@keyframes tagEntra {
+  0%   { opacity: 0; transform: translateY(6px) scale(0.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+/* ============================================================
+   8. CAIXA DE INSIGHT
+   Entra logo depois das tags, com leve atraso fixo.
+============================================================ */
+
+.insight-box {
+  opacity: 0;
+  animation: insightEntra 0.45s ease 0.55s forwards;
+}
+
+@keyframes insightEntra {
+  0%   { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ============================================================
+   9. CARDS DE RECOMENDAÇÃO
+   Cada card sobe e aparece em cascata, como as tags — mas com
+   atraso maior, já que entram depois do insight.
+============================================================ */
+
+.rec-card {
+  opacity: 0;
+  animation: cardEntra 0.45s ease forwards;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rec-card:nth-child(1) { animation-delay: 0.65s; }
+.rec-card:nth-child(2) { animation-delay: 0.75s; }
+.rec-card:nth-child(3) { animation-delay: 0.85s; }
+.rec-card:nth-child(4) { animation-delay: 0.95s; }
+
+@keyframes cardEntra {
+  0%   { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.rec-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(83, 74, 183, 0.16);
+}
+
+/* Botão/link de ação do card: seta desliza no hover, igual à navegação */
+.rec-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.18s ease;
+}
+
+.rec-action:hover .ti-arrow-right {
+  transform: translateX(3px);
+}
+
+
+/* ============================================================
+   10. BANNER DE CRISE
+   Quando deixa de ter .hidden, entra com destaque maior — leve
+   "balanço" para chamar atenção sem ser agressivo, e o ícone
+   pulsa suavemente em loop enquanto o banner estiver visível.
+============================================================ */
+
+.crisis-banner {
+  transition: opacity 0.3s ease;
+}
+
+.crisis-banner:not(.hidden) {
+  animation: bannerEntra 0.5s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+@keyframes bannerEntra {
+  0%   { opacity: 0; transform: translateY(-10px) scale(0.98); }
+  60%  { transform: translateY(2px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.crisis-banner:not(.hidden) i:first-child {
+  animation: pulsoLoop 1.8s ease-in-out infinite;
+}
+
+@keyframes pulsoLoop {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.12); }
+}
+
+
+/* ============================================================
+   11. RESPEITO À PREFERÊNCIA DE MOVIMENTO REDUZIDO
+   Quem configurou o sistema para reduzir animações não deve
+   receber nenhuma das animações acima — só a troca de estado.
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
   /* ============================================================
      22. RESPONSIVIDADE
      Adaptações progressivas para telas menores.

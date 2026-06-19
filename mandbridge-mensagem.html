@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MindBridge - Mensagens</title>
+
+    <!-- Fontes: Lora para títulos, Inter para corpo -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- Biblioteca de ícones Tabler -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+
+    <!-- Favicon da aba -->
+    <link rel="shortcut icon" href="MindBridge/assets/img/favicon.svg" type="image/x-icon" />
+
+    <!-- Base global (header, footer, variáveis de cor, toast, botão topo) -->
+    <link rel="stylesheet" href="MindBridge/assets/css/mindbridge-home.css" />
+
+    <!-- Estilos exclusivos desta página (sidebar de conversas, chat, modais) -->
+    <link rel="stylesheet" href="MindBridge/assets/css/mindbridge-mensagens.css" />
+  </head>
+
+  <body class="pagina-mensagens">
+
+    <!-- Barra de urgência fixa no topo — acesso rápido ao CVV em qualquer momento -->
+    <div class="sup">
+      <i class="ti ti-heart-handshake"></i>
+      <span>Precisa de apoio agora?</span>
+      <a href="tel:188">Falar com o CVV — 188</a>
+      <span class="sup-divider">·</span>
+      <a href="mindbridge-comunidade.html#urgencia-comunidade">Ver recursos de emergência</a>
+    </div>
+
+    <!-- Cabeçalho principal com navegação -->
+    <header class="header">
+      <nav class="nav">
+
+        <!-- Logo com link para a home -->
+        <a href="mindbridge-home.html" class="nav-logo">
+          <div class="nav-logo-icon"><span class="dot"></span></div>
+          <h2>MindBridge</h2>
+        </a>
+
+        <!-- Links de navegação principal; "Mensagens" marcado como ativo -->
+        <ul class="nav-links" id="navLinks">
+          <li><a href="mindbridge-home.html"><i class="ti ti-home"></i> Início</a></li>
+          <li><a href="mindbridge-comunidade.html"><i class="ti ti-users"></i> Comunidade</a></li>
+          <li class="active"><a href="mindbridge-mensagens.html"><i class="ti ti-message-circle"></i> Mensagens</a></li>
+          <li><a href="mindbridge-home.html#biblioteca"><i class="ti ti-lifebuoy"></i> Recursos</a></li>
+          <li><a href="mindbridge-comunidade.html#urgencia-comunidade"><i class="ti ti-map-pin"></i> Mapa de Apoio</a></li>
+        </ul>
+
+        <!-- Ações do lado direito da navbar -->
+        <div class="nav-actions">
+
+          <!-- Selo de segurança e privacidade -->
+          <div class="badge">
+            <i class="ti ti-shield-check"></i>
+            <p>Seguro &amp; Privado</p>
+          </div>
+
+          <!-- Avatar do usuário — visível apenas quando logado (.logado no body) -->
+          <a href="mindbridge-login.html" class="nav-avatar" id="navAvatar" aria-label="Ver perfil">
+            <i class="ti ti-user"></i>
+          </a>
+
+          <!-- Botão "Entrar" — visível apenas quando deslogado (sem .logado no body) -->
+          <a href="mindbridge-login.html" class="btn-entrar" id="btnEntrar">Entrar</a>
+
+        </div>
+
+        <!-- Botão hambúrguer para menu mobile -->
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+
+      </nav>
+    </header>
+
+    <main class="msg-main">
+
+      <!-- ============================================================
+           LAYOUT DE MENSAGENS — duas colunas
+           Esquerda: sidebar com busca, ações e lista de conversas
+           Direita: janela de chat ativo (ou estado vazio)
+      ============================================================= -->
+      <section class="msg-shell">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="msg-sidebar" id="msgSidebar">
+
+          <!-- Cabeçalho da sidebar: título + botão de nova conversa -->
+          <div class="msg-sidebar-topo">
+            <h1>Mensagens</h1>
+            <button type="button" class="msg-btn-novo" id="btnNovaConversa" aria-label="Encontrar pessoas e iniciar conversa">
+              <i class="ti ti-user-plus"></i>
+            </button>
+          </div>
+
+          <!-- Campo de busca — filtra conversas já existentes pela lista -->
+          <div class="msg-busca">
+            <i class="ti ti-search"></i>
+            <input type="text" id="msgBuscaInput" placeholder="Buscar conversas...">
+          </div>
+
+          <!-- Chips de filtro rápido das conversas -->
+          <div class="msg-filtros" role="group" aria-label="Filtrar conversas">
+            <button class="msg-filtro-chip ativo" data-filtro-conversa="todas">Todas</button>
+            <button class="msg-filtro-chip" data-filtro-conversa="nao-lidas">Não lidas</button>
+            <button class="msg-filtro-chip" data-filtro-conversa="favoritas">Favoritas</button>
+          </div>
+
+          <!-- Lista rolável de conversas recentes -->
+          <div class="msg-lista" id="msgLista">
+            <!-- Itens injetados via JS a partir do array CONTATOS -->
+          </div>
+
+          <!-- Estado vazio da lista (quando busca não encontra nada) -->
+          <div class="msg-lista-vazia" id="msgListaVazia" hidden>
+            <i class="ti ti-mood-empty"></i>
+            <p>Nenhuma conversa encontrada.</p>
+          </div>
+
+        </aside>
+
+        <!-- ================= ÁREA DE CHAT ================= -->
+        <section class="msg-chat" id="msgChat">
+
+          <!-- Estado vazio: nenhuma conversa selecionada ainda -->
+          <div class="msg-chat-vazio" id="msgChatVazio">
+            <div class="msg-chat-vazio-icone"><i class="ti ti-message-heart"></i></div>
+            <h2>Suas conversas, no seu ritmo</h2>
+            <p>Selecione uma conversa ao lado ou encontre alguém novo para trocar uma mensagem de apoio.</p>
+            <button type="button" class="msg-chat-vazio-btn" id="btnEncontrarVazio">
+              <i class="ti ti-user-search"></i> Encontrar pessoas
+            </button>
+          </div>
+
+          <!-- Conversa ativa — oculta por padrão, exibida via JS -->
+          <div class="msg-conversa" id="msgConversa" hidden>
+
+            <!-- Cabeçalho da conversa: pessoa, status, ações (ligar, chamada de vídeo, mais) -->
+            <header class="msg-conversa-header">
+
+              <!-- Botão de voltar — só aparece no mobile -->
+              <button type="button" class="msg-voltar" id="msgVoltar" aria-label="Voltar para a lista de conversas">
+                <i class="ti ti-chevron-left"></i>
+              </button>
+
+              <div class="msg-conversa-pessoa">
+                <div class="msg-avatar" id="msgConversaAvatar">A</div>
+                <div class="msg-conversa-info">
+                  <strong id="msgConversaNome">Nome</strong>
+                  <span id="msgConversaStatus" class="msg-conversa-status">
+                    <span class="msg-status-ponto"></span> Online
+                  </span>
+                </div>
+              </div>
+
+              <!-- Ações rápidas: ligar, chamada de vídeo, mais opções -->
+              <div class="msg-conversa-acoes">
+                <button type="button" class="msg-acao-btn" id="btnLigar" aria-label="Ligar" title="Ligar">
+                  <i class="ti ti-phone"></i>
+                </button>
+                <button type="button" class="msg-acao-btn" id="btnVideo" aria-label="Chamada de vídeo" title="Chamada de vídeo">
+                  <i class="ti ti-video"></i>
+                </button>
+                <button type="button" class="msg-acao-btn" id="btnMais" aria-label="Mais opções" title="Mais opções">
+                  <i class="ti ti-dots-vertical"></i>
+                </button>
+
+                <!-- Menu suspenso de mais opções -->
+                <div class="msg-menu-mais" id="msgMenuMais">
+                  <button type="button" data-acao="favoritar" id="btnFavoritar">
+                    <i class="ti ti-star"></i> <span>Favoritar conversa</span>
+                  </button>
+                  <button type="button" data-acao="silenciar">
+                    <i class="ti ti-bell-off"></i> Silenciar notificações
+                  </button>
+                  <button type="button" data-acao="perfil">
+                    <i class="ti ti-user"></i> Ver perfil
+                  </button>
+                  <button type="button" data-acao="bloquear" class="msg-menu-perigo">
+                    <i class="ti ti-ban"></i> Bloquear pessoa
+                  </button>
+                  <button type="button" data-acao="denunciar" class="msg-menu-perigo">
+                    <i class="ti ti-flag"></i> Denunciar conversa
+                  </button>
+                </div>
+              </div>
+            </header>
+
+            <!-- Aviso fixo de segurança acima das mensagens -->
+            <div class="msg-aviso-seguranca">
+              <i class="ti ti-shield-heart"></i>
+              Conversas privadas e moderadas. Em caso de emergência, <a href="tel:188">ligue para o CVV — 188</a>.
+            </div>
+
+            <!-- Corpo rolável com as mensagens trocadas -->
+            <div class="msg-corpo" id="msgCorpo">
+              <!-- Mensagens injetadas via JS -->
+            </div>
+
+            <!-- Indicador "digitando..." -->
+            <div class="msg-digitando" id="msgDigitando" hidden>
+              <div class="msg-avatar msg-avatar-mini" id="msgDigitandoAvatar">A</div>
+              <div class="msg-digitando-bolha">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <!-- Área de digitação e envio -->
+            <footer class="msg-rodape">
+              <button type="button" class="msg-anexo-btn" aria-label="Anexar" title="Em breve">
+                <i class="ti ti-mood-smile"></i>
+              </button>
+              <textarea id="msgTextarea" placeholder="Escreva uma mensagem..." rows="1" maxlength="500"></textarea>
+              <button type="button" class="msg-enviar-btn" id="msgEnviarBtn" disabled aria-label="Enviar mensagem">
+                <i class="ti ti-send"></i>
+              </button>
+            </footer>
+
+          </div>
+          <!-- fim .msg-conversa -->
+
+        </section>
+        <!-- fim .msg-chat -->
+
+      </section>
+      <!-- fim .msg-shell -->
+
+
+      <!-- ============================================================
+           MODAL "ENCONTRAR PESSOAS"
+           Busca por nome/tema e inicia uma nova conversa.
+      ============================================================= -->
+      <div class="mp-overlay" id="mpOverlay" role="dialog" aria-modal="true" aria-labelledby="mpTitulo">
+        <div class="mp-modal">
+
+          <div class="mp-cabecalho">
+            <div class="mp-cabecalho-icone" aria-hidden="true"><i class="ti ti-user-search"></i></div>
+            <div>
+              <h2 id="mpTitulo">Encontrar pessoas</h2>
+              <p>Busque por nome ou tema e comece uma conversa com cuidado</p>
+            </div>
+            <button class="mp-fechar" id="mpFechar" aria-label="Fechar"><i class="ti ti-x"></i></button>
+          </div>
+
+          <div class="mp-corpo">
+
+            <!-- Campo de busca de pessoas -->
+            <div class="mp-busca">
+              <i class="ti ti-search"></i>
+              <input type="text" id="mpBuscaInput" placeholder="Buscar por nome, ex: Ana, Rafael...">
+            </div>
+
+            <!-- Chips de sugestão por tema -->
+            <div class="mp-temas" role="group" aria-label="Filtrar sugestões por tema">
+              <button class="mp-tema-chip ativo" data-tema-pessoa="todos">Todos</button>
+              <button class="mp-tema-chip" data-tema-pessoa="ansiedade">Ansiedade</button>
+              <button class="mp-tema-chip" data-tema-pessoa="burnout">Burnout</button>
+              <button class="mp-tema-chip" data-tema-pessoa="luto">Luto</button>
+              <button class="mp-tema-chip" data-tema-pessoa="sono">Sono</button>
+              <button class="mp-tema-chip" data-tema-pessoa="autoestima">Autoestima</button>
+            </div>
+
+            <!-- Resultados da busca -->
+            <p class="mp-secao-titulo">Pessoas sugeridas para você</p>
+            <div class="mp-resultados" id="mpResultados">
+              <!-- Itens injetados via JS -->
+            </div>
+
+            <!-- Estado vazio -->
+            <div class="mp-vazio" id="mpVazio" hidden>
+              <i class="ti ti-mood-empty"></i>
+              <p>Ninguém encontrado com esse nome.</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ============================================================
+           MODAL "CHAMADA" — simula ligação de voz ou vídeo
+      ============================================================= -->
+      <div class="ch-overlay" id="chOverlay" role="dialog" aria-modal="true" aria-labelledby="chNome">
+        <div class="ch-modal">
+
+          <span class="ch-tipo" id="chTipo">Chamada de voz</span>
+
+          <div class="ch-avatar-grande" id="chAvatarGrande">A</div>
+          <h2 id="chNome">Nome da pessoa</h2>
+          <p class="ch-status" id="chStatus">Chamando...</p>
+
+          <div class="ch-ondas" id="chOndas" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+
+          <div class="ch-acoes">
+            <button type="button" class="ch-btn ch-btn-mudo" id="chMudo" aria-label="Mudo" title="Mudo">
+              <i class="ti ti-microphone"></i>
+            </button>
+            <button type="button" class="ch-btn ch-btn-encerrar" id="chEncerrar" aria-label="Encerrar chamada" title="Encerrar">
+              <i class="ti ti-phone-x"></i>
+            </button>
+            <button type="button" class="ch-btn ch-btn-alto-falante" id="chAltoFalante" aria-label="Alto-falante" title="Alto-falante">
+              <i class="ti ti-volume"></i>
+            </button>
+          </div>
+
+          <!-- Lembrete de segurança durante a chamada -->
+          <p class="ch-rodape">
+            <i class="ti ti-shield-heart"></i>
+            Em uma crise? <a href="tel:188">Ligue para o CVV — 188</a>
+          </p>
+
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Rodapé com logo, links institucionais e atalho para o CVV -->
+    <footer class="footer">
+      <div class="footer-logo">
+        <div class="nav-logo-icon"><span class="dot"></span></div>
+        <span>MindBridge</span>
+      </div>
+      <div class="footer-links">
+        <a href="mindbridge-home.html#sobre">Sobre</a>
+        <a href="mindbridge-comunidade.html">Comunidade</a>
+        <a href="mindbridge-home.html#biblioteca">Recursos</a>
+        <a href="mindbridge-home.html#profissionais">Profissionais</a>
+        <a href="mindbridge-comunidade.html#urgencia-comunidade">Privacidade</a>
+        <a href="mindbridge-comunidade.html#urgencia-comunidade">Contato</a>
+      </div>
+      <a href="tel:188" class="footer-cvv">
+        <i class="ti ti-phone"></i>
+        <span>Crise? Ligue agora — <strong>CVV 188</strong></span>
+      </a>
+      <p class="footer-copy">© 2026 MindBridge. Feito com empatia.</p>
+    </footer>
+
+    <!-- Toast de feedback rápido -->
+    <div class="toast" id="toast">
+      <i class="ti ti-heart"></i>
+      <span id="toastTexto">Mensagem enviada!</span>
+    </div>
+
+    <!-- JS global: menu mobile, scroll do header, animação reveal, botão topo -->
+    <script src="MindBridge/assets/js/mindbridge-home.js" defer></script>
+
+    <!-- JS desta página: conversas, busca de pessoas, chat, chamadas -->
+    <script src="MindBridge/assets/js/mindbridge-mensagens.js" defer></script>
+
+  </body>
+</html>

@@ -623,7 +623,8 @@ input:focus-visible {
 .urgencia {
     display: flex;
     gap: 20px;
-    padding: 0 40px 80px;
+    padding: 50px 40px 80px;
+    margin-top: 40px;
     justify-content: center;
     flex-wrap: wrap;
 }

@@ -121,7 +121,7 @@ body{
     background-color: var(--Roxo-Calmo);
     padding: 40px;
     width: 420px;
-    min-height: 610px;
+    min-height: 730px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
