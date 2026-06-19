@@ -2,10 +2,10 @@
 // config/db.php
 declare(strict_types=1);
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'mindbridge_db');
-define('DB_USER', 'root');          // troque em produção
-define('DB_PASS', '');              // troque em produção
+define('DB_HOST', 'p2.hcraft.online');
+define('DB_NAME', 'login');
+define('DB_USER', 'remoto');          // troque em produção
+define('DB_PASS', 'ro8765');              // troque em produção
 define('DB_CHARSET', 'utf8mb4');
 
 try {
