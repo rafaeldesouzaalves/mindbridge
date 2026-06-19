@@ -19,6 +19,9 @@
 
     <!-- Estilos exclusivos desta página (hero, filtros, grupos, feed) -->
     <link rel="stylesheet" href="MindBridge/assets/css/mindbridge-comunidade.css" />
+
+    <!-- NOVO — estado visual dos cards de grupo clicáveis -->
+    <link rel="stylesheet" href="MindBridge/assets/css/mindbridge-comunidade-grupos.css" />
   </head>
 
   <body>
@@ -42,7 +45,7 @@
           <h2>MindBridge</h2>
         </a>
 
-        <!-- Links de navegação principal; "Comunidade" marcado como ativo -->
+        <!-- Links de navegação principal; "Comunidade" marcado como ativo. -->
         <ul class="nav-links" id="navLinks">
           <li><a href="mindbridge-home.html"><i class="ti ti-home"></i> Início</a></li>
           <li><a href="mindbridge-home.html#como-funciona"><i class="ti ti-route"></i> Como funciona</a></li>
@@ -61,7 +64,6 @@
           </div>
 
           <!-- Avatar do usuário — visível apenas quando logado (.logado no body) -->
-          <!-- O JS substitui o ícone pelas iniciais reais e atualiza o href para o perfil -->
           <a href="mindbridge-login.html" class="nav-avatar" id="navAvatar" aria-label="Ver perfil">
             <i class="ti ti-user"></i>
           </a>
@@ -81,61 +83,53 @@
 
     <main>
 
-            <!-- ============================================================
-              PATCH HTML — substitua apenas o bloco <section class="com-hero">
-              no seu mindbridge-comunidade.html pelo trecho abaixo.
+      <section class="com-hero">
 
-              NOVIDADE: .com-hero-stats com data-stat para o JS atualizar
-              os números ao criar grupos e publicar posts.
-          ============================================================ -->
+        <!-- Selo com bolinha pulsante indicando presença em tempo real -->
+        <span class="com-hero-tag">
+          <span class="ponto-online"></span>
+          312 pessoas ativas agora
+        </span>
 
-        <section class="com-hero">
+        <h1>Aqui, ninguém precisa explicar <span class="destaque">tudo</span> para ser entendido.</h1>
 
-          <!-- Selo com bolinha pulsante indicando presença em tempo real -->
-          <span class="com-hero-tag">
-            <span class="ponto-online"></span>
-            312 pessoas ativas agora
-          </span>
+        <p>
+          Leia, responda ou só fique por aqui — tudo bem ir no seu ritmo.
+          Esta é uma comunidade de apoio entre pessoas reais, com moderação
+          ativa e respeito acima de tudo.
+        </p>
 
-          <h1>Aqui, ninguém precisa explicar <span class="destaque">tudo</span> para ser entendido.</h1>
+        <!-- Mini aviso de regras -->
+        <span class="com-hero-regras">
+          <i class="ti ti-shield-heart"></i>
+          Sem julgamentos. Sem conselhos não pedidos. Só apoio.
+        </span>
 
-          <p>
-            Leia, responda ou só fique por aqui — tudo bem ir no seu ritmo.
-            Esta é uma comunidade de apoio entre pessoas reais, com moderação
-            ativa e respeito acima de tudo.
-          </p>
+        <!-- Stats rápidos — o JS atualiza via data-stat ao criar grupos/posts -->
+        <div class="com-hero-stats">
 
-          <!-- Mini aviso de regras -->
-          <span class="com-hero-regras">
-            <i class="ti ti-shield-heart"></i>
-            Sem julgamentos. Sem conselhos não pedidos. Só apoio.
-          </span>
-
-          <!-- Stats rápidos — o JS atualiza via data-stat ao criar grupos/posts -->
-          <div class="com-hero-stats">
-
-            <div class="com-hero-stat" data-stat="membros">
-              <strong>18.400</strong>
-              <span>membros</span>
-            </div>
-
-            <div class="com-hero-stat-divider" aria-hidden="true"></div>
-
-            <div class="com-hero-stat" data-stat="grupos">
-              <strong>47</strong>
-              <span>grupos ativos</span>
-            </div>
-
-            <div class="com-hero-stat-divider" aria-hidden="true"></div>
-
-            <div class="com-hero-stat" data-stat="posts">
-              <strong>2.130</strong>
-              <span>publicações</span>
-            </div>
-
+          <div class="com-hero-stat" data-stat="membros">
+            <strong>18.400</strong>
+            <span>membros</span>
           </div>
 
-        </section>
+          <div class="com-hero-stat-divider" aria-hidden="true"></div>
+
+          <div class="com-hero-stat" data-stat="grupos">
+            <strong>47</strong>
+            <span>grupos ativos</span>
+          </div>
+
+          <div class="com-hero-stat-divider" aria-hidden="true"></div>
+
+          <div class="com-hero-stat" data-stat="posts">
+            <strong>2.130</strong>
+            <span>publicações</span>
+          </div>
+
+        </div>
+
+      </section>
 
       <!-- Chips de filtro por tema — controlados pelo JS para mostrar/ocultar posts -->
       <div class="com-filtros-wrapper">
@@ -156,14 +150,31 @@
         <!-- Cabeçalho da seção de grupos -->
         <div class="com-secao-cabecalho reveal">
           <h2>Encontre o seu <span class="destaque">grupo</span></h2>
-          <p>Espaços dedicados a temas específicos, onde você encontra pessoas vivendo algo parecido com o que você sente.</p>
+          <p>Espaços dedicados a temas específicos, onde você encontra pessoas vivendo algo parecido com o que você sente. Clique em um card para ver os detalhes e entrar.</p>
         </div>
 
-        <!-- Cards dos grupos: cada um tem ícone, descrição, contagem de membros e status -->
+        <!-- Cards dos grupos: cada um tem ícone, descrição, contagem de membros e status.
+             NOVO: cada card é clicável (role="button") e abre o modal "Entrar no
+             grupo" (.ge-overlay) com os dados preenchidos via data-grupo-*. -->
         <div class="com-grupos-grid">
 
           <!-- Grupo: Ansiedade & Pânico -->
-          <div class="com-grupo-card reveal">
+          <div
+            class="com-grupo-card reveal com-grupo-clicavel"
+            role="button"
+            tabindex="0"
+            data-grupo-id="ansiedade-panico"
+            data-grupo-nome="Ansiedade &amp; Pânico"
+            data-grupo-desc="Técnicas, desabafos e apoio para quem lida com crises de ansiedade no dia a dia."
+            data-grupo-icone="ti-wind"
+            data-grupo-cor="cor-ansiedade"
+            data-grupo-temas="ansiedade"
+            data-grupo-membros="4180"
+            data-grupo-moderador="Equipe MindBridge"
+            data-grupo-privacidade="publico"
+            aria-haspopup="dialog"
+            aria-label="Ver detalhes do grupo Ansiedade e Pânico"
+          >
             <div class="com-grupo-icone cor-ansiedade"><i class="ti ti-wind"></i></div>
             <h3>Ansiedade &amp; Pânico</h3>
             <p>Técnicas, desabafos e apoio para quem lida com crises de ansiedade no dia a dia.</p>
@@ -174,7 +185,22 @@
           </div>
 
           <!-- Grupo: Burnout & Carreira -->
-          <div class="com-grupo-card reveal">
+          <div
+            class="com-grupo-card reveal com-grupo-clicavel"
+            role="button"
+            tabindex="0"
+            data-grupo-id="burnout-carreira"
+            data-grupo-nome="Burnout &amp; Carreira"
+            data-grupo-desc="Para quem sente o peso do esgotamento profissional e busca formas de se recuperar."
+            data-grupo-icone="ti-battery-1"
+            data-grupo-cor="cor-burnout"
+            data-grupo-temas="burnout"
+            data-grupo-membros="2760"
+            data-grupo-moderador="Equipe MindBridge"
+            data-grupo-privacidade="publico"
+            aria-haspopup="dialog"
+            aria-label="Ver detalhes do grupo Burnout e Carreira"
+          >
             <div class="com-grupo-icone cor-burnout"><i class="ti ti-battery-1"></i></div>
             <h3>Burnout &amp; Carreira</h3>
             <p>Para quem sente o peso do esgotamento profissional e busca formas de se recuperar.</p>
@@ -185,7 +211,22 @@
           </div>
 
           <!-- Grupo: Luto & Perdas -->
-          <div class="com-grupo-card reveal">
+          <div
+            class="com-grupo-card reveal com-grupo-clicavel"
+            role="button"
+            tabindex="0"
+            data-grupo-id="luto-perdas"
+            data-grupo-nome="Luto &amp; Perdas"
+            data-grupo-desc="Um espaço gentil para falar sobre perdas, no seu tempo, sem pressa de &quot;superar&quot;."
+            data-grupo-icone="ti-feather"
+            data-grupo-cor="cor-luto"
+            data-grupo-temas="luto"
+            data-grupo-membros="1340"
+            data-grupo-moderador="Equipe MindBridge"
+            data-grupo-privacidade="publico"
+            aria-haspopup="dialog"
+            aria-label="Ver detalhes do grupo Luto e Perdas"
+          >
             <div class="com-grupo-icone cor-luto"><i class="ti ti-feather"></i></div>
             <h3>Luto &amp; Perdas</h3>
             <p>Um espaço gentil para falar sobre perdas, no seu tempo, sem pressa de "superar".</p>
@@ -196,7 +237,22 @@
           </div>
 
           <!-- Grupo: Sono & Descanso -->
-          <div class="com-grupo-card reveal">
+          <div
+            class="com-grupo-card reveal com-grupo-clicavel"
+            role="button"
+            tabindex="0"
+            data-grupo-id="sono-descanso"
+            data-grupo-nome="Sono &amp; Descanso"
+            data-grupo-desc="Trocas sobre insônia, rotina noturna e técnicas para uma mente mais calma à noite."
+            data-grupo-icone="ti-moon"
+            data-grupo-cor="cor-sono"
+            data-grupo-temas="sono"
+            data-grupo-membros="980"
+            data-grupo-moderador="Equipe MindBridge"
+            data-grupo-privacidade="publico"
+            aria-haspopup="dialog"
+            aria-label="Ver detalhes do grupo Sono e Descanso"
+          >
             <div class="com-grupo-icone cor-sono"><i class="ti ti-moon"></i></div>
             <h3>Sono &amp; Descanso</h3>
             <p>Trocas sobre insônia, rotina noturna e técnicas para uma mente mais calma à noite.</p>
@@ -208,8 +264,8 @@
 
 
         <!-- ============================================================
-            BLOCO 1 — BOTÃO "CRIAR GRUPO" (vai dentro de .com-grupos-grid)
-            Cole como último item da grade de grupos existente.
+            BOTÃO "CRIAR GRUPO" — último item da grade.
+            Sem com-grupo-clicavel: tem seu próprio modal de criação.
         ============================================================ -->
         <div class="com-grupo-card com-grupo-card-criar reveal" id="btnAbrirCriarGrupo" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Criar novo grupo de apoio">
           <div class="com-grupo-icone cor-criar">
@@ -224,8 +280,7 @@
 
 
         <!-- ============================================================
-            BLOCO 2 — MODAL DE CRIAR GRUPO (cola antes de </main>)
-            O JS controla a visibilidade via classe .aberto no overlay.
+            MODAL DE CRIAR GRUPO (sem mudanças de lógica)
         ============================================================ -->
 
         <div class="cg-overlay" id="cgOverlay" role="dialog" aria-modal="true" aria-labelledby="cgTitulo">
@@ -279,63 +334,60 @@
                 </div>
               </div>
 
-                  <!-- ========== SELEÇÃO DE ÍCONE (novo campo) ========== -->
-      
-                <!-- Ícone do grupo -->
-                <div class="cg-campo">
-                  <label>Ícone do grupo <span class="cg-obrig" aria-hidden="true">*</span></label>
+              <!-- Ícone do grupo -->
+              <div class="cg-campo">
+                <label>Ícone do grupo <span class="cg-obrig" aria-hidden="true">*</span></label>
 
-                  <!-- Grade com 12 opções de ícone -->
-                  <div class="cg-icones" id="cgIcones" role="group" aria-label="Escolher ícone do grupo">
+                <!-- Grade com 12 opções de ícone -->
+                <div class="cg-icones" id="cgIcones" role="group" aria-label="Escolher ícone do grupo">
 
-                    <button type="button" class="cg-icone-btn ativo" data-icone="ti-wind" aria-label="Vento">
-                      <i class="ti ti-wind"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-battery-1" aria-label="Bateria">
-                      <i class="ti ti-battery-1"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-feather" aria-label="Pena">
-                      <i class="ti ti-feather"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-moon" aria-label="Lua">
-                      <i class="ti ti-moon"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-star" aria-label="Estrela">
-                      <i class="ti ti-star"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-heart" aria-label="Coração">
-                      <i class="ti ti-heart"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-leaf" aria-label="Folha">
-                      <i class="ti ti-leaf"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-sun" aria-label="Sol">
-                      <i class="ti ti-sun"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-flower" aria-label="Flor">
-                      <i class="ti ti-flower"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-users" aria-label="Pessoas">
-                      <i class="ti ti-users"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-brain" aria-label="Mente">
-                      <i class="ti ti-brain"></i>
-                    </button>
-                    <button type="button" class="cg-icone-btn" data-icone="ti-butterfly" aria-label="Borboleta">
-                      <i class="ti ti-butterfly"></i>
-                    </button>
+                  <button type="button" class="cg-icone-btn ativo" data-icone="ti-wind" aria-label="Vento">
+                    <i class="ti ti-wind"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-battery-1" aria-label="Bateria">
+                    <i class="ti ti-battery-1"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-feather" aria-label="Pena">
+                    <i class="ti ti-feather"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-moon" aria-label="Lua">
+                    <i class="ti ti-moon"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-star" aria-label="Estrela">
+                    <i class="ti ti-star"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-heart" aria-label="Coração">
+                    <i class="ti ti-heart"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-leaf" aria-label="Folha">
+                    <i class="ti ti-leaf"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-sun" aria-label="Sol">
+                    <i class="ti ti-sun"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-flower" aria-label="Flor">
+                    <i class="ti ti-flower"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-users" aria-label="Pessoas">
+                    <i class="ti ti-users"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-brain" aria-label="Mente">
+                    <i class="ti ti-brain"></i>
+                  </button>
+                  <button type="button" class="cg-icone-btn" data-icone="ti-butterfly" aria-label="Borboleta">
+                    <i class="ti ti-butterfly"></i>
+                  </button>
 
-                  </div>
-
-                  <!-- Pré-visualização do ícone selecionado -->
-                  <div class="cg-icone-preview" id="cgIconePreview">
-                    <div class="cg-icone-preview-badge" id="cgIconePreviewBadge">
-                      <i class="ti ti-wind" id="cgIconePreviewIcone"></i>
-                    </div>
-                    <span id="cgIconePreviewLabel">Ícone selecionado</span>
-                  </div>
                 </div>
-              <!-- ========== FIM SELEÇÃO DE ÍCONE ========== -->
+
+                <!-- Pré-visualização do ícone selecionado -->
+                <div class="cg-icone-preview" id="cgIconePreview">
+                  <div class="cg-icone-preview-badge" id="cgIconePreviewBadge">
+                    <i class="ti ti-wind" id="cgIconePreviewIcone"></i>
+                  </div>
+                  <span id="cgIconePreviewLabel">Ícone selecionado</span>
+                </div>
+              </div>
 
               <!-- Tema -->
               <div class="cg-campo">
@@ -415,7 +467,74 @@
           <!-- fim .cg-modal -->
         </div>
         <!-- fim .cg-overlay -->
-        
+
+
+        <!-- ============================================================
+             MODAL "ENTRAR NO GRUPO"
+             Abre ao clicar em qualquer card com .com-grupo-clicavel.
+             O JS preenche os dados a partir dos atributos data-grupo-*
+             do card clicado. Ao confirmar, NÃO abre chat aqui — em vez
+             disso redireciona para mindbridge-mensagens.html já com
+             aquele grupo selecionado (ver mindbridge-comunidade-grupos.js).
+        ============================================================= -->
+        <div class="ge-overlay" id="geOverlay" role="dialog" aria-modal="true" aria-labelledby="geNome">
+          <div class="ge-modal">
+
+            <!-- Faixa colorida no topo com ícone grande do grupo -->
+            <div class="ge-banner" id="geBanner">
+              <i class="ti ge-banner-icone" id="geBannerIcone"></i>
+              <button type="button" class="ge-fechar" id="geFechar" aria-label="Fechar">
+                <i class="ti ti-x"></i>
+              </button>
+            </div>
+
+            <!-- Corpo: nome, chips de tema, descrição, metadados -->
+            <div class="ge-corpo">
+              <h2 class="ge-nome" id="geNome">Nome do grupo</h2>
+
+              <div class="ge-temas" id="geTemas">
+                <!-- Chips de tema inseridos via JS -->
+              </div>
+
+              <p class="ge-desc" id="geDesc">Descrição do grupo.</p>
+
+              <div class="ge-meta">
+                <span class="ge-meta-item">
+                  <i class="ti ti-users" aria-hidden="true"></i>
+                  <span id="geMeta_membros">0 membros</span>
+                </span>
+                <span class="ge-meta-item">
+                  <i class="ti ti-shield" aria-hidden="true"></i>
+                  <span id="geMeta_privacidade">Público</span>
+                </span>
+                <span class="ge-meta-item">
+                  <i class="ti ti-user-star" aria-hidden="true"></i>
+                  <span id="geMeta_moderador">Moderador</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="ge-divisor"></div>
+
+            <!-- Rodapé com aviso e botões de ação -->
+            <div class="ge-rodape">
+              <p class="ge-aviso">
+                <i class="ti ti-shield-heart" aria-hidden="true"></i>
+                Ao entrar, você concorda em manter um espaço respeitoso, sem julgamentos e sem conselhos não pedidos — assim como em toda a comunidade.
+              </p>
+              <div class="ge-acoes">
+                <button type="button" class="ge-btn-cancelar" id="geCancelar">Agora não</button>
+                <button type="button" class="ge-btn-entrar" id="geBtnEntrar">
+                  <i class="ti ti-door-enter" aria-hidden="true"></i> Entrar no grupo
+                </button>
+              </div>
+            </div>
+
+          </div>
+          <!-- fim .ge-modal -->
+        </div>
+        <!-- fim .ge-overlay -->
+
         </div>
       </section>
 
@@ -642,11 +761,9 @@
         <a href="mindbridge-comunidade.html">Comunidade</a>
         <a href="mindbridge-home.html#biblioteca">Recursos</a>
         <a href="mindbridge-home.html#profissionais">Profissionais</a>
-        <!-- Privacidade e Contato apontam para urgência até as páginas próprias existirem -->
         <a href="#urgencia-comunidade">Privacidade</a>
         <a href="#urgencia-comunidade">Contato</a>
       </div>
-      <!-- Link de discagem rápida para o CVV no rodapé -->
       <a href="tel:188" class="footer-cvv">
         <i class="ti ti-phone"></i>
         <span>Crise? Ligue agora — <strong>CVV 188</strong></span>
@@ -659,6 +776,12 @@
       <i class="ti ti-arrow-up"></i>
     </button>
 
+    <!-- Botão flutuante de acesso rápido às mensagens diretas -->
+    <a href="mindbridge-mensagem.html" class="btn-mensagens-flutuante" aria-label="Abrir mensagens diretas">
+      <i class="ti ti-message-circle"></i>
+      <span class="btn-mensagens-flutuante-selo" aria-hidden="true"></span>
+    </a>
+
     <!-- Toast de feedback rápido para ações como abraço e respostas -->
     <div class="toast" id="toast">
       <i class="ti ti-heart"></i>
@@ -668,8 +791,11 @@
     <!-- JS global: menu mobile, scroll do header, animação reveal, botão topo -->
     <script src="MindBridge/assets/js/mindbridge-home.js" defer></script>
 
-    <!-- JS desta página: filtros, novo post, abraços, carregar mais -->
+    <!-- JS desta página: filtros, novo post, abraços, carregar mais, criar grupo -->
     <script src="MindBridge/assets/js/mindbridge-comunidade.js" defer></script>
+
+    <!-- NOVO — JS do modal "Entrar no grupo" + redirecionamento para Mensagens -->
+    <script src="MindBridge/assets/js/mindbridge-comunidade-grupos.js" defer></script>
 
   </body>
 </html>

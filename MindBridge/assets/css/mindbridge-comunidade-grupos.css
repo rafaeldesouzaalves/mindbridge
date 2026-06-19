@@ -1,0 +1,46 @@
+/* ================================================================
+   MINDBRIDGE — COMUNIDADE: CARDS DE GRUPO CLICÁVEIS (CSS v1)
+   Arquivo: mindbridge-comunidade-grupos.css
+
+   Complementa mindbridge-comunidade.css. Cobre apenas o estado
+   visual extra dos cards de grupo agora que eles são clicáveis
+   (abrem o modal "Entrar no grupo"). Os modais .ge-* em si já
+   têm todo o CSS necessário dentro de mindbridge-comunidade.css
+   (seção 17) — nada precisa ser duplicado aqui.
+================================================================ */
+
+.com-grupo-clicavel { outline: none; }
+
+.com-grupo-clicavel:focus-visible {
+  box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.28);
+  border-color: var(--Roxo-Calmo);
+}
+
+/* Pequena dica visual de "abrir" no rodapé do card ao passar o mouse,
+   para deixar claro que o card é clicável antes mesmo do clique. */
+.com-grupo-clicavel .com-grupo-rodape::after {
+  content: "Ver grupo →";
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--Roxo-Calmo);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.18s, transform 0.18s;
+  white-space: nowrap;
+  margin-left: auto;
+}
+.com-grupo-clicavel:hover .com-grupo-rodape::after,
+.com-grupo-clicavel:focus-visible .com-grupo-rodape::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  /* Some no mobile para não disputar espaço com membros/selo,
+     que já quebram linha em telas pequenas */
+  .com-grupo-clicavel .com-grupo-rodape::after { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .com-grupo-clicavel .com-grupo-rodape::after { transition: none !important; }
+}

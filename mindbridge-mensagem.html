@@ -82,7 +82,8 @@
 
       <!-- ============================================================
            LAYOUT DE MENSAGENS — duas colunas
-           Esquerda: sidebar com busca, ações e lista de conversas
+           Esquerda: sidebar com abas (Diretas/Grupos), busca, ações
+           e lista de conversas ou grupos
            Direita: janela de chat ativo (ou estado vazio)
       ============================================================= -->
       <section class="msg-shell">
@@ -98,29 +99,71 @@
             </button>
           </div>
 
-          <!-- Campo de busca — filtra conversas já existentes pela lista -->
-          <div class="msg-busca">
-            <i class="ti ti-search"></i>
-            <input type="text" id="msgBuscaInput" placeholder="Buscar conversas...">
+          <!-- Abas internas: Diretas (conversas 1:1) / Grupos (grupos que participo) -->
+          <div class="msg-abas" role="tablist" aria-label="Tipo de conversa">
+            <button type="button" class="msg-aba ativa" id="abaBtnDiretas" data-aba="diretas" role="tab" aria-selected="true">
+              <i class="ti ti-message-circle"></i> Diretas
+            </button>
+            <button type="button" class="msg-aba" id="abaBtnGrupos" data-aba="grupos" role="tab" aria-selected="false">
+              <i class="ti ti-users"></i> Grupos
+              <span class="msg-aba-badge" id="abaGruposBadge" hidden>0</span>
+            </button>
           </div>
 
-          <!-- Chips de filtro rápido das conversas -->
-          <div class="msg-filtros" role="group" aria-label="Filtrar conversas">
-            <button class="msg-filtro-chip ativo" data-filtro-conversa="todas">Todas</button>
-            <button class="msg-filtro-chip" data-filtro-conversa="nao-lidas">Não lidas</button>
-            <button class="msg-filtro-chip" data-filtro-conversa="favoritas">Favoritas</button>
-          </div>
+          <!-- ===== CONTEÚDO DA ABA "DIRETAS" ===== -->
+          <div class="msg-aba-painel" id="painelDiretas">
 
-          <!-- Lista rolável de conversas recentes -->
-          <div class="msg-lista" id="msgLista">
-            <!-- Itens injetados via JS a partir do array CONTATOS -->
-          </div>
+            <!-- Campo de busca — filtra conversas já existentes pela lista -->
+            <div class="msg-busca">
+              <i class="ti ti-search"></i>
+              <input type="text" id="msgBuscaInput" placeholder="Buscar conversas...">
+            </div>
 
-          <!-- Estado vazio da lista (quando busca não encontra nada) -->
-          <div class="msg-lista-vazia" id="msgListaVazia" hidden>
-            <i class="ti ti-mood-empty"></i>
-            <p>Nenhuma conversa encontrada.</p>
+            <!-- Chips de filtro rápido das conversas -->
+            <div class="msg-filtros" role="group" aria-label="Filtrar conversas">
+              <button class="msg-filtro-chip ativo" data-filtro-conversa="todas">Todas</button>
+              <button class="msg-filtro-chip" data-filtro-conversa="nao-lidas">Não lidas</button>
+              <button class="msg-filtro-chip" data-filtro-conversa="favoritas">Favoritas</button>
+            </div>
+
+            <!-- Lista rolável de conversas recentes -->
+            <div class="msg-lista" id="msgLista">
+              <!-- Itens injetados via JS a partir do array CONTATOS -->
+            </div>
+
+            <!-- Estado vazio da lista (quando busca não encontra nada) -->
+            <div class="msg-lista-vazia" id="msgListaVazia" hidden>
+              <i class="ti ti-mood-empty"></i>
+              <p>Nenhuma conversa encontrada.</p>
+            </div>
+
           </div>
+          <!-- fim #painelDiretas -->
+
+          <!-- ===== CONTEÚDO DA ABA "GRUPOS" ===== -->
+          <div class="msg-aba-painel" id="painelGrupos" hidden>
+
+            <!-- Botão para procurar/entrar em novos grupos, sem sair da página -->
+            <div class="msg-grupos-topo">
+              <button type="button" class="msg-btn-procurar-grupos" id="btnProcurarGrupos">
+                <i class="ti ti-search"></i> Procurar grupos
+              </button>
+            </div>
+
+            <!-- Lista rolável dos grupos que o usuário já participa -->
+            <div class="msg-lista" id="listaGrupos">
+              <!-- Itens injetados via JS a partir de 'mb_grupos_participando' -->
+            </div>
+
+            <!-- Estado vazio: usuário ainda não participa de nenhum grupo -->
+            <div class="msg-lista-vazia" id="listaGruposVazia" hidden>
+              <i class="ti ti-users-group"></i>
+              <p>Você ainda não participa de nenhum grupo.</p>
+              <button type="button" class="msg-lista-vazia-btn" id="btnProcurarGruposVazio">Procurar grupos</button>
+            </div>
+
+          </div>
+          <!-- fim #painelGrupos -->
 
         </aside>
 
@@ -170,7 +213,7 @@
                   <i class="ti ti-dots-vertical"></i>
                 </button>
 
-                <!-- Menu suspenso de mais opções -->
+                <!-- Menu suspenso de mais opções (conversas diretas) -->
                 <div class="msg-menu-mais" id="msgMenuMais">
                   <button type="button" data-acao="favoritar" id="btnFavoritar">
                     <i class="ti ti-star"></i> <span>Favoritar conversa</span>
@@ -186,6 +229,22 @@
                   </button>
                   <button type="button" data-acao="denunciar" class="msg-menu-perigo">
                     <i class="ti ti-flag"></i> Denunciar conversa
+                  </button>
+                </div>
+
+                <!-- Menu suspenso de mais opções (grupos) -->
+                <div class="msg-menu-mais" id="msgMenuMaisGrupo">
+                  <button type="button" data-acao-grupo="info">
+                    <i class="ti ti-info-circle"></i> Ver informações do grupo
+                  </button>
+                  <button type="button" data-acao-grupo="silenciar">
+                    <i class="ti ti-bell-off"></i> Silenciar notificações
+                  </button>
+                  <button type="button" data-acao-grupo="sair" class="msg-menu-perigo">
+                    <i class="ti ti-door-exit"></i> Sair do grupo
+                  </button>
+                  <button type="button" data-acao-grupo="denunciar" class="msg-menu-perigo">
+                    <i class="ti ti-flag"></i> Denunciar grupo
                   </button>
                 </div>
               </div>
@@ -233,7 +292,7 @@
 
       <!-- ============================================================
            MODAL "ENCONTRAR PESSOAS"
-           Busca por nome/tema e inicia uma nova conversa.
+           Busca por nome/tema e inicia uma nova conversa direta.
       ============================================================= -->
       <div class="mp-overlay" id="mpOverlay" role="dialog" aria-modal="true" aria-labelledby="mpTitulo">
         <div class="mp-modal">
@@ -275,6 +334,50 @@
             <div class="mp-vazio" id="mpVazio" hidden>
               <i class="ti ti-mood-empty"></i>
               <p>Ninguém encontrado com esse nome.</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ============================================================
+           MODAL "PROCURAR GRUPOS"
+           Mesmo padrão visual do modal "Encontrar pessoas" (popover
+           compacto ancorado perto do botão), só que lista os grupos
+           de apoio da MindBridge — os mesmos da página Comunidade —
+           e permite entrar direto, sem precisar voltar para lá.
+      ============================================================= -->
+      <div class="mp-overlay" id="bgOverlay" role="dialog" aria-modal="true" aria-labelledby="bgTitulo">
+        <div class="mp-modal">
+
+          <div class="mp-cabecalho">
+            <div class="mp-cabecalho-icone" aria-hidden="true"><i class="ti ti-users-group"></i></div>
+            <div>
+              <h2 id="bgTitulo">Procurar grupos</h2>
+              <p>Encontre um grupo de apoio para o que você está sentindo</p>
+            </div>
+            <button class="mp-fechar" id="bgFechar" aria-label="Fechar"><i class="ti ti-x"></i></button>
+          </div>
+
+          <div class="mp-corpo">
+
+            <!-- Campo de busca de grupos -->
+            <div class="mp-busca">
+              <i class="ti ti-search"></i>
+              <input type="text" id="bgBuscaInput" placeholder="Buscar grupo por nome ou tema...">
+            </div>
+
+            <!-- Resultados da busca de grupos -->
+            <div class="mp-resultados" id="bgResultados">
+              <!-- Itens injetados via JS a partir de TODOS_GRUPOS -->
+            </div>
+
+            <!-- Estado vazio -->
+            <div class="mp-vazio" id="bgVazio" hidden>
+              <i class="ti ti-mood-empty"></i>
+              <p>Nenhum grupo encontrado.</p>
             </div>
 
           </div>
@@ -352,7 +455,7 @@
     <!-- JS global: menu mobile, scroll do header, animação reveal, botão topo -->
     <script src="MindBridge/assets/js/mindbridge-home.js" defer></script>
 
-    <!-- JS desta página: conversas, busca de pessoas, chat, chamadas -->
+    <!-- JS desta página: abas Diretas/Grupos, conversas, grupos, busca, chat, chamadas -->
     <script src="MindBridge/assets/js/mindbridge-mensagens.js" defer></script>
 
   </body>

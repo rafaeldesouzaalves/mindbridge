@@ -1,4 +1,4 @@
-  /* ================================================================
+/* ================================================================
     MINDBRIDGE — COMUNIDADE (CSS v3)
     Complementa mindbridge-home.css com estilos exclusivos desta
     página. Carregado depois do arquivo base no HTML.
@@ -21,8 +21,9 @@
     14. Animações extras (pulse, shimmer, entrada)
     15. Responsividade mobile
     16. Acessibilidade (prefers-reduced-motion)
-    17. Modal "Entrar no grupo"          ← NOVO
-    18. Modal "Chat do grupo"            ← NOVO
+    17. Modal "Entrar no grupo"
+    18. Modal "Chat do grupo"
+    19. Botão flutuante — acesso rápido às Mensagens   ← NOVO
   ================================================================ */
 
 
@@ -890,6 +891,10 @@
     .ge-overlay.aberto .ge-modal { transform: translateY(0); }
     .gc-overlay .gc-modal   { transform: translateY(100%); }
     .gc-overlay.aberto .gc-modal { transform: translateY(0); }
+
+    /* Botão flutuante de mensagens sobe um pouco no mobile para não
+       colidir com a barra de urgência ou gestos do navegador */
+    .btn-mensagens-flutuante { bottom: 18px; left: 18px; width: 52px; height: 52px; font-size: 22px; }
   }
   @media (max-width: 480px) {
     .com-hero h1             { font-size: 24px; }
@@ -935,6 +940,8 @@
     .com-grupo-card.card-novo-entrada,
     .comunidade-card.post-novo-entrada,
     .resposta-enviada   { animation: none; }
+    .btn-mensagens-flutuante,
+    .btn-mensagens-flutuante:hover { transition: none; animation: none; }
   }
 
 
@@ -1427,4 +1434,53 @@
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+  }
+
+
+  /* ============================================================
+    19. BOTÃO FLUTUANTE — ACESSO RÁPIDO ÀS MENSAGENS   ← NOVO
+    Fica fixo no canto inferior ESQUERDO da tela (o "btn-topo" do
+    CSS global já ocupa o canto direito). Não depende do header,
+    então continua visível mesmo com o menu mobile fechado.
+  ============================================================ */
+
+  /* Botão circular roxo, sempre visível durante o scroll */
+  .btn-mensagens-flutuante {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    z-index: 900; /* abaixo dos modais (1100+), acima do conteúdo normal */
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    text-decoration: none;
+    box-shadow: 0 10px 28px rgba(90, 72, 200, 0.35);
+    transition: background-color var(--dur-rapido),
+                transform var(--dur-rapido) var(--ease-bounce),
+                box-shadow var(--dur-rapido);
+  }
+  .btn-mensagens-flutuante:hover {
+    background-color: #3a2f9e;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 14px 34px rgba(90, 72, 200, 0.45);
+  }
+  .btn-mensagens-flutuante:active { transform: translateY(0) scale(0.97); }
+
+  /* Pequeno selo/ponto no canto do botão, só para indicar
+     visualmente que é um atalho de comunicação (decorativo) */
+  .btn-mensagens-flutuante-selo {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--Verde-Esperança);
+    border: 2px solid white;
   }
