@@ -344,7 +344,7 @@ input:focus-visible {
 
 
 /* ============================================================
-   6. HERO (primeira seção — texto + quiz)
+   6. HERO (primeira seção — texto + chamada para o quiz)
 ============================================================ */
 
 .hero {
@@ -406,7 +406,7 @@ input:focus-visible {
     box-shadow: 0 8px 24px rgba(83, 74, 183, 0.3);
 }
 
-/* --- Card do Quiz --- */
+/* --- Card de chamada para o quiz completo --- */
 
 .hero-quiz {
     flex: 1;
@@ -431,88 +431,59 @@ input:focus-visible {
     transform: translateY(-4px);
 }
 
+/* Conteúdo do card de chamada (CTA) para o quiz de triagem completo.
+   Substitui o antigo mini-quiz de 1 pergunta: agora a home apenas
+   convida a pessoa a ir para mindbridge-quiz.html, onde o quiz
+   completo de 8 passos é respondido. */
+.quiz-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+}
+
+.quiz-cta-icone {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--Lavanda-Suave);
+    color: var(--Roxo-Calmo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 4px;
+}
+
 .quiz-titulo {
     font-family: 'Lora', serif;
     font-size: 18px;
     color: var(--Roxo-Calmo);
-    margin-bottom: 18px;
-    text-align: center;
 }
 
-.quiz-opcoes {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.quiz-btn {
-    background-color: var(--Lavanda-Suave);
-    border: 1px solid var(--Borda-Suave);
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 14px;
-    text-align: left;
-    color: #444;
-    cursor: pointer;
-    transition: all 0.25s;
-}
-
-.quiz-btn:hover {
-    background-color: #EDE9F9;
-    border-color: var(--Roxo-Calmo);
-    transform: translateX(4px); /* pequeno deslize ao passar o mouse */
-}
-
-/* Estado "selecionado" — aplicado via JS quando o usuário clica numa opção */
-.quiz-btn.selecionado {
-    background-color: var(--Roxo-Calmo);
-    border-color: var(--Roxo-Calmo);
-    color: white;
-}
-
-.quiz-rodape {
-    margin-top: 16px;
-    font-size: 12px;
-    color: #aaa;
-    text-align: center;
-}
-
-/* --- Resultado do quiz (aparece após escolher uma opção) --- */
-
-.quiz-resultado {
-    display: none; /* JS troca para "flex" depois da resposta */
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    text-align: center;
-    animation: fadeUp 0.4s ease both;
-}
-
-.quiz-resultado.visivel {
-    display: flex;
-}
-
-.quiz-resultado p {
+.quiz-cta-texto {
     font-size: 14px;
     color: var(--Texto-Suave);
     line-height: 1.6;
 }
 
-.quiz-resultado .btn-comecar {
+/* Botão "Iniciar quiz de triagem": reaproveita .btn-comecar mas
+   centralizado dentro do card (sobrescreve align-self herdado) */
+.quiz-cta-btn {
     align-self: center;
-    margin-top: 4px;
+    margin-top: 6px;
 }
 
-.quiz-resultado-icone {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background-color: var(--Verde-Menta);
-    color: var(--Verde-Esperança);
+.quiz-rodape {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #aaa;
+    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    gap: 5px;
 }
 
 

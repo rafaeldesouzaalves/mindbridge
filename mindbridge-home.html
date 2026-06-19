@@ -101,34 +101,26 @@
           </a>
         </div>
 
-        <!-- Card do quiz de triagem emocional -->
+        <!-- Card de chamada para o quiz de triagem emocional completo -->
         <div class="hero-quiz">
           <div class="quiz-card" id="quizCard">
 
-            <!-- Pergunta inicial do quiz -->
-            <div id="quizPergunta">
-              <p class="quiz-titulo">Como você está se sentindo hoje?</p>
-
-              <div class="quiz-opcoes" id="quizOpcoes">
-                <button class="quiz-btn" data-resultado="ansioso">😔 Ansioso</button>
-                <button class="quiz-btn" data-resultado="esgotado">😴 Esgotado</button>
-                <button class="quiz-btn" data-resultado="triste">😢 Triste</button>
-                <button class="quiz-btn" data-resultado="irritado">😤 Irritado</button>
-                <button class="quiz-btn" data-resultado="perdido">😕 Perdido</button>
-                <button class="quiz-btn" data-resultado="curioso">🙂 Bem, só curioso</button>
+            <div class="quiz-cta">
+              <div class="quiz-cta-icone">
+                <i class="ti ti-heart-handshake"></i>
               </div>
+              <p class="quiz-titulo">Como você está se sentindo hoje?</p>
+              <p class="quiz-cta-texto">
+                Responda algumas perguntas rápidas e anônimas para receber
+                indicações pensadas especialmente para o seu momento.
+              </p>
+
+              <a href="mindbridge-quiz.html" class="btn-comecar quiz-cta-btn">
+                <i class="ti ti-arrow-right"></i>
+                Iniciar quiz de triagem
+              </a>
 
               <p class="quiz-rodape"><i class="ti ti-lock"></i> Suas respostas são anônimas e seguras.</p>
-            </div>
-
-            <!-- Resultado exibido após o clique (texto trocado via JS) -->
-            <div class="quiz-resultado" id="quizResultado">
-              <div class="quiz-resultado-icone">
-                <i class="ti ti-check"></i>
-              </div>
-              <p id="quizResultadoTexto">Obrigado por compartilhar. Preparamos algumas indicações para você.</p>
-              <a href="#urgencia" class="btn-comecar">Ver indicações</a>
-              <button class="quiz-btn" id="quizRefazer" style="text-align:center;">Refazer o quiz</button>
             </div>
 
           </div>
@@ -207,14 +199,14 @@
           <i class="ti ti-leaf"></i>
           <h3>Estou Curioso</h3>
           <p>Quero explorar técnicas e aprender sobre saúde mental.</p>
-          <a href="#"><i class="ti ti-arrow-right"></i> Explorar Biblioteca</a>
+          <a href="mindbridge-home.html#biblioteca"><i class="ti ti-arrow-right"></i> Explorar Biblioteca</a>
         </div>
 
         <div class="urgencia-card reveal">
           <i class="ti ti-stethoscope"></i>
           <h3>Falar com Profissional</h3>
           <p>Psicólogos e terapeutas prontos para te ouvir com sigilo e cuidado.</p>
-          <a href="#"><i class="ti ti-arrow-right"></i> Ver profissionais</a>
+          <a href="mindbridge-home.html#profissionais"><i class="ti ti-arrow-right"></i> Ver profissionais</a>
         </div>
 
         <div class="urgencia-card reveal">
