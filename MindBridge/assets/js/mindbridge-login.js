@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
    Abre o popup OAuth do Google. Ao confirmar, envia o
    credential token para o backend PHP validar.
 ============================================================= */
-const CLIENT_ID = 'SEU_CLIENT_ID_AQUI.apps.googleusercontent.com'; // ← substitua
+const CLIENT_ID = '457534457639-p83hooh96soj19g6mol3htsjjl6725g1.apps.googleusercontent.com'; // ← substitua
 
 const btnGoogle = document.getElementById('btn-google');
 
