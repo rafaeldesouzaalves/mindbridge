@@ -1,1429 +1,1430 @@
-/* ================================================================
-   MINDBRIDGE — COMUNIDADE (CSS v3)
-   Complementa mindbridge-home.css com estilos exclusivos desta
-   página. Carregado depois do arquivo base no HTML.
-
-   ÍNDICE
-   ──────
-   1.  Variáveis de animação
-   2.  Avatar / perfil no header
-   3.  Hero da comunidade
-   4.  Filtros de tema (chips)
-   5.  Grupos de apoio (grade + cards)
-   6.  Modal "Criar grupo"
-   8.  Card criado dinamicamente
-   9.  Feed da comunidade
-   10. Formulário "Nova publicação"
-   11. Cards do feed (posts)
-   12. Respostas e lista com scroll
-   13. Seção de urgência
-   14. Animações extras (pulse, shimmer, entrada)
-   15. Responsividade mobile
-   16. Acessibilidade (prefers-reduced-motion)
-   17. Modal "Entrar no grupo"          ← NOVO
-   18. Modal "Chat do grupo"            ← NOVO
-================================================================ */
-
-
-/* ============================================================
-   1. VARIÁVEIS DE ANIMAÇÃO
-   Centraliza durações e easings usados em todo o arquivo.
-============================================================ */
-:root {
-  --dur-rapido:  0.18s;
-  --dur-medio:   0.28s;
-  --dur-lento:   0.42s;
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-saida:  cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-
-/* ============================================================
-   2. AVATAR / PERFIL NO HEADER
-============================================================ */
-.nav-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background-color: var(--Lavanda-Suave);
-  border: 1.5px solid var(--Borda-Suave);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--Roxo-Calmo);
-  font-size: 18px;
-  flex-shrink: 0;
-  transition: background-color var(--dur-rapido), color var(--dur-rapido),
-              transform var(--dur-rapido) var(--ease-bounce);
-}
-.nav-avatar:hover {
-  background-color: var(--Roxo-Calmo);
-  color: white;
-  border-color: transparent;
-  transform: scale(1.08);
-}
-body:not(.logado) .nav-avatar { display: none; }
-body:not(.logado) .btn-entrar { display: inline-flex; }
-body.logado .btn-entrar { display: none; }
-body.logado .nav-avatar { display: flex; }
-
-
-/* ============================================================
-   3. HERO DA COMUNIDADE
-============================================================ */
-.com-hero {
-  padding: 72px 40px 52px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  background: radial-gradient(ellipse 80% 60% at 50% -10%,
-              rgba(90, 72, 200, 0.07) 0%, transparent 70%);
-}
-.com-hero-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: #EDE9F9;
-  color: var(--Roxo-Calmo);
-  font-size: 13px;
-  font-weight: 500;
-  padding: 6px 16px;
-  border-radius: 20px;
-  animation: fadeSubir var(--dur-lento) var(--ease-saida) both;
-}
-.com-hero-tag .ponto-online {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--Verde-Esperança);
-  animation: pulsoPonto 2s ease-in-out infinite;
-}
-.com-hero h1 {
-  font-family: 'Lora', serif;
-  font-size: 40px;
-  font-weight: 500;
-  color: var(--Roxo-Calmo);
-  line-height: 1.22;
-  max-width: 700px;
-  animation: fadeSubir var(--dur-lento) 0.08s var(--ease-saida) both;
-}
-.com-hero p {
-  font-size: 16px;
-  color: var(--Texto-Suave);
-  max-width: 560px;
-  line-height: 1.75;
-  animation: fadeSubir var(--dur-lento) 0.14s var(--ease-saida) both;
-}
-.com-hero-regras {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--Texto-Suave);
-  background-color: var(--Verde-Menta);
-  padding: 8px 18px;
-  border-radius: 20px;
-  margin-top: 4px;
-  animation: fadeSubir var(--dur-lento) 0.20s var(--ease-saida) both;
-}
-.com-hero-regras i { color: var(--Verde-Esperança); font-size: 16px; }
-.com-hero-stats {
-  display: flex;
-  gap: 32px;
-  margin-top: 8px;
-  animation: fadeSubir var(--dur-lento) 0.26s var(--ease-saida) both;
-}
-.com-hero-stat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.com-hero-stat strong {
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--Roxo-Calmo);
-  font-family: 'Lora', serif;
-}
-.com-hero-stat span { font-size: 12px; color: var(--Texto-Suave); }
-.com-hero-stat-divider { width: 1px; height: 32px; background-color: var(--Borda-Suave); align-self: center; }
-
-
-/* ============================================================
-   4. FILTROS DE TEMA (chips horizontais)
-============================================================ */
-.com-filtros-wrapper { padding: 0 40px; margin-bottom: 40px; }
-.com-filtros {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 4px 2px 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-  scrollbar-width: none;
-}
-.com-filtros::-webkit-scrollbar { display: none; }
-.com-filtro-btn {
-  flex-shrink: 0;
-  background-color: white;
-  border: 1.5px solid var(--Borda-Suave);
-  color: var(--Texto-Suave);
-  font-size: 13.5px;
-  font-weight: 500;
-  padding: 9px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: border-color var(--dur-rapido), color var(--dur-rapido),
-              background-color var(--dur-rapido),
-              transform var(--dur-rapido) var(--ease-bounce),
-              box-shadow var(--dur-rapido);
-  white-space: nowrap;
-}
-.com-filtro-btn:hover {
-  border-color: var(--Roxo-Calmo);
-  color: var(--Roxo-Calmo);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(90, 72, 200, 0.12);
-}
-.com-filtro-btn.ativo {
-  background-color: var(--Roxo-Calmo);
-  border-color: var(--Roxo-Calmo);
-  color: white;
-  box-shadow: 0 4px 14px rgba(90, 72, 200, 0.25);
-}
-
-
-/* ============================================================
-   5. GRUPOS DE APOIO (grade + cards)
-============================================================ */
-.com-grupos { padding: 0 40px 88px; }
-.com-secao-cabecalho {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.com-secao-cabecalho h2 {
-  font-family: 'Lora', serif;
-  font-size: 30px;
-  font-weight: 500;
-  color: var(--Roxo-Calmo);
-}
-.com-secao-cabecalho p { font-size: 15px; color: var(--Texto-Suave); line-height: 1.65; }
-.com-grupos-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.com-grupo-card {
-  background-color: white;
-  border: 1px solid var(--Borda-Suave);
-  border-radius: 18px;
-  padding: 24px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  cursor: pointer;
-  transition: transform var(--dur-medio) var(--ease-saida),
-              box-shadow var(--dur-medio),
-              border-color var(--dur-medio);
-  text-align: left;
-  overflow: hidden;
-}
-.com-grupo-card:hover {
-  transform: translateY(-7px);
-  box-shadow: 0 16px 40px rgba(90, 72, 200, 0.14);
-  border-color: var(--Roxo-Calmo);
-}
-.com-grupo-icone {
-  width: 46px;
-  height: 46px;
-  border-radius: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 21px;
-  color: white;
-  flex-shrink: 0;
-  transition: transform var(--dur-rapido) var(--ease-bounce);
-}
-.com-grupo-card:hover .com-grupo-icone { transform: scale(1.12) rotate(-4deg); }
-.com-grupo-icone.cor-ansiedade       { background-color: var(--Roxo-Calmo); }
-.com-grupo-icone.cor-burnout         { background-color: var(--Azul-Confiança); }
-.com-grupo-icone.cor-luto            { background-color: #8B7BC4; }
-.com-grupo-icone.cor-sono            { background-color: var(--Verde-Esperança); }
-.com-grupo-icone.cor-autoestima      { background-color: #E6A817; }
-.com-grupo-icone.cor-relacionamentos { background-color: #E05C8A; }
-.com-grupo-icone.cor-outro           { background-color: #888; }
-.com-grupo-icone.cor-criar           { background-color: var(--Roxo-Calmo); }
-.com-grupo-card h3 {
-  font-family: 'Lora', serif;
-  font-size: 17px;
-  color: #333;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.com-grupo-card p {
-  font-size: 13.5px;
-  color: var(--Texto-Suave);
-  line-height: 1.55;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-.com-grupo-rodape {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12.5px;
-  color: #aaa;
-  padding-top: 10px;
-  border-top: 1px solid var(--Lavanda-Suave);
-  flex-wrap: wrap;
-  gap: 4px;
-}
-.com-grupo-rodape .com-grupo-membros {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
-}
-.com-grupo-selo {
-  color: var(--Verde-Esperança);
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
-}
-.com-grupo-card-criar {
-  border-style: dashed;
-  border-color: var(--Roxo-Calmo);
-  background-color: #F5F2FE;
-  outline: none;
-}
-.com-grupo-card-criar:hover,
-.com-grupo-card-criar:focus-visible {
-  transform: translateY(-7px);
-  box-shadow: 0 16px 40px rgba(90, 72, 200, 0.16);
-  background-color: #EDE8FC;
-}
-.com-grupo-criar-cta {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--Roxo-Calmo);
-}
-.com-grupo-criar-cta i { font-size: 14px; transition: transform var(--dur-rapido); }
-.com-grupo-card-criar:hover .com-grupo-criar-cta i { transform: translateX(4px); }
-.com-grupo-temas-lista { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 2px; }
-.com-grupo-tag-tema {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--Roxo-Calmo);
-  background-color: var(--Lavanda-Suave);
-  padding: 2px 9px;
-  border-radius: 20px;
-  display: inline-block;
-}
-.com-grupo-novo-badge {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--Verde-Esperança);
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-.com-grupo-card.card-novo-entrada {
-  animation: cardEntrada var(--dur-lento) var(--ease-bounce) both;
-}
-@keyframes cardEntrada {
-  from { opacity: 0; transform: translateY(20px) scale(0.95); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-
-/* ============================================================
-   6. MODAL "CRIAR GRUPO"
-============================================================ */
-.cg-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.48);
-  z-index: 1100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--dur-medio) ease;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-.cg-overlay.aberto { opacity: 1; pointer-events: all; }
-.cg-modal {
-  background-color: white;
-  border-radius: 22px;
-  width: 100%;
-  max-width: 520px;
-  display: flex;
-  flex-direction: column;
-  transform: translateY(20px) scale(0.97);
-  transition: transform var(--dur-medio) var(--ease-saida), opacity var(--dur-medio) ease;
-  opacity: 0;
-  max-height: 92vh;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
-}
-.cg-overlay.aberto .cg-modal { transform: translateY(0) scale(1); opacity: 1; }
-.cg-cabecalho {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 22px 24px 18px;
-  border-bottom: 1px solid var(--Borda-Suave);
-  flex-shrink: 0;
-}
-.cg-cabecalho-icone {
-  width: 42px;
-  height: 42px;
-  border-radius: 13px;
-  background-color: var(--Lavanda-Suave);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 21px;
-  color: var(--Roxo-Calmo);
-  flex-shrink: 0;
-}
-.cg-cabecalho h2 {
-  font-family: 'Lora', serif;
-  font-size: 17px;
-  font-weight: 500;
-  color: var(--Roxo-Calmo);
-  margin-bottom: 3px;
-}
-.cg-cabecalho p { font-size: 12.5px; color: var(--Texto-Suave); }
-.cg-fechar {
-  margin-left: auto;
-  flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border: none;
-  background: none;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 19px;
-  color: var(--Texto-Suave);
-  cursor: pointer;
-  transition: background-color var(--dur-rapido), color var(--dur-rapido), transform var(--dur-rapido);
-}
-.cg-fechar:hover {
-  background-color: var(--Lavanda-Suave);
-  color: var(--Roxo-Calmo);
-  transform: rotate(90deg);
-}
-.cg-corpo {
-  padding: 22px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  overflow-y: auto;
-  flex: 1;
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: var(--Borda-Suave) transparent;
-}
-.cg-corpo::-webkit-scrollbar { width: 4px; }
-.cg-corpo::-webkit-scrollbar-track { background: transparent; }
-.cg-corpo::-webkit-scrollbar-thumb { background-color: var(--Borda-Suave); border-radius: 4px; }
-.cg-campo { display: flex; flex-direction: column; gap: 7px; }
-.cg-campo label { font-size: 13px; font-weight: 500; color: #555; }
-.cg-obrig   { color: #C0392B; }
-.cg-opcional { font-size: 11px; color: #bbb; font-weight: 400; }
-.cg-campo input,
-.cg-campo textarea,
-.cg-campo select {
-  width: 100%;
-  padding: 10px 13px;
-  border: 1.5px solid var(--Borda-Suave);
-  border-radius: 11px;
-  font-size: 14px;
-  font-family: inherit;
-  color: #444;
-  background-color: white;
-  outline: none;
-  transition: border-color var(--dur-rapido), box-shadow var(--dur-rapido);
-  resize: vertical;
-  max-width: 100%;
-}
-.cg-campo input:focus,
-.cg-campo textarea:focus,
-.cg-campo select:focus {
-  border-color: var(--Roxo-Calmo);
-  box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.1);
-}
-.cg-campo input.com-erro,
-.cg-campo textarea.com-erro {
-  border-color: #E74C3C;
-  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
-}
-.cg-campo-rodape { display: flex; justify-content: space-between; align-items: center; min-height: 16px; }
-.cg-erro    { font-size: 12px; color: #C0392B; }
-.cg-contador { font-size: 11px; color: #ccc; }
-.cg-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.cg-temas { display: flex; flex-wrap: wrap; gap: 8px; }
-.cg-tema {
-  border: 1.5px solid var(--Borda-Suave);
-  border-radius: 20px;
-  padding: 7px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--Texto-Suave);
-  background-color: white;
-  cursor: pointer;
-  transition: border-color var(--dur-rapido), color var(--dur-rapido),
-              background-color var(--dur-rapido),
-              transform var(--dur-rapido) var(--ease-bounce);
-  white-space: nowrap;
-}
-.cg-tema:hover { border-color: var(--Roxo-Calmo); color: var(--Roxo-Calmo); transform: scale(1.05); }
-.cg-tema.ativo { background-color: var(--Lavanda-Suave); border-color: var(--Roxo-Calmo); color: var(--Roxo-Calmo); }
-.cg-privacidade { display: flex; gap: 10px; }
-.cg-priv {
-  flex: 1;
-  border: 1.5px solid var(--Borda-Suave);
-  border-radius: 13px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  background-color: white;
-  text-align: left;
-  transition: border-color var(--dur-rapido), background-color var(--dur-rapido), transform var(--dur-rapido);
-}
-.cg-priv:hover { border-color: var(--Roxo-Calmo); transform: translateY(-1px); }
-.cg-priv i       { font-size: 20px; color: var(--Texto-Suave); flex-shrink: 0; }
-.cg-priv div     { display: flex; flex-direction: column; gap: 2px; }
-.cg-priv strong  { font-size: 13px; font-weight: 500; color: #444; }
-.cg-priv span    { font-size: 11px; color: var(--Texto-Suave); line-height: 1.4; }
-.cg-priv.ativo   { border-color: var(--Roxo-Calmo); background-color: var(--Lavanda-Suave); }
-.cg-priv.ativo i,
-.cg-priv.ativo strong { color: var(--Roxo-Calmo); }
-.cg-rodape {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 16px 24px 20px;
-  border-top: 1px solid var(--Borda-Suave);
-  flex-shrink: 0;
-}
-.cg-btn-cancelar {
-  background: none;
-  border: 1.5px solid var(--Borda-Suave);
-  border-radius: 11px;
-  padding: 10px 22px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--Texto-Suave);
-  cursor: pointer;
-  transition: border-color var(--dur-rapido), color var(--dur-rapido);
-}
-.cg-btn-cancelar:hover { border-color: var(--Roxo-Calmo); color: var(--Roxo-Calmo); }
-.cg-btn-criar {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background-color: var(--Roxo-Calmo);
-  color: white;
-  border: none;
-  border-radius: 11px;
-  padding: 10px 26px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color var(--dur-rapido),
-              transform var(--dur-rapido) var(--ease-bounce),
-              box-shadow var(--dur-rapido);
-}
-.cg-btn-criar:hover {
-  background-color: #3a2f9e;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(90, 72, 200, 0.3);
-}
-.cg-btn-criar:active { transform: translateY(0); }
-.cg-btn-criar.carregando { opacity: 0.7; pointer-events: none; }
-.cg-btn-criar.carregando i { animation: girar 0.8s linear infinite; }
-
-
-/* ============================================================
-   7. SELEÇÃO DE ÍCONE dentro do modal
-============================================================ */
-.cg-icones { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
-.cg-icone-btn {
-  aspect-ratio: 1;
-  border: 1.5px solid var(--Borda-Suave);
-  border-radius: 11px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: var(--Texto-Suave);
-  cursor: pointer;
-  transition: border-color var(--dur-rapido), color var(--dur-rapido),
-              background-color var(--dur-rapido),
-              transform var(--dur-rapido) var(--ease-bounce);
-}
-.cg-icone-btn:hover {
-  border-color: var(--Roxo-Calmo);
-  color: var(--Roxo-Calmo);
-  background-color: var(--Lavanda-Suave);
-  transform: scale(1.1);
-}
-.cg-icone-btn.ativo {
-  background-color: var(--Lavanda-Suave);
-  border-color: var(--Roxo-Calmo);
-  color: var(--Roxo-Calmo);
-  box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.12);
-  transform: scale(1.08);
-}
-.cg-icone-preview { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-.cg-icone-preview-badge {
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  background-color: var(--Roxo-Calmo);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  color: white;
-  flex-shrink: 0;
-  transition: background-color var(--dur-medio);
-}
-.cg-icone-preview span { font-size: 12px; color: var(--Texto-Suave); }
-
-
-/* ============================================================
-   9. FEED DA COMUNIDADE
-============================================================ */
-.com-feed { padding: 0 40px 60px; display: flex; flex-direction: column; align-items: center; }
-.com-feed-coluna { width: 100%; max-width: 680px; display: flex; flex-direction: column; gap: 20px; }
-.com-feed .comunidade-card { flex: none; width: 100%; scroll-snap-align: unset; }
-.com-feed-carregar {
-  align-self: center;
-  margin-top: 12px;
-  background-color: white;
-  border: 1.5px solid var(--Borda-Suave);
-  color: var(--Roxo-Calmo);
-  font-size: 14px;
-  font-weight: 500;
-  padding: 12px 32px;
-  border-radius: 11px;
-  cursor: pointer;
-  transition: background-color var(--dur-rapido), color var(--dur-rapido),
-              border-color var(--dur-rapido),
-              transform var(--dur-rapido) var(--ease-bounce),
-              box-shadow var(--dur-rapido);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.com-feed-carregar:hover {
-  background-color: var(--Roxo-Calmo);
-  color: white;
-  border-color: transparent;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(90, 72, 200, 0.2);
-}
-.com-feed-carregar.carregado i { animation: girar 0.4s ease both; }
-.com-feed-incentivo {
-  text-align: center;
-  font-size: 13px;
-  color: var(--Texto-Suave);
-  max-width: 420px;
-  margin: 4px auto 0;
-  line-height: 1.65;
-}
-
-
-/* ============================================================
-   10. FORMULÁRIO "NOVA PUBLICAÇÃO"
-============================================================ */
-.com-novo-post {
-  background-color: white;
-  border: 1px solid var(--Borda-Suave);
-  border-radius: 18px;
-  padding: 20px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  transition: box-shadow var(--dur-medio), border-color var(--dur-medio);
-}
-.com-novo-post:focus-within {
-  box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.08);
-  border-color: rgba(90, 72, 200, 0.3);
-}
-.com-novo-post-topo { display: flex; align-items: center; gap: 12px; }
-.com-novo-post textarea {
-  width: 100%;
-  min-height: 68px;
-  border: 1px solid var(--Borda-Suave);
-  border-radius: 12px;
-  padding: 12px 14px;
-  font-family: inherit;
-  font-size: 14px;
-  color: #444;
-  resize: vertical;
-  outline: none;
-  transition: border-color var(--dur-rapido), box-shadow var(--dur-rapido);
-  max-width: 100%;
-}
-.com-novo-post textarea:focus {
-  border-color: var(--Roxo-Calmo);
-  box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.09);
-}
-.com-novo-post-rodape {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.com-novo-post select {
-  border: 1px solid var(--Borda-Suave);
-  border-radius: 9px;
-  padding: 7px 10px;
-  font-size: 13px;
-  color: var(--Roxo-Calmo);
-  background-color: var(--Lavanda-Suave);
-  font-family: inherit;
-  cursor: pointer;
-  transition: border-color var(--dur-rapido);
-}
-.com-novo-post select:focus { border-color: var(--Roxo-Calmo); outline: none; }
-.com-novo-post-anonimo {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--Texto-Suave);
-  cursor: pointer;
-}
-.com-novo-post-anonimo input {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--Roxo-Calmo);
-  cursor: pointer;
-}
-.com-novo-post-publicar {
-  background-color: var(--Roxo-Calmo);
-  color: white;
-  border: none;
-  border-radius: 9px;
-  padding: 9px 24px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color var(--dur-rapido),
-              transform var(--dur-rapido) var(--ease-bounce),
-              box-shadow var(--dur-rapido);
-  margin-left: auto;
-}
-.com-novo-post-publicar:hover:not(:disabled) {
-  background-color: #3a2f9e;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(90, 72, 200, 0.28);
-}
-.com-novo-post-publicar:disabled { opacity: 0.45; cursor: not-allowed; }
-.com-novo-post-contador { font-size: 11px; color: #ccc; text-align: right; margin-top: -6px; }
-.com-novo-post-contador.proximo-limite { color: #E6A817; }
-.com-novo-post-contador.no-limite      { color: #E74C3C; }
-
-
-/* ============================================================
-   11. CARDS DO FEED (posts)
-============================================================ */
-.comunidade-card.post-novo-entrada {
-  animation: cardEntrada var(--dur-lento) var(--ease-bounce) both;
-}
-.com-feed .comunidade-card {
-  transition: box-shadow var(--dur-medio), border-color var(--dur-medio);
-}
-.com-feed .comunidade-card:hover {
-  box-shadow: 0 6px 24px rgba(90, 72, 200, 0.1);
-  border-color: rgba(90, 72, 200, 0.2);
-}
-.btn-abraco {
-  transition: transform var(--dur-rapido) var(--ease-bounce),
-              background-color var(--dur-rapido),
-              color var(--dur-rapido);
-}
-.btn-abraco:hover:not(.enviado) { transform: scale(1.04); }
-.btn-abraco.enviado {
-  color: #E05C8A;
-  background-color: #FDF0F5;
-  border-color: #F5C6D8;
-  pointer-events: none;
-}
-.btn-abraco.enviado i { animation: pulsoCoracao 0.4s var(--ease-bounce); }
-
-
-/* ============================================================
-   12. RESPOSTAS E LISTA COM SCROLL
-============================================================ */
-.respostas-lista {
-  max-height: 180px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding-right: 4px;
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: var(--Borda-Suave) transparent;
-}
-.respostas-lista::-webkit-scrollbar { width: 4px; }
-.respostas-lista::-webkit-scrollbar-track { background: transparent; }
-.respostas-lista::-webkit-scrollbar-thumb { background-color: var(--Borda-Suave); border-radius: 4px; }
-.respostas-lista::-webkit-scrollbar-thumb:hover { background-color: var(--Roxo-Calmo); }
-.resposta-enviada {
-  font-size: 13px;
-  color: var(--Texto-Suave);
-  background-color: var(--Lavanda-Suave);
-  border-radius: 9px;
-  padding: 7px 11px;
-  line-height: 1.5;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  animation: fadeSubir 0.2s var(--ease-saida) both;
-}
-.resposta-enviada strong { color: var(--Roxo-Calmo); font-weight: 500; }
-
-
-/* ============================================================
-   13. SEÇÃO DE URGÊNCIA
-============================================================ */
-.urgencia-card {
-  transition: transform var(--dur-medio) var(--ease-saida), box-shadow var(--dur-medio);
-}
-.urgencia-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1); }
-
-
-/* ============================================================
-   14. ANIMAÇÕES EXTRAS
-============================================================ */
-@keyframes fadeSubir {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0);    }
-}
-@keyframes pulsoPonto {
-  0%, 100% { box-shadow: 0 0 0 0   rgba(29, 158, 117, 0.5); }
-  50%      { box-shadow: 0 0 0 6px rgba(29, 158, 117, 0);   }
-}
-@keyframes pulsoCoracao {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.4); }
-  100% { transform: scale(1); }
-}
-@keyframes girar {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-@keyframes shimmer {
-  from { background-position: -400px 0; }
-  to   { background-position:  400px 0; }
-}
-.skeleton {
-  background: linear-gradient(90deg, #f0eef8 25%, #e4e0f4 50%, #f0eef8 75%);
-  background-size: 800px 100%;
-  animation: shimmer 1.4s ease-in-out infinite;
-  border-radius: 8px;
-}
-
-
-/* ============================================================
-   15. RESPONSIVIDADE MOBILE
-============================================================ */
-@media (max-width: 1024px) { .com-grupos-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 768px) {
-  .com-hero             { padding: 48px 20px 36px; }
-  .com-hero h1          { font-size: 28px; }
-  .com-hero p           { font-size: 15px; }
-  .com-hero-stats       { gap: 20px; }
-  .com-hero-stat strong { font-size: 18px; }
-  .com-filtros-wrapper,
-  .com-grupos,
-  .com-feed { padding-left: 20px; padding-right: 20px; }
-  .com-filtros { flex-wrap: nowrap; justify-content: flex-start; -webkit-overflow-scrolling: touch; }
-  .com-grupos-grid { grid-template-columns: 1fr; }
-  .cg-overlay { align-items: flex-end; padding: 0; }
-  .cg-modal { border-radius: 22px 22px 0 0; max-height: 94vh; transform: translateY(100%); }
-  .cg-overlay.aberto .cg-modal { transform: translateY(0); }
-  .cg-linha { grid-template-columns: 1fr; }
-  .cg-privacidade { flex-direction: column; }
-  .com-novo-post-rodape   { flex-direction: column; align-items: stretch; }
-  .com-novo-post-publicar { margin-left: 0; width: 100%; text-align: center; padding: 12px; }
-  .com-novo-post-anonimo  { padding: 4px 0; }
-
-  /* Modais de grupo também sobem de baixo no mobile */
-  .ge-overlay,
-  .gc-overlay { align-items: flex-end; padding: 0; }
-  .ge-modal,
-  .gc-modal { border-radius: 22px 22px 0 0; max-height: 94vh; }
-  .ge-overlay .ge-modal   { transform: translateY(100%); }
-  .ge-overlay.aberto .ge-modal { transform: translateY(0); }
-  .gc-overlay .gc-modal   { transform: translateY(100%); }
-  .gc-overlay.aberto .gc-modal { transform: translateY(0); }
-}
-@media (max-width: 480px) {
-  .com-hero h1             { font-size: 24px; }
-  .com-hero-tag,
-  .com-hero-regras         { font-size: 12px; }
-  .com-secao-cabecalho h2  { font-size: 22px; }
-  .com-grupo-card          { padding: 20px 16px; }
-  .cg-icones               { grid-template-columns: repeat(4, 1fr); }
-  .cg-cabecalho h2         { font-size: 15px; }
-  .cg-rodape               { flex-direction: column-reverse; }
-  .cg-btn-criar,
-  .cg-btn-cancelar         { width: 100%; justify-content: center; text-align: center; }
-  .com-hero-stats          { flex-wrap: wrap; justify-content: center; gap: 16px; }
-  .com-hero-stat-divider   { display: none; }
-  .ge-rodape               { flex-direction: column-reverse; }
-  .ge-btn-entrar,
-  .ge-btn-cancelar         { width: 100%; justify-content: center; text-align: center; }
-}
-
-
-/* ============================================================
-   16. ACESSIBILIDADE — prefers-reduced-motion
-============================================================ */
-@media (prefers-reduced-motion: reduce) {
-  .com-hero-tag .ponto-online { animation: none; }
-  .com-hero-tag,
-  .com-hero h1,
-  .com-hero p,
-  .com-hero-regras,
-  .com-hero-stats     { animation: none; opacity: 1; transform: none; }
-  .com-grupo-card,
-  .com-grupo-card:hover,
-  .com-filtro-btn,
-  .com-filtro-btn:hover,
-  .btn-abraco,
-  .cg-overlay,
-  .cg-modal,
-  .cg-fechar,
-  .ge-overlay,
-  .ge-modal,
-  .gc-overlay,
-  .gc-modal           { transition: none; animation: none; }
-  .com-grupo-card.card-novo-entrada,
-  .comunidade-card.post-novo-entrada,
-  .resposta-enviada   { animation: none; }
-}
-
-
-/* ============================================================
-   17. MODAL "ENTRAR NO GRUPO"
-   Exibido ao clicar em qualquer card de grupo (exceto "Criar").
-   Mostra detalhes do grupo e botão para entrar / acessar o chat.
-============================================================ */
-
-/* Overlay escurecido — mesmo padrão do modal criar grupo */
-.ge-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.50);
-  z-index: 1200;                /* acima do modal criar grupo */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--dur-medio) ease;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-}
-.ge-overlay.aberto { opacity: 1; pointer-events: all; }
-
-/* Janela branca centralizada */
-.ge-modal {
-  background-color: white;
-  border-radius: 22px;
-  width: 100%;
-  max-width: 460px;
-  display: flex;
-  flex-direction: column;
-  transform: translateY(24px) scale(0.96);
-  transition: transform var(--dur-medio) var(--ease-saida), opacity var(--dur-medio) ease;
-  opacity: 0;
-  max-height: 90vh;
-  overflow: hidden;
-  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.2);
-}
-.ge-overlay.aberto .ge-modal { transform: translateY(0) scale(1); opacity: 1; }
-
-/* Faixa colorida no topo com ícone grande do grupo */
-.ge-banner {
-  height: 110px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  flex-shrink: 0;
-  /* Cor definida inline pelo JS com a cor temática do grupo */
-  background-color: var(--Roxo-Calmo);
-}
-
-/* Ícone grande centralizado no banner */
-.ge-banner-icone {
-  font-size: 46px;
-  color: rgba(255, 255, 255, 0.95);
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
-  animation: fadeSubir 0.3s var(--ease-saida) both;
-}
-
-/* Botão fechar posicionado no canto do banner */
-.ge-fechar {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 32px;
-  height: 32px;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.22);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  color: white;
-  cursor: pointer;
-  transition: background-color var(--dur-rapido), transform var(--dur-rapido);
-}
-.ge-fechar:hover { background-color: rgba(255, 255, 255, 0.38); transform: rotate(90deg); }
-
-/* Corpo: nome, chips, descrição, membros, moderador */
-.ge-corpo {
-  padding: 24px 26px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  overflow-y: auto;
-  flex: 1;
-}
-
-/* Nome do grupo em destaque */
-.ge-nome {
-  font-family: 'Lora', serif;
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--Roxo-Calmo);
-  line-height: 1.25;
-}
-
-/* Linha de chips de tema */
-.ge-temas { display: flex; flex-wrap: wrap; gap: 6px; }
-
-/* Chip de tema individual */
-.ge-tema-chip {
-  font-size: 11.5px;
-  font-weight: 500;
-  color: var(--Roxo-Calmo);
-  background-color: var(--Lavanda-Suave);
-  padding: 3px 11px;
-  border-radius: 20px;
-}
-
-/* Descrição do grupo */
-.ge-desc {
-  font-size: 14px;
-  color: var(--Texto-Suave);
-  line-height: 1.65;
-}
-
-/* Linha de metadados: membros, privacidade, moderador */
-.ge-meta {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  font-size: 13px;
-  color: #999;
-  flex-wrap: wrap;
-}
-.ge-meta-item { display: flex; align-items: center; gap: 5px; }
-.ge-meta-item i { font-size: 15px; color: var(--Roxo-Calmo); }
-
-/* Separador antes do rodapé */
-.ge-divisor {
-  height: 1px;
-  background-color: var(--Borda-Suave);
-  margin: 4px 0 0;
-  flex-shrink: 0;
-}
-
-/* Rodapé com aviso e botões de ação */
-.ge-rodape {
-  padding: 16px 26px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-/* Aviso de regras da comunidade */
-.ge-aviso {
-  font-size: 12px;
-  color: #aaa;
-  line-height: 1.55;
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-}
-.ge-aviso i { color: var(--Verde-Esperança); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
-
-/* Linha com os dois botões de ação */
-.ge-acoes {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-/* Botão cancelar */
-.ge-btn-cancelar {
-  background: none;
-  border: 1.5px solid var(--Borda-Suave);
-  border-radius: 11px;
-  padding: 11px 22px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--Texto-Suave);
-  cursor: pointer;
-  transition: border-color var(--dur-rapido), color var(--dur-rapido);
-  flex-shrink: 0;
-}
-.ge-btn-cancelar:hover { border-color: var(--Roxo-Calmo); color: var(--Roxo-Calmo); }
-
-/* Botão principal "Entrar no grupo" */
-.ge-btn-entrar {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: var(--Roxo-Calmo);
-  color: white;
-  border: none;
-  border-radius: 11px;
-  padding: 11px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color var(--dur-rapido),
-              transform var(--dur-rapido) var(--ease-bounce),
-              box-shadow var(--dur-rapido);
-}
-.ge-btn-entrar:hover {
-  background-color: #3a2f9e;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(90, 72, 200, 0.3);
-}
-.ge-btn-entrar:active { transform: translateY(0); }
-
-
-/* ============================================================
-   18. MODAL "CHAT DO GRUPO"
-   Aberto logo após o usuário confirmar entrada no grupo.
-   Simula uma sala de bate-papo em tempo real.
-============================================================ */
-
-/* Overlay do chat — z-index maior para sobrepor tudo */
-.gc-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.52);
-  z-index: 1300;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--dur-medio) ease;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-}
-.gc-overlay.aberto { opacity: 1; pointer-events: all; }
-
-/* Janela do chat — mais alta que os outros modais */
-.gc-modal {
-  background-color: white;
-  border-radius: 22px;
-  width: 100%;
-  max-width: 500px;
-  height: min(620px, 88vh);
-  display: flex;
-  flex-direction: column;
-  transform: translateY(28px) scale(0.96);
-  transition: transform var(--dur-medio) var(--ease-saida), opacity var(--dur-medio) ease;
-  opacity: 0;
-  overflow: hidden;
-  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.22);
-}
-.gc-overlay.aberto .gc-modal { transform: translateY(0) scale(1); opacity: 1; }
-
-/* Header do chat: ícone + nome + online + fechar */
-.gc-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 18px;
-  border-bottom: 1px solid var(--Borda-Suave);
-  flex-shrink: 0;
-  /* Cor de fundo sutil baseada na cor do grupo, definida inline pelo JS */
-  background-color: var(--Lavanda-Suave);
-}
-
-/* Ícone pequeno do grupo no header */
-.gc-header-icone {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: white;
-  flex-shrink: 0;
-  /* Cor definida inline pelo JS */
-  background-color: var(--Roxo-Calmo);
-}
-
-/* Nome e status do grupo no header */
-.gc-header-info { flex: 1; min-width: 0; }
-.gc-header-nome {
-  font-family: 'Lora', serif;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--Roxo-Calmo);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.gc-header-status {
-  font-size: 12px;
-  color: var(--Verde-Esperança);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 2px;
-}
-.gc-header-status .ponto { width: 6px; height: 6px; border-radius: 50%; background: var(--Verde-Esperança); }
-
-/* Botão fechar do chat */
-.gc-fechar {
-  width: 34px;
-  height: 34px;
-  border: none;
-  background: none;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  color: var(--Texto-Suave);
-  cursor: pointer;
-  transition: background-color var(--dur-rapido), color var(--dur-rapido), transform var(--dur-rapido);
-  flex-shrink: 0;
-}
-.gc-fechar:hover {
-  background-color: rgba(90, 72, 200, 0.1);
-  color: var(--Roxo-Calmo);
-  transform: rotate(90deg);
-}
-
-/* Área de mensagens com scroll */
-.gc-mensagens {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: var(--Borda-Suave) transparent;
-  background-color: #FAFAFA;
-}
-.gc-mensagens::-webkit-scrollbar { width: 4px; }
-.gc-mensagens::-webkit-scrollbar-track { background: transparent; }
-.gc-mensagens::-webkit-scrollbar-thumb { background-color: var(--Borda-Suave); border-radius: 4px; }
-
-/* Mensagem de sistema (entrada, avisos) — centralizada */
-.gc-msg-sistema {
-  text-align: center;
-  font-size: 12px;
-  color: #bbb;
-  font-style: italic;
-  padding: 2px 0;
-  animation: fadeSubir 0.25s var(--ease-saida) both;
-}
-
-/* Bolha de mensagem de outro usuário */
-.gc-msg-outro {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  animation: fadeSubir 0.22s var(--ease-saida) both;
-}
-.gc-msg-outro .gc-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: var(--Lavanda-Suave);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--Roxo-Calmo);
-  flex-shrink: 0;
-}
-.gc-msg-outro .gc-bolha {
-  max-width: 75%;
-  background-color: white;
-  border: 1px solid var(--Borda-Suave);
-  border-radius: 16px 16px 16px 4px;
-  padding: 9px 13px;
-  font-size: 13.5px;
-  color: #444;
-  line-height: 1.5;
-  word-break: break-word;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-}
-.gc-msg-outro .gc-bolha strong { font-size: 11.5px; color: var(--Roxo-Calmo); display: block; margin-bottom: 3px; }
-.gc-msg-outro .gc-bolha .gc-hora { font-size: 10.5px; color: #ccc; margin-top: 4px; display: block; text-align: right; }
-
-/* Bolha de mensagem do próprio usuário (direita) */
-.gc-msg-proprio {
-  display: flex;
-  justify-content: flex-end;
-  animation: fadeSubir 0.22s var(--ease-saida) both;
-}
-.gc-msg-proprio .gc-bolha {
-  max-width: 75%;
-  background-color: var(--Roxo-Calmo);
-  border-radius: 16px 16px 4px 16px;
-  padding: 9px 13px;
-  font-size: 13.5px;
-  color: white;
-  line-height: 1.5;
-  word-break: break-word;
-  box-shadow: 0 2px 8px rgba(90, 72, 200, 0.25);
-}
-.gc-msg-proprio .gc-bolha .gc-hora { font-size: 10.5px; color: rgba(255,255,255,0.6); margin-top: 4px; display: block; text-align: right; }
-
-/* Indicador "alguém está digitando..." */
-.gc-digitando {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: #bbb;
-  font-style: italic;
-  padding: 0 4px;
-  min-height: 20px;
-  animation: fadeSubir 0.2s var(--ease-saida) both;
-}
-.gc-digitando-pontos {
-  display: flex;
-  gap: 3px;
-  align-items: center;
-}
-.gc-digitando-pontos span {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background-color: var(--Roxo-Calmo);
-  animation: pulsoPonto 1.2s ease-in-out infinite;
-}
-.gc-digitando-pontos span:nth-child(2) { animation-delay: 0.2s; }
-.gc-digitando-pontos span:nth-child(3) { animation-delay: 0.4s; }
-
-/* Área de input de nova mensagem */
-.gc-input-area {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border-top: 1px solid var(--Borda-Suave);
-  flex-shrink: 0;
-  background-color: white;
-}
-
-/* Campo de texto da mensagem */
-.gc-input {
-  flex: 1;
-  border: 1.5px solid var(--Borda-Suave);
-  border-radius: 22px;
-  padding: 10px 16px;
-  font-size: 14px;
-  font-family: inherit;
-  color: #444;
-  outline: none;
-  transition: border-color var(--dur-rapido), box-shadow var(--dur-rapido);
-  resize: none;
-  height: 42px;
-  max-height: 100px;
-  overflow-y: auto;
-  line-height: 1.45;
-}
-.gc-input:focus {
-  border-color: var(--Roxo-Calmo);
-  box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.09);
-}
-
-/* Botão enviar mensagem */
-.gc-btn-enviar {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background-color: var(--Roxo-Calmo);
-  color: white;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: background-color var(--dur-rapido),
-              transform var(--dur-rapido) var(--ease-bounce),
-              box-shadow var(--dur-rapido);
-}
-.gc-btn-enviar:hover {
-  background-color: #3a2f9e;
-  transform: scale(1.1);
-  box-shadow: 0 4px 14px rgba(90, 72, 200, 0.35);
-}
-.gc-btn-enviar:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
+  /* ================================================================
+    MINDBRIDGE — COMUNIDADE (CSS v3)
+    Complementa mindbridge-home.css com estilos exclusivos desta
+    página. Carregado depois do arquivo base no HTML.
+
+    ÍNDICE
+    ──────
+    1.  Variáveis de animação
+    2.  Avatar / perfil no header
+    3.  Hero da comunidade
+    4.  Filtros de tema (chips)
+    5.  Grupos de apoio (grade + cards)
+    6.  Modal "Criar grupo"
+    7.  Seleção de ícone dentro do modal
+    8.  Card criado dinamicamente
+    9.  Feed da comunidade
+    10. Formulário "Nova publicação"
+    11. Cards do feed (posts)
+    12. Respostas e lista com scroll
+    13. Seção de urgência
+    14. Animações extras (pulse, shimmer, entrada)
+    15. Responsividade mobile
+    16. Acessibilidade (prefers-reduced-motion)
+    17. Modal "Entrar no grupo"          ← NOVO
+    18. Modal "Chat do grupo"            ← NOVO
+  ================================================================ */
+
+
+  /* ============================================================
+    1. VARIÁVEIS DE ANIMAÇÃO
+    Centraliza durações e easings usados em todo o arquivo.
+  ============================================================ */
+  :root {
+    --dur-rapido:  0.18s;
+    --dur-medio:   0.28s;
+    --dur-lento:   0.42s;
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-saida:  cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+
+  /* ============================================================
+    2. AVATAR / PERFIL NO HEADER
+  ============================================================ */
+  .nav-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--Lavanda-Suave);
+    border: 1.5px solid var(--Borda-Suave);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--Roxo-Calmo);
+    font-size: 18px;
+    flex-shrink: 0;
+    transition: background-color var(--dur-rapido), color var(--dur-rapido),
+                transform var(--dur-rapido) var(--ease-bounce);
+  }
+  .nav-avatar:hover {
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border-color: transparent;
+    transform: scale(1.08);
+  }
+  body:not(.logado) .nav-avatar { display: none; }
+  body:not(.logado) .btn-entrar { display: inline-flex; }
+  body.logado .btn-entrar { display: none; }
+  body.logado .nav-avatar { display: flex; }
+
+
+  /* ============================================================
+    3. HERO DA COMUNIDADE
+  ============================================================ */
+  .com-hero {
+    padding: 72px 40px 52px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background: radial-gradient(ellipse 80% 60% at 50% -10%,
+                rgba(90, 72, 200, 0.07) 0%, transparent 70%);
+  }
+  .com-hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #EDE9F9;
+    color: var(--Roxo-Calmo);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 20px;
+    animation: fadeSubir var(--dur-lento) var(--ease-saida) both;
+  }
+  .com-hero-tag .ponto-online {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--Verde-Esperança);
+    animation: pulsoPonto 2s ease-in-out infinite;
+  }
+  .com-hero h1 {
+    font-family: 'Lora', serif;
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    line-height: 1.22;
+    max-width: 700px;
+    animation: fadeSubir var(--dur-lento) 0.08s var(--ease-saida) both;
+  }
+  .com-hero p {
+    font-size: 16px;
+    color: var(--Texto-Suave);
+    max-width: 560px;
+    line-height: 1.75;
+    animation: fadeSubir var(--dur-lento) 0.14s var(--ease-saida) both;
+  }
+  .com-hero-regras {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    background-color: var(--Verde-Menta);
+    padding: 8px 18px;
+    border-radius: 20px;
+    margin-top: 4px;
+    animation: fadeSubir var(--dur-lento) 0.20s var(--ease-saida) both;
+  }
+  .com-hero-regras i { color: var(--Verde-Esperança); font-size: 16px; }
+  .com-hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 8px;
+    animation: fadeSubir var(--dur-lento) 0.26s var(--ease-saida) both;
+  }
+  .com-hero-stat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .com-hero-stat strong {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    font-family: 'Lora', serif;
+  }
+  .com-hero-stat span { font-size: 12px; color: var(--Texto-Suave); }
+  .com-hero-stat-divider { width: 1px; height: 32px; background-color: var(--Borda-Suave); align-self: center; }
+
+
+  /* ============================================================
+    4. FILTROS DE TEMA (chips horizontais)
+  ============================================================ */
+  .com-filtros-wrapper { padding: 0 40px; margin-bottom: 40px; }
+  .com-filtros {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 2px 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    scrollbar-width: none;
+  }
+  .com-filtros::-webkit-scrollbar { display: none; }
+  .com-filtro-btn {
+    flex-shrink: 0;
+    background-color: white;
+    border: 1.5px solid var(--Borda-Suave);
+    color: var(--Texto-Suave);
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 9px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: border-color var(--dur-rapido), color var(--dur-rapido),
+                background-color var(--dur-rapido),
+                transform var(--dur-rapido) var(--ease-bounce),
+                box-shadow var(--dur-rapido);
+    white-space: nowrap;
+  }
+  .com-filtro-btn:hover {
+    border-color: var(--Roxo-Calmo);
+    color: var(--Roxo-Calmo);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(90, 72, 200, 0.12);
+  }
+  .com-filtro-btn.ativo {
+    background-color: var(--Roxo-Calmo);
+    border-color: var(--Roxo-Calmo);
+    color: white;
+    box-shadow: 0 4px 14px rgba(90, 72, 200, 0.25);
+  }
+
+
+  /* ============================================================
+    5. GRUPOS DE APOIO (grade + cards)
+  ============================================================ */
+  .com-grupos { padding: 0 40px 88px; }
+  .com-secao-cabecalho {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .com-secao-cabecalho h2 {
+    font-family: 'Lora', serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+  }
+  .com-secao-cabecalho p { font-size: 15px; color: var(--Texto-Suave); line-height: 1.65; }
+  .com-grupos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .com-grupo-card {
+    background-color: white;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 18px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform var(--dur-medio) var(--ease-saida),
+                box-shadow var(--dur-medio),
+                border-color var(--dur-medio);
+    text-align: left;
+    overflow: hidden;
+  }
+  .com-grupo-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 16px 40px rgba(90, 72, 200, 0.14);
+    border-color: var(--Roxo-Calmo);
+  }
+  .com-grupo-icone {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    color: white;
+    flex-shrink: 0;
+    transition: transform var(--dur-rapido) var(--ease-bounce);
+  }
+  .com-grupo-card:hover .com-grupo-icone { transform: scale(1.12) rotate(-4deg); }
+  .com-grupo-icone.cor-ansiedade       { background-color: var(--Roxo-Calmo); }
+  .com-grupo-icone.cor-burnout         { background-color: var(--Azul-Confiança); }
+  .com-grupo-icone.cor-luto            { background-color: #8B7BC4; }
+  .com-grupo-icone.cor-sono            { background-color: var(--Verde-Esperança); }
+  .com-grupo-icone.cor-autoestima      { background-color: #E6A817; }
+  .com-grupo-icone.cor-relacionamentos { background-color: #E05C8A; }
+  .com-grupo-icone.cor-outro           { background-color: #888; }
+  .com-grupo-icone.cor-criar           { background-color: var(--Roxo-Calmo); }
+  .com-grupo-card h3 {
+    font-family: 'Lora', serif;
+    font-size: 17px;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .com-grupo-card p {
+    font-size: 13.5px;
+    color: var(--Texto-Suave);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .com-grupo-rodape {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: #aaa;
+    padding-top: 10px;
+    border-top: 1px solid var(--Lavanda-Suave);
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .com-grupo-rodape .com-grupo-membros {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .com-grupo-selo {
+    color: var(--Verde-Esperança);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .com-grupo-card-criar {
+    border-style: dashed;
+    border-color: var(--Roxo-Calmo);
+    background-color: #F5F2FE;
+    outline: none;
+  }
+  .com-grupo-card-criar:hover,
+  .com-grupo-card-criar:focus-visible {
+    transform: translateY(-7px);
+    box-shadow: 0 16px 40px rgba(90, 72, 200, 0.16);
+    background-color: #EDE8FC;
+  }
+  .com-grupo-criar-cta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+  }
+  .com-grupo-criar-cta i { font-size: 14px; transition: transform var(--dur-rapido); }
+  .com-grupo-card-criar:hover .com-grupo-criar-cta i { transform: translateX(4px); }
+  .com-grupo-temas-lista { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 2px; }
+  .com-grupo-tag-tema {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    background-color: var(--Lavanda-Suave);
+    padding: 2px 9px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+  .com-grupo-novo-badge {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--Verde-Esperança);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .com-grupo-card.card-novo-entrada {
+    animation: cardEntrada var(--dur-lento) var(--ease-bounce) both;
+  }
+  @keyframes cardEntrada {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+
+  /* ============================================================
+    6. MODAL "CRIAR GRUPO"
+  ============================================================ */
+  .cg-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.48);
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-medio) ease;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+  .cg-overlay.aberto { opacity: 1; pointer-events: all; }
+  .cg-modal {
+    background-color: white;
+    border-radius: 22px;
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(20px) scale(0.97);
+    transition: transform var(--dur-medio) var(--ease-saida), opacity var(--dur-medio) ease;
+    opacity: 0;
+    max-height: 92vh;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+  }
+  .cg-overlay.aberto .cg-modal { transform: translateY(0) scale(1); opacity: 1; }
+  .cg-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid var(--Borda-Suave);
+    flex-shrink: 0;
+  }
+  .cg-cabecalho-icone {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background-color: var(--Lavanda-Suave);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    color: var(--Roxo-Calmo);
+    flex-shrink: 0;
+  }
+  .cg-cabecalho h2 {
+    font-family: 'Lora', serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    margin-bottom: 3px;
+  }
+  .cg-cabecalho p { font-size: 12.5px; color: var(--Texto-Suave); }
+  .cg-fechar {
+    margin-left: auto;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    color: var(--Texto-Suave);
+    cursor: pointer;
+    transition: background-color var(--dur-rapido), color var(--dur-rapido), transform var(--dur-rapido);
+  }
+  .cg-fechar:hover {
+    background-color: var(--Lavanda-Suave);
+    color: var(--Roxo-Calmo);
+    transform: rotate(90deg);
+  }
+  .cg-corpo {
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow-y: auto;
+    flex: 1;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--Borda-Suave) transparent;
+  }
+  .cg-corpo::-webkit-scrollbar { width: 4px; }
+  .cg-corpo::-webkit-scrollbar-track { background: transparent; }
+  .cg-corpo::-webkit-scrollbar-thumb { background-color: var(--Borda-Suave); border-radius: 4px; }
+  .cg-campo { display: flex; flex-direction: column; gap: 7px; }
+  .cg-campo label { font-size: 13px; font-weight: 500; color: #555; }
+  .cg-obrig   { color: #C0392B; }
+  .cg-opcional { font-size: 11px; color: #bbb; font-weight: 400; }
+  .cg-campo input,
+  .cg-campo textarea,
+  .cg-campo select {
+    width: 100%;
+    padding: 10px 13px;
+    border: 1.5px solid var(--Borda-Suave);
+    border-radius: 11px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #444;
+    background-color: white;
+    outline: none;
+    transition: border-color var(--dur-rapido), box-shadow var(--dur-rapido);
+    resize: vertical;
+    max-width: 100%;
+  }
+  .cg-campo input:focus,
+  .cg-campo textarea:focus,
+  .cg-campo select:focus {
+    border-color: var(--Roxo-Calmo);
+    box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.1);
+  }
+  .cg-campo input.com-erro,
+  .cg-campo textarea.com-erro {
+    border-color: #E74C3C;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+  }
+  .cg-campo-rodape { display: flex; justify-content: space-between; align-items: center; min-height: 16px; }
+  .cg-erro    { font-size: 12px; color: #C0392B; }
+  .cg-contador { font-size: 11px; color: #ccc; }
+  .cg-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cg-temas { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cg-tema {
+    border: 1.5px solid var(--Borda-Suave);
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--Texto-Suave);
+    background-color: white;
+    cursor: pointer;
+    transition: border-color var(--dur-rapido), color var(--dur-rapido),
+                background-color var(--dur-rapido),
+                transform var(--dur-rapido) var(--ease-bounce);
+    white-space: nowrap;
+  }
+  .cg-tema:hover { border-color: var(--Roxo-Calmo); color: var(--Roxo-Calmo); transform: scale(1.05); }
+  .cg-tema.ativo { background-color: var(--Lavanda-Suave); border-color: var(--Roxo-Calmo); color: var(--Roxo-Calmo); }
+  .cg-privacidade { display: flex; gap: 10px; }
+  .cg-priv {
+    flex: 1;
+    border: 1.5px solid var(--Borda-Suave);
+    border-radius: 13px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background-color: white;
+    text-align: left;
+    transition: border-color var(--dur-rapido), background-color var(--dur-rapido), transform var(--dur-rapido);
+  }
+  .cg-priv:hover { border-color: var(--Roxo-Calmo); transform: translateY(-1px); }
+  .cg-priv i       { font-size: 20px; color: var(--Texto-Suave); flex-shrink: 0; }
+  .cg-priv div     { display: flex; flex-direction: column; gap: 2px; }
+  .cg-priv strong  { font-size: 13px; font-weight: 500; color: #444; }
+  .cg-priv span    { font-size: 11px; color: var(--Texto-Suave); line-height: 1.4; }
+  .cg-priv.ativo   { border-color: var(--Roxo-Calmo); background-color: var(--Lavanda-Suave); }
+  .cg-priv.ativo i,
+  .cg-priv.ativo strong { color: var(--Roxo-Calmo); }
+  .cg-rodape {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--Borda-Suave);
+    flex-shrink: 0;
+  }
+  .cg-btn-cancelar {
+    background: none;
+    border: 1.5px solid var(--Borda-Suave);
+    border-radius: 11px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--Texto-Suave);
+    cursor: pointer;
+    transition: border-color var(--dur-rapido), color var(--dur-rapido);
+  }
+  .cg-btn-cancelar:hover { border-color: var(--Roxo-Calmo); color: var(--Roxo-Calmo); }
+  .cg-btn-criar {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border: none;
+    border-radius: 11px;
+    padding: 10px 26px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--dur-rapido),
+                transform var(--dur-rapido) var(--ease-bounce),
+                box-shadow var(--dur-rapido);
+  }
+  .cg-btn-criar:hover {
+    background-color: #3a2f9e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(90, 72, 200, 0.3);
+  }
+  .cg-btn-criar:active { transform: translateY(0); }
+  .cg-btn-criar.carregando { opacity: 0.7; pointer-events: none; }
+  .cg-btn-criar.carregando i { animation: girar 0.8s linear infinite; }
+
+
+  /* ============================================================
+    7. SELEÇÃO DE ÍCONE dentro do modal
+  ============================================================ */
+  .cg-icones { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .cg-icone-btn {
+    aspect-ratio: 1;
+    border: 1.5px solid var(--Borda-Suave);
+    border-radius: 11px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--Texto-Suave);
+    cursor: pointer;
+    transition: border-color var(--dur-rapido), color var(--dur-rapido),
+                background-color var(--dur-rapido),
+                transform var(--dur-rapido) var(--ease-bounce);
+  }
+  .cg-icone-btn:hover {
+    border-color: var(--Roxo-Calmo);
+    color: var(--Roxo-Calmo);
+    background-color: var(--Lavanda-Suave);
+    transform: scale(1.1);
+  }
+  .cg-icone-btn.ativo {
+    background-color: var(--Lavanda-Suave);
+    border-color: var(--Roxo-Calmo);
+    color: var(--Roxo-Calmo);
+    box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.12);
+    transform: scale(1.08);
+  }
+  .cg-icone-preview { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .cg-icone-preview-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background-color: var(--Roxo-Calmo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    flex-shrink: 0;
+    transition: background-color var(--dur-medio);
+  }
+  .cg-icone-preview span { font-size: 12px; color: var(--Texto-Suave); }
+
+
+  /* ============================================================
+    9. FEED DA COMUNIDADE
+  ============================================================ */
+  .com-feed { padding: 0 40px 60px; display: flex; flex-direction: column; align-items: center; }
+  .com-feed-coluna { width: 100%; max-width: 680px; display: flex; flex-direction: column; gap: 20px; }
+  .com-feed .comunidade-card { flex: none; width: 100%; scroll-snap-align: unset; }
+  .com-feed-carregar {
+    align-self: center;
+    margin-top: 12px;
+    background-color: white;
+    border: 1.5px solid var(--Borda-Suave);
+    color: var(--Roxo-Calmo);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 32px;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: background-color var(--dur-rapido), color var(--dur-rapido),
+                border-color var(--dur-rapido),
+                transform var(--dur-rapido) var(--ease-bounce),
+                box-shadow var(--dur-rapido);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .com-feed-carregar:hover {
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(90, 72, 200, 0.2);
+  }
+  .com-feed-carregar.carregado i { animation: girar 0.4s ease both; }
+  .com-feed-incentivo {
+    text-align: center;
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    max-width: 420px;
+    margin: 4px auto 0;
+    line-height: 1.65;
+  }
+
+
+  /* ============================================================
+    10. FORMULÁRIO "NOVA PUBLICAÇÃO"
+  ============================================================ */
+  .com-novo-post {
+    background-color: white;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 18px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: box-shadow var(--dur-medio), border-color var(--dur-medio);
+  }
+  .com-novo-post:focus-within {
+    box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.08);
+    border-color: rgba(90, 72, 200, 0.3);
+  }
+  .com-novo-post-topo { display: flex; align-items: center; gap: 12px; }
+  .com-novo-post textarea {
+    width: 100%;
+    min-height: 68px;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #444;
+    resize: vertical;
+    outline: none;
+    transition: border-color var(--dur-rapido), box-shadow var(--dur-rapido);
+    max-width: 100%;
+  }
+  .com-novo-post textarea:focus {
+    border-color: var(--Roxo-Calmo);
+    box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.09);
+  }
+  .com-novo-post-rodape {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .com-novo-post select {
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 9px;
+    padding: 7px 10px;
+    font-size: 13px;
+    color: var(--Roxo-Calmo);
+    background-color: var(--Lavanda-Suave);
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color var(--dur-rapido);
+  }
+  .com-novo-post select:focus { border-color: var(--Roxo-Calmo); outline: none; }
+  .com-novo-post-anonimo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    cursor: pointer;
+  }
+  .com-novo-post-anonimo input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--Roxo-Calmo);
+    cursor: pointer;
+  }
+  .com-novo-post-publicar {
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 9px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--dur-rapido),
+                transform var(--dur-rapido) var(--ease-bounce),
+                box-shadow var(--dur-rapido);
+    margin-left: auto;
+  }
+  .com-novo-post-publicar:hover:not(:disabled) {
+    background-color: #3a2f9e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(90, 72, 200, 0.28);
+  }
+  .com-novo-post-publicar:disabled { opacity: 0.45; cursor: not-allowed; }
+  .com-novo-post-contador { font-size: 11px; color: #ccc; text-align: right; margin-top: -6px; }
+  .com-novo-post-contador.proximo-limite { color: #E6A817; }
+  .com-novo-post-contador.no-limite      { color: #E74C3C; }
+
+
+  /* ============================================================
+    11. CARDS DO FEED (posts)
+  ============================================================ */
+  .comunidade-card.post-novo-entrada {
+    animation: cardEntrada var(--dur-lento) var(--ease-bounce) both;
+  }
+  .com-feed .comunidade-card {
+    transition: box-shadow var(--dur-medio), border-color var(--dur-medio);
+  }
+  .com-feed .comunidade-card:hover {
+    box-shadow: 0 6px 24px rgba(90, 72, 200, 0.1);
+    border-color: rgba(90, 72, 200, 0.2);
+  }
+  .btn-abraco {
+    transition: transform var(--dur-rapido) var(--ease-bounce),
+                background-color var(--dur-rapido),
+                color var(--dur-rapido);
+  }
+  .btn-abraco:hover:not(.enviado) { transform: scale(1.04); }
+  .btn-abraco.enviado {
+    color: #E05C8A;
+    background-color: #FDF0F5;
+    border-color: #F5C6D8;
+    pointer-events: none;
+  }
+  .btn-abraco.enviado i { animation: pulsoCoracao 0.4s var(--ease-bounce); }
+
+
+  /* ============================================================
+    12. RESPOSTAS E LISTA COM SCROLL
+  ============================================================ */
+  .respostas-lista {
+    max-height: 180px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-right: 4px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--Borda-Suave) transparent;
+  }
+  .respostas-lista::-webkit-scrollbar { width: 4px; }
+  .respostas-lista::-webkit-scrollbar-track { background: transparent; }
+  .respostas-lista::-webkit-scrollbar-thumb { background-color: var(--Borda-Suave); border-radius: 4px; }
+  .respostas-lista::-webkit-scrollbar-thumb:hover { background-color: var(--Roxo-Calmo); }
+  .resposta-enviada {
+    font-size: 13px;
+    color: var(--Texto-Suave);
+    background-color: var(--Lavanda-Suave);
+    border-radius: 9px;
+    padding: 7px 11px;
+    line-height: 1.5;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    animation: fadeSubir 0.2s var(--ease-saida) both;
+  }
+  .resposta-enviada strong { color: var(--Roxo-Calmo); font-weight: 500; }
+
+
+  /* ============================================================
+    13. SEÇÃO DE URGÊNCIA
+  ============================================================ */
+  .urgencia-card {
+    transition: transform var(--dur-medio) var(--ease-saida), box-shadow var(--dur-medio);
+  }
+  .urgencia-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1); }
+
+
+  /* ============================================================
+    14. ANIMAÇÕES EXTRAS
+  ============================================================ */
+  @keyframes fadeSubir {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0);    }
+  }
+  @keyframes pulsoPonto {
+    0%, 100% { box-shadow: 0 0 0 0   rgba(29, 158, 117, 0.5); }
+    50%      { box-shadow: 0 0 0 6px rgba(29, 158, 117, 0);   }
+  }
+  @keyframes pulsoCoracao {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+  @keyframes girar {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes shimmer {
+    from { background-position: -400px 0; }
+    to   { background-position:  400px 0; }
+  }
+  .skeleton {
+    background: linear-gradient(90deg, #f0eef8 25%, #e4e0f4 50%, #f0eef8 75%);
+    background-size: 800px 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+    border-radius: 8px;
+  }
+
+
+  /* ============================================================
+    15. RESPONSIVIDADE MOBILE
+  ============================================================ */
+  @media (max-width: 1024px) { .com-grupos-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) {
+    .com-hero             { padding: 48px 20px 36px; }
+    .com-hero h1          { font-size: 28px; }
+    .com-hero p           { font-size: 15px; }
+    .com-hero-stats       { gap: 20px; }
+    .com-hero-stat strong { font-size: 18px; }
+    .com-filtros-wrapper,
+    .com-grupos,
+    .com-feed { padding-left: 20px; padding-right: 20px; }
+    .com-filtros { flex-wrap: nowrap; justify-content: flex-start; -webkit-overflow-scrolling: touch; }
+    .com-grupos-grid { grid-template-columns: 1fr; }
+    .cg-overlay { align-items: flex-end; padding: 0; }
+    .cg-modal { border-radius: 22px 22px 0 0; max-height: 94vh; transform: translateY(100%); }
+    .cg-overlay.aberto .cg-modal { transform: translateY(0); }
+    .cg-linha { grid-template-columns: 1fr; }
+    .cg-privacidade { flex-direction: column; }
+    .com-novo-post-rodape   { flex-direction: column; align-items: stretch; }
+    .com-novo-post-publicar { margin-left: 0; width: 100%; text-align: center; padding: 12px; }
+    .com-novo-post-anonimo  { padding: 4px 0; }
+
+    /* Modais de grupo também sobem de baixo no mobile */
+    .ge-overlay,
+    .gc-overlay { align-items: flex-end; padding: 0; }
+    .ge-modal,
+    .gc-modal { border-radius: 22px 22px 0 0; max-height: 94vh; }
+    .ge-overlay .ge-modal   { transform: translateY(100%); }
+    .ge-overlay.aberto .ge-modal { transform: translateY(0); }
+    .gc-overlay .gc-modal   { transform: translateY(100%); }
+    .gc-overlay.aberto .gc-modal { transform: translateY(0); }
+  }
+  @media (max-width: 480px) {
+    .com-hero h1             { font-size: 24px; }
+    .com-hero-tag,
+    .com-hero-regras         { font-size: 12px; }
+    .com-secao-cabecalho h2  { font-size: 22px; }
+    .com-grupo-card          { padding: 20px 16px; }
+    .cg-icones               { grid-template-columns: repeat(4, 1fr); }
+    .cg-cabecalho h2         { font-size: 15px; }
+    .cg-rodape               { flex-direction: column-reverse; }
+    .cg-btn-criar,
+    .cg-btn-cancelar         { width: 100%; justify-content: center; text-align: center; }
+    .com-hero-stats          { flex-wrap: wrap; justify-content: center; gap: 16px; }
+    .com-hero-stat-divider   { display: none; }
+    .ge-rodape               { flex-direction: column-reverse; }
+    .ge-btn-entrar,
+    .ge-btn-cancelar         { width: 100%; justify-content: center; text-align: center; }
+  }
+
+
+  /* ============================================================
+    16. ACESSIBILIDADE — prefers-reduced-motion
+  ============================================================ */
+  @media (prefers-reduced-motion: reduce) {
+    .com-hero-tag .ponto-online { animation: none; }
+    .com-hero-tag,
+    .com-hero h1,
+    .com-hero p,
+    .com-hero-regras,
+    .com-hero-stats     { animation: none; opacity: 1; transform: none; }
+    .com-grupo-card,
+    .com-grupo-card:hover,
+    .com-filtro-btn,
+    .com-filtro-btn:hover,
+    .btn-abraco,
+    .cg-overlay,
+    .cg-modal,
+    .cg-fechar,
+    .ge-overlay,
+    .ge-modal,
+    .gc-overlay,
+    .gc-modal           { transition: none; animation: none; }
+    .com-grupo-card.card-novo-entrada,
+    .comunidade-card.post-novo-entrada,
+    .resposta-enviada   { animation: none; }
+  }
+
+
+  /* ============================================================
+    17. MODAL "ENTRAR NO GRUPO"
+    Exibido ao clicar em qualquer card de grupo (exceto "Criar").
+    Mostra detalhes do grupo e botão para entrar / acessar o chat.
+  ============================================================ */
+
+  /* Overlay escurecido — mesmo padrão do modal criar grupo */
+  .ge-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.50);
+    z-index: 1200;                /* acima do modal criar grupo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-medio) ease;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .ge-overlay.aberto { opacity: 1; pointer-events: all; }
+
+  /* Janela branca centralizada */
+  .ge-modal {
+    background-color: white;
+    border-radius: 22px;
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(24px) scale(0.96);
+    transition: transform var(--dur-medio) var(--ease-saida), opacity var(--dur-medio) ease;
+    opacity: 0;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 28px 72px rgba(0, 0, 0, 0.2);
+  }
+  .ge-overlay.aberto .ge-modal { transform: translateY(0) scale(1); opacity: 1; }
+
+  /* Faixa colorida no topo com ícone grande do grupo */
+  .ge-banner {
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+    /* Cor definida inline pelo JS com a cor temática do grupo */
+    background-color: var(--Roxo-Calmo);
+  }
+
+  /* Ícone grande centralizado no banner */
+  .ge-banner-icone {
+    font-size: 46px;
+    color: rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+    animation: fadeSubir 0.3s var(--ease-saida) both;
+  }
+
+  /* Botão fechar posicionado no canto do banner */
+  .ge-fechar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background-color var(--dur-rapido), transform var(--dur-rapido);
+  }
+  .ge-fechar:hover { background-color: rgba(255, 255, 255, 0.38); transform: rotate(90deg); }
+
+  /* Corpo: nome, chips, descrição, membros, moderador */
+  .ge-corpo {
+    padding: 24px 26px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  /* Nome do grupo em destaque */
+  .ge-nome {
+    font-family: 'Lora', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    line-height: 1.25;
+  }
+
+  /* Linha de chips de tema */
+  .ge-temas { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* Chip de tema individual */
+  .ge-tema-chip {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    background-color: var(--Lavanda-Suave);
+    padding: 3px 11px;
+    border-radius: 20px;
+  }
+
+  /* Descrição do grupo */
+  .ge-desc {
+    font-size: 14px;
+    color: var(--Texto-Suave);
+    line-height: 1.65;
+  }
+
+  /* Linha de metadados: membros, privacidade, moderador */
+  .ge-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 13px;
+    color: #999;
+    flex-wrap: wrap;
+  }
+  .ge-meta-item { display: flex; align-items: center; gap: 5px; }
+  .ge-meta-item i { font-size: 15px; color: var(--Roxo-Calmo); }
+
+  /* Separador antes do rodapé */
+  .ge-divisor {
+    height: 1px;
+    background-color: var(--Borda-Suave);
+    margin: 4px 0 0;
+    flex-shrink: 0;
+  }
+
+  /* Rodapé com aviso e botões de ação */
+  .ge-rodape {
+    padding: 16px 26px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  /* Aviso de regras da comunidade */
+  .ge-aviso {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.55;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .ge-aviso i { color: var(--Verde-Esperança); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Linha com os dois botões de ação */
+  .ge-acoes {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* Botão cancelar */
+  .ge-btn-cancelar {
+    background: none;
+    border: 1.5px solid var(--Borda-Suave);
+    border-radius: 11px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--Texto-Suave);
+    cursor: pointer;
+    transition: border-color var(--dur-rapido), color var(--dur-rapido);
+    flex-shrink: 0;
+  }
+  .ge-btn-cancelar:hover { border-color: var(--Roxo-Calmo); color: var(--Roxo-Calmo); }
+
+  /* Botão principal "Entrar no grupo" */
+  .ge-btn-entrar {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border: none;
+    border-radius: 11px;
+    padding: 11px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--dur-rapido),
+                transform var(--dur-rapido) var(--ease-bounce),
+                box-shadow var(--dur-rapido);
+  }
+  .ge-btn-entrar:hover {
+    background-color: #3a2f9e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(90, 72, 200, 0.3);
+  }
+  .ge-btn-entrar:active { transform: translateY(0); }
+
+
+  /* ============================================================
+    18. MODAL "CHAT DO GRUPO"
+    Aberto logo após o usuário confirmar entrada no grupo.
+    Simula uma sala de bate-papo em tempo real.
+  ============================================================ */
+
+  /* Overlay do chat — z-index maior para sobrepor tudo */
+  .gc-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.52);
+    z-index: 1300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-medio) ease;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .gc-overlay.aberto { opacity: 1; pointer-events: all; }
+
+  /* Janela do chat — mais alta que os outros modais */
+  .gc-modal {
+    background-color: white;
+    border-radius: 22px;
+    width: 100%;
+    max-width: 500px;
+    height: min(620px, 88vh);
+    display: flex;
+    flex-direction: column;
+    transform: translateY(28px) scale(0.96);
+    transition: transform var(--dur-medio) var(--ease-saida), opacity var(--dur-medio) ease;
+    opacity: 0;
+    overflow: hidden;
+    box-shadow: 0 28px 72px rgba(0, 0, 0, 0.22);
+  }
+  .gc-overlay.aberto .gc-modal { transform: translateY(0) scale(1); opacity: 1; }
+
+  /* Header do chat: ícone + nome + online + fechar */
+  .gc-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--Borda-Suave);
+    flex-shrink: 0;
+    /* Cor de fundo sutil baseada na cor do grupo, definida inline pelo JS */
+    background-color: var(--Lavanda-Suave);
+  }
+
+  /* Ícone pequeno do grupo no header */
+  .gc-header-icone {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+    /* Cor definida inline pelo JS */
+    background-color: var(--Roxo-Calmo);
+  }
+
+  /* Nome e status do grupo no header */
+  .gc-header-info { flex: 1; min-width: 0; }
+  .gc-header-nome {
+    font-family: 'Lora', serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .gc-header-status {
+    font-size: 12px;
+    color: var(--Verde-Esperança);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+  }
+  .gc-header-status .ponto { width: 6px; height: 6px; border-radius: 50%; background: var(--Verde-Esperança); }
+
+  /* Botão fechar do chat */
+  .gc-fechar {
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--Texto-Suave);
+    cursor: pointer;
+    transition: background-color var(--dur-rapido), color var(--dur-rapido), transform var(--dur-rapido);
+    flex-shrink: 0;
+  }
+  .gc-fechar:hover {
+    background-color: rgba(90, 72, 200, 0.1);
+    color: var(--Roxo-Calmo);
+    transform: rotate(90deg);
+  }
+
+  /* Área de mensagens com scroll */
+  .gc-mensagens {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--Borda-Suave) transparent;
+    background-color: #FAFAFA;
+  }
+  .gc-mensagens::-webkit-scrollbar { width: 4px; }
+  .gc-mensagens::-webkit-scrollbar-track { background: transparent; }
+  .gc-mensagens::-webkit-scrollbar-thumb { background-color: var(--Borda-Suave); border-radius: 4px; }
+
+  /* Mensagem de sistema (entrada, avisos) — centralizada */
+  .gc-msg-sistema {
+    text-align: center;
+    font-size: 12px;
+    color: #bbb;
+    font-style: italic;
+    padding: 2px 0;
+    animation: fadeSubir 0.25s var(--ease-saida) both;
+  }
+
+  /* Bolha de mensagem de outro usuário */
+  .gc-msg-outro {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    animation: fadeSubir 0.22s var(--ease-saida) both;
+  }
+  .gc-msg-outro .gc-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--Lavanda-Suave);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--Roxo-Calmo);
+    flex-shrink: 0;
+  }
+  .gc-msg-outro .gc-bolha {
+    max-width: 75%;
+    background-color: white;
+    border: 1px solid var(--Borda-Suave);
+    border-radius: 16px 16px 16px 4px;
+    padding: 9px 13px;
+    font-size: 13.5px;
+    color: #444;
+    line-height: 1.5;
+    word-break: break-word;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .gc-msg-outro .gc-bolha strong { font-size: 11.5px; color: var(--Roxo-Calmo); display: block; margin-bottom: 3px; }
+  .gc-msg-outro .gc-bolha .gc-hora { font-size: 10.5px; color: #ccc; margin-top: 4px; display: block; text-align: right; }
+
+  /* Bolha de mensagem do próprio usuário (direita) */
+  .gc-msg-proprio {
+    display: flex;
+    justify-content: flex-end;
+    animation: fadeSubir 0.22s var(--ease-saida) both;
+  }
+  .gc-msg-proprio .gc-bolha {
+    max-width: 75%;
+    background-color: var(--Roxo-Calmo);
+    border-radius: 16px 16px 4px 16px;
+    padding: 9px 13px;
+    font-size: 13.5px;
+    color: white;
+    line-height: 1.5;
+    word-break: break-word;
+    box-shadow: 0 2px 8px rgba(90, 72, 200, 0.25);
+  }
+  .gc-msg-proprio .gc-bolha .gc-hora { font-size: 10.5px; color: rgba(255,255,255,0.6); margin-top: 4px; display: block; text-align: right; }
+
+  /* Indicador "alguém está digitando..." */
+  .gc-digitando {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #bbb;
+    font-style: italic;
+    padding: 0 4px;
+    min-height: 20px;
+    animation: fadeSubir 0.2s var(--ease-saida) both;
+  }
+  .gc-digitando-pontos {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+  .gc-digitando-pontos span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--Roxo-Calmo);
+    animation: pulsoPonto 1.2s ease-in-out infinite;
+  }
+  .gc-digitando-pontos span:nth-child(2) { animation-delay: 0.2s; }
+  .gc-digitando-pontos span:nth-child(3) { animation-delay: 0.4s; }
+
+  /* Área de input de nova mensagem */
+  .gc-input-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--Borda-Suave);
+    flex-shrink: 0;
+    background-color: white;
+  }
+
+  /* Campo de texto da mensagem */
+  .gc-input {
+    flex: 1;
+    border: 1.5px solid var(--Borda-Suave);
+    border-radius: 22px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #444;
+    outline: none;
+    transition: border-color var(--dur-rapido), box-shadow var(--dur-rapido);
+    resize: none;
+    height: 42px;
+    max-height: 100px;
+    overflow-y: auto;
+    line-height: 1.45;
+  }
+  .gc-input:focus {
+    border-color: var(--Roxo-Calmo);
+    box-shadow: 0 0 0 3px rgba(90, 72, 200, 0.09);
+  }
+
+  /* Botão enviar mensagem */
+  .gc-btn-enviar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--Roxo-Calmo);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color var(--dur-rapido),
+                transform var(--dur-rapido) var(--ease-bounce),
+                box-shadow var(--dur-rapido);
+  }
+  .gc-btn-enviar:hover {
+    background-color: #3a2f9e;
+    transform: scale(1.1);
+    box-shadow: 0 4px 14px rgba(90, 72, 200, 0.35);
+  }
+  .gc-btn-enviar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
